@@ -4,10 +4,12 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GoogleManager : MonoBehaviour
 {
-    public TextMeshProUGUI logText;
+    public Text logText;
 
     void Start()
     {
@@ -33,6 +35,7 @@ public class GoogleManager : MonoBehaviour
             string ImgUrl = PlayGamesPlatform.Instance.GetUserImageUrl();
 
             logText.text = "Success \n" + name;
+            SceneManager.LoadScene("Lobby");
         }
         else
         {

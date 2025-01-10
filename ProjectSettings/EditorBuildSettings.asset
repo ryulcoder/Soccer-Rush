@@ -6,8 +6,16 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/DataLoad.unity
+    guid: b5744288fad18124f85b7a5dfe50a7b3
+  - enabled: 1
     path: Assets/Scenes/InGame.unity
     guid: c850ee8c3b14cc8459e7e186857cf567
+  - enabled: 1
+    path: Assets/Scenes/Lobby.unity
+    guid: bb6773a2d44c9224fa34f7d4aad17d3e
   m_configObjects:
+    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: a49b6556d432f344fa74053304c3a3b9,
+      type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000,
       guid: e9db8848e6324e74b84e43ac2ce4497c, type: 2}
