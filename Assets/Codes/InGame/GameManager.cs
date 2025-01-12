@@ -11,9 +11,9 @@ public class GameManager : MonoBehaviour
 {
     public float gameSpeed = 1;
 
-    public float playerMoveSpeed = 0.5f;
-    public float playerAniSpeed = 1;
-    public float ballMoveSpeed = 280;
+    public float playerMoveSpeed = 1;
+    public float playerAniSpeed = 1.3f;
+    public float ballMoveSpeed = 60;
 
     public int count = 0;
     string nextTime;
