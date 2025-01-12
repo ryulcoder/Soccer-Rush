@@ -13,6 +13,8 @@ public class StageSlide : MonoBehaviour
     // 화면 스테이지 세팅
     public void StageSet()
     {
+        if (currentStage >= panels.Length)
+            currentStage = panels.Length - 1;
         panels[currentStage].anchoredPosition = Vector3.zero;
         for (int i = 0; i < panels.Length; i++)
         {

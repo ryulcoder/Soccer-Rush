@@ -35,7 +35,9 @@ public class GoogleManager : MonoBehaviour
             string ImgUrl = PlayGamesPlatform.Instance.GetUserImageUrl();
 
             logText.text = "Success \n" + name;
-            SceneManager.LoadScene("Lobby");
+            
+            DataConnectGP dataConnectGP = GetComponent<DataConnectGP>();
+            dataConnectGP.LoadData();
         }
         else
         {

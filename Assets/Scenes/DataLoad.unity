@@ -236,7 +236,7 @@ GameObject:
   - component: {fileID: 587596769}
   - component: {fileID: 587596768}
   m_Layer: 5
-  m_Name: Image
+  m_Name: BackGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -474,8 +474,9 @@ GameObject:
   - component: {fileID: 1079993730}
   - component: {fileID: 1079993729}
   - component: {fileID: 1079993731}
+  - component: {fileID: 1079993732}
   m_Layer: 5
-  m_Name: googleAlert
+  m_Name: googleConnect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -555,6 +556,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logText: {fileID: 1079993729}
+--- !u!114 &1079993732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1079993727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb127fb520be07d469571094508b114e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showText: {fileID: 0}
 --- !u!1 &1356434784
 GameObject:
   m_ObjectHideFlags: 0
