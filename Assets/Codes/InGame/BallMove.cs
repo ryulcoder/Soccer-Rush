@@ -25,7 +25,7 @@ public class BallMove : MonoBehaviour
     Vector3 movement = Vector3.forward;
     Vector3 torqueDir = Vector3.right;
 
-    Vector3 playerVec;
+    Vector3 playerVec, moveTorqueDir;
 
     void Start()
     {
@@ -54,15 +54,23 @@ public class BallMove : MonoBehaviour
                 if (!moveKick)
                 {
                     if (BallTrans.position.x < playerVec.x)
-                        BallRigibody.AddTorque(torqueDir * 100, ForceMode.VelocityChange);
-                    BallRigibody.AddTorque(torqueDir * 100, ForceMode.VelocityChange);
+                        moveTorqueDir = new Vector3(1, 1, 0);
+                    else
+                        moveTorqueDir = new Vector3(1, -1, 0);
+
+                    BallRigibody.AddTorque(moveTorqueDir * 100, ForceMode.VelocityChange);
+
                     moveKick = true;
                 }
                     
                 BallTrans.position = new(playerVec.x, BallTrans.position.y, BallTrans.position.z);
             }
             else
+            {
+
                 moveKick = false;
+            }
+                
 
         }
 

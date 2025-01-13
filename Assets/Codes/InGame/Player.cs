@@ -8,9 +8,10 @@ public class Player : MonoBehaviour
     public Transform PlayerTransform;
     public Rigidbody PlayerRigibody;
     public Animator PlayerAni;
+    public Transform Armature;
 
     public Transform TileTransform;
-    
+
     public float speed, jumpSpeed;
     float distance, totalSpeed, prev_x, next_x;
 
@@ -42,10 +43,10 @@ public class Player : MonoBehaviour
     {
         if (start)
         {
-            if (!isDribble) 
+            if (!isDribble)
             {
                 isDribble = true;
-                PlayerAni.SetTrigger("Dribble"); 
+                PlayerAni.SetTrigger("Dribble");
             }
 
         }
@@ -58,6 +59,38 @@ public class Player : MonoBehaviour
         if (start)
         {
             stateInfo = PlayerAni.GetCurrentAnimatorStateInfo(0);
+
+            /*if (isJump && Armature.localPosition.y <= 0.01f)
+            {
+                isJump = false;
+            }*/
+
+            if (isMove)
+            {
+                PlayerTransform.position += 13 * Time.deltaTime * direction;
+
+                Vector3 position = PlayerTransform.position;
+
+                if (direction.x > 0)
+                    PlayerAni.SetFloat("Horizontal", next_x - position.x < distance / 2 ? next_x - position.x : distance - (next_x - position.x));
+                else
+                    PlayerAni.SetFloat("Horizontal", position.x - next_x < distance / 2 ? next_x - position.x : -distance + position.x - next_x);
+
+
+                if (direction.x > 0 && position.x >= next_x - 0.01f || direction.x < 0 && position.x <= next_x + 0.01f)
+                {
+                    Debug.Log("µµÂø");
+
+                    PlayerTransform.position = new(next_x, position.y, position.z);
+
+                    PlayerAni.SetFloat("Horizontal", 0);
+
+                    prev_x = next_x;
+
+                    isMove = false;
+                    MoveButtonDelay = false;
+                }
+            }
 
             if (isDribble)
             {
@@ -78,43 +111,7 @@ public class Player : MonoBehaviour
                 }
 
 
-                if (isMove)
-                {
-                    PlayerTransform.position += direction * Time.deltaTime * 13;
-
-                    Vector3 position = PlayerTransform.position;
-
-                    if (direction.x > 0)
-                        PlayerAni.SetFloat("Horizontal", next_x - position.x < distance / 2 ? next_x - position.x : distance - (next_x - position.x));
-                    else
-                        PlayerAni.SetFloat("Horizontal", position.x - next_x < distance / 2 ? next_x - position.x : - distance + position.x - next_x);     
-
-
-                    if (direction.x > 0 && position.x >= next_x || direction.x < 0 && position.x <= next_x + 0.05f)
-                    {
-                        Debug.Log("µµÂø");
-
-                        PlayerTransform.position = new(next_x, position.y, position.z);
-
-                        PlayerAni.SetFloat("Horizontal", 0);
-
-                        prev_x = next_x;
-
-                        isMove = false;
-                        MoveButtonDelay = false;
-                    }
-                }
-            }
-        }
-    }
-
-    void LateUpdate()
-    {
-        if (start)
-        {
-            if (isJump && !stateInfo.IsName("Jump_Run"))
-            {
-                isJump = false;
+               
             }
         }
     }
@@ -156,7 +153,10 @@ public class Player : MonoBehaviour
         PlayerAni.SetTrigger("Jump");
     }
 
-
+    public void Jump_End()
+    {
+        isJump = false;
+    }
 
     private void OnTriggerEnter(Collider collider)
     {
