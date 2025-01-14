@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TileMove : MonoBehaviour
+public class FloorMove : MonoBehaviour
 {
     public GameManager GameManager;
+    public PoolManager PoolManager;
 
-    public Transform TileTrans;
+    public Transform FloorTrans;
 
     bool onPlayer, inPlayer, coroutine;
 
@@ -18,6 +19,32 @@ public class TileMove : MonoBehaviour
                 StartCoroutine(DelayAndMoveTile());
         }
     }
+
+    IEnumerator DelayAndMoveTile()
+    {
+        coroutine = true;
+
+        PoolManager.PoolObjects(GetComponentsInChildren<Transform>());
+
+        yield return new WaitForSeconds(1);
+
+        if (onPlayer) yield break;
+
+        FloorTrans.position += new Vector3(0, 0, FloorTrans.localScale.z * GameManager.Tiles.Length);
+
+        inPlayer = false;
+        coroutine = false;
+
+        SettingDefender();
+    }
+
+    void SettingDefender()
+    {
+        
+
+        //PoolManager.DefenderPreFabs.Length
+    }
+
 
     private void OnTriggerStay(Collider collider)
     {
@@ -38,20 +65,6 @@ public class TileMove : MonoBehaviour
         if (collider.gameObject.name != "PlayerFoot") return;
 
         onPlayer = false;
-    }
-
-    IEnumerator DelayAndMoveTile()
-    {
-        coroutine = true;
-
-        yield return new WaitForSeconds(1);
-
-        if (onPlayer) yield break;
-
-        TileTrans.position += new Vector3(0, 0, TileTrans.localScale.z * GameManager.Tiles.Length);
-
-        inPlayer = false;
-        coroutine = false;
     }
 
 }
