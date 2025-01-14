@@ -1,11 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using Debug = UnityEngine.Debug;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,6 +16,7 @@ public class GameManager : MonoBehaviour
     string nextTime;
 
     [Header("[ Code ]")]
+    public PoolManager PoolManager;
     public Player Player;
     public BallMove BallMove;
 
