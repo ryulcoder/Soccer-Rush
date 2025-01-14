@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public BallMove BallMove;
+
     public Transform PlayerTransform;
     public Rigidbody PlayerRigibody;
     public Animator PlayerAni;
@@ -17,7 +18,7 @@ public class Player : MonoBehaviour
 
     bool start, dribbleSlowStart;
     public bool isDribble, isJump, isMove;
-    bool ballKick, MoveButtonDelay;
+    bool ballKick, isWaitingForDoubleClick;
 
     Vector3 direction;
 
@@ -58,44 +59,44 @@ public class Player : MonoBehaviour
     {
         if (start)
         {
-            stateInfo = PlayerAni.GetCurrentAnimatorStateInfo(0);
-
-            /*if (isJump && Armature.localPosition.y <= 0.01f)
-            {
-                isJump = false;
-            }*/
-
+            // 좌 우 움직임 update
             if (isMove)
             {
-                PlayerTransform.position += 13 * Time.deltaTime * direction;
-
                 Vector3 position = PlayerTransform.position;
-
-                if (direction.x > 0)
-                    PlayerAni.SetFloat("Horizontal", next_x - position.x < distance / 2 ? next_x - position.x : distance - (next_x - position.x));
-                else
-                    PlayerAni.SetFloat("Horizontal", position.x - next_x < distance / 2 ? next_x - position.x : -distance + position.x - next_x);
-
-
-                if (direction.x > 0 && position.x >= next_x - 0.01f || direction.x < 0 && position.x <= next_x + 0.01f)
+                
+                // 도착위치 도달 시 스탑 후 초기화
+                if (direction.x > 0 && position.x >= next_x - 0.1f || direction.x < 0 && position.x <= next_x + 0.1f)
                 {
-                    Debug.Log("도착");
+                    isMove = false;
 
                     PlayerTransform.position = new(next_x, position.y, position.z);
 
                     PlayerAni.SetFloat("Horizontal", 0);
 
                     prev_x = next_x;
+                }
+                else
+                {
+                    PlayerTransform.position += 13 * Time.deltaTime * direction;
 
-                    isMove = false;
-                    MoveButtonDelay = false;
+                    float moveDis = Mathf.Abs(next_x - prev_x);
+
+                    if (direction.x > 0)
+                        PlayerAni.SetFloat("Horizontal", next_x - position.x < moveDis / 2 ? next_x - position.x : moveDis - (next_x - position.x));
+                    else
+                        PlayerAni.SetFloat("Horizontal", position.x - next_x < moveDis / 2 ? next_x - position.x : -moveDis + position.x - next_x);
                 }
             }
 
+            // 플레이어 애니메이터 현재 애니메이션 확인
+            stateInfo = PlayerAni.GetCurrentAnimatorStateInfo(0);
+
+            // 드리블중
             if (isDribble)
             {
                 if (stateInfo.IsName("Start_Run") || stateInfo.IsName("Dribble_Tree") || stateInfo.IsName("Jump_Run"))
                 {
+                    // 처음 드리블 시 천천히 속도 올리기
                     if (dribbleSlowStart)
                     {
                         totalSpeed += Time.deltaTime;
@@ -107,6 +108,7 @@ public class Player : MonoBehaviour
                         }
                     }
 
+                    // 드리블 이동
                     PlayerTransform.position += Vector3.forward * totalSpeed;
                 }
 
@@ -116,34 +118,58 @@ public class Player : MonoBehaviour
         }
     }
 
-
+    // 좌 우 이동
     public void MoveLeftRight(int moveDirection)
     {
         if (start) 
         { 
-            if (isMove || isJump) return;
+            if (isJump) return;
 
-            if (moveDirection == -1)
+            direction = new(moveDirection, 0, 0);
+
+            next_x += direction.x * distance;
+
+            // 더블클릭 체크
+            StartCoroutine(DoubleClickCheck());
+
+            if (Mathf.Abs(next_x) >= distance)
             {
-                if (PlayerRigibody.position.x <= -distance) return;
-
-                direction = Vector3.left;
+                next_x = moveDirection * distance;
             }
-            else
-            {
-                if (PlayerRigibody.position.x >= distance) return;
-
-                direction = Vector3.right;
-            }
-
-            next_x = prev_x + direction.x * distance;
-            
-            PlayerAni.SetFloat("Horizontal", direction.x);
 
             isMove = true;
         }
+
     }
 
+    IEnumerator DoubleClickCheck()
+    {
+        // 더블클릭 처리
+        if (isWaitingForDoubleClick)
+        {
+            Debug.Log("더블클릭!");
+            isWaitingForDoubleClick = false; // 대기 상태 초기화
+
+        }
+
+        // 싱글 클릭 처리 대기
+        else
+        {
+            isWaitingForDoubleClick = true;
+            yield return new WaitForSecondsRealtime(0.2f);
+
+            // 대기 중 더블클릭이 발생하지 않으면 싱글 클릭 처리
+            if (isWaitingForDoubleClick)
+            {
+                Debug.Log("싱글클릭!");
+                isWaitingForDoubleClick = false; // 대기 상태 초기화
+            }
+            else
+                yield break;
+        }
+    }
+
+    // 점프
     public void Jump()
     {
         if (isJump || isMove) return;
@@ -151,23 +177,30 @@ public class Player : MonoBehaviour
         isJump = true;
 
         PlayerAni.SetTrigger("Jump");
+
+        BallMove.Flick();
     }
 
-    public void Jump_End()
-    {
-        isJump = false;
-    }
 
     private void OnTriggerEnter(Collider collider)
     {
+        // 볼 콜라이더 트리거 시
         if (collider.gameObject.name == "Ball")
         {
             ballKick = true;
-
+            if (isJump) isJump = false;
         }
 
+        // 태클을 당했을 시
         if (collider.gameObject.name == "Takle_Defender")
         {
+            PlayerAni.SetTrigger("GetTackled_Front");
+            totalSpeed = 0;
+        }
+
+        if (collider.gameObject.name == "SlidingTakle_Defender")
+        {
+            // 태클을 당했을 때 점프시
             if (isJump)
             {
                 Debug.Log("점프중 무적");
@@ -176,17 +209,12 @@ public class Player : MonoBehaviour
 
             PlayerAni.SetTrigger("GetTackled_Front");
             totalSpeed = 0;
-
-        }
-
-        if (collider.gameObject.name == "SlidingTakle_Defender")
-        {
-
         }
     }
 
     private void OnTriggerExit(Collider collider)
     {
+        // 볼 콜라이더랑 멀어질 시
         if (collider.gameObject.name == "Ball")
         {
             ballKick = false;

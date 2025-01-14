@@ -1896,6 +1896,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67e25af8064ea844cbf42daf351c431c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BallMove: {fileID: 166653161}
   PlayerTransform: {fileID: 5903297864780688752}
   PlayerRigibody: {fileID: 835559944}
   PlayerAni: {fileID: 5903297864780688753}
