@@ -46,7 +46,7 @@ public class BallMove : MonoBehaviour
 
             if (flick && BallRigibody.velocity.z > 10)
             {
-                BallRigibody.velocity = new Vector3(BallRigibody.velocity.x, BallRigibody.velocity.y, 10);
+                BallRigibody.velocity = new Vector3(BallRigibody.velocity.x, BallRigibody.velocity.y, 9);
             }
 
             BallRigibody.angularVelocity *= dampingFactor;
@@ -93,8 +93,8 @@ public class BallMove : MonoBehaviour
             // 공 띄우기 
             if (flick)
             {
-                BallTrans.position += Vector3.forward; // 플레이어 이동 속도와 같이
-                BallRigibody.AddForce(Vector3.down * 55, ForceMode.Acceleration); // 볼 떨어지는 가중력
+                BallTrans.position += Vector3.forward * 0.9f; // 플레이어 이동 속도와 같이
+                BallRigibody.AddForce(Vector3.down * 100, ForceMode.Acceleration); // 볼 떨어지는 가중력
                 BallRigibody.AddTorque(torqueDir, ForceMode.Acceleration);
 
                 // 최고 높이 확인
@@ -134,7 +134,7 @@ public class BallMove : MonoBehaviour
         BallRigibody.velocity = Vector3.zero;
         Reset();
 
-        BallRigibody.AddForce(new(0, 50, 10), ForceMode.VelocityChange);
+        BallRigibody.AddForce(new(0, 55, 9), ForceMode.VelocityChange);
         BallRigibody.AddTorque(torqueDir * 100, ForceMode.VelocityChange);
     }
 
@@ -191,6 +191,8 @@ public class BallMove : MonoBehaviour
             // 포물선 특정 높이에서 떨어져야 할때
             if (flickBallDown)
             {
+                Player.JumpEnd();
+
                 BallRigibody.velocity = new(BallRigibody.velocity.x, 0, BallRigibody.velocity.z);
 
                 BallRigibody.AddForce(movement * speed / 2, ForceMode.VelocityChange);
