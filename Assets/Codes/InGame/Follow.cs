@@ -6,17 +6,24 @@ public class Follow : MonoBehaviour
 {
     public Transform Target;
 
-    public Vector3 Offset;
-    public Vector3 targetZ;
+    public Vector3 defaultVec;
+    public Vector3 targetVec;
+
+    float targetdis;
 
     void Awake()
     {
-        Offset = transform.position;
+        defaultVec = transform.position;
+        targetdis = Target.position.x - transform.position.x;
     }
 
     void FixedUpdate()
     {
-        targetZ = new(0, 0, Target.position.z);
-        transform.position = Offset + targetZ;
+        targetVec = new(Target.position.x + defaultVec.x, transform.position.y, Target.position.z + defaultVec.z);
+
+        transform.position = Vector3.Lerp(transform.position, targetVec, Time.deltaTime * 5);
+        transform.position = new Vector3(transform.position.x, transform.position.y, Target.position.z + defaultVec.z);
+
     }
+
 }
