@@ -52,7 +52,7 @@ public class BallMove : MonoBehaviour
             BallRigibody.angularVelocity *= dampingFactor;
             BallRigibody.velocity *= dampingFactor;
 
-            Debug.Log(BallRigibody.velocity);
+            //Debug.Log(BallRigibody.velocity);
         }
 
         // º¼À» Ã¡À» ½Ã
