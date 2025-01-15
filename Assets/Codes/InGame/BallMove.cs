@@ -39,9 +39,20 @@ public class BallMove : MonoBehaviour
         // 볼 이동, 회전 감속 로직 적용
         if (deceleration)
         {
+            if (Player.dribbleSlowStart)
+            {
+                BallRigibody.velocity = new Vector3(BallRigibody.velocity.x, BallRigibody.velocity.y, 35);
+            }
+
+            if (flick && BallRigibody.velocity.z > 10)
+            {
+                BallRigibody.velocity = new Vector3(BallRigibody.velocity.x, BallRigibody.velocity.y, 10);
+            }
+
             BallRigibody.angularVelocity *= dampingFactor;
             BallRigibody.velocity *= dampingFactor;
 
+            Debug.Log(BallRigibody.velocity);
         }
 
         // 볼을 찼을 시
@@ -49,7 +60,7 @@ public class BallMove : MonoBehaviour
         {
             // 공이 이탈 시 위치 조정
             if (BallTrans.position.z < PlayerTrans.position.z + 3)
-                BallTrans.position = new Vector3(0, BallTrans.position.y, PlayerTrans.position.z + 4.5f);
+                BallTrans.position = new Vector3(0, BallTrans.position.y, PlayerTrans.position.z + 5);
 
             playerVec = PlayerTrans.position;
             ballVec = BallTrans.position;
@@ -85,28 +96,6 @@ public class BallMove : MonoBehaviour
                 BallTrans.position += Vector3.forward; // 플레이어 이동 속도와 같이
                 BallRigibody.AddForce(Vector3.down * 55, ForceMode.Acceleration); // 볼 떨어지는 가중력
                 BallRigibody.AddTorque(torqueDir, ForceMode.Acceleration);
-
-                // 포물선 특정 높이에서 떨어져야 할때
-                if (flickBallDown)
-                {
-                    // 볼이 땅에 닿았을때
-                    if (BallTrans.position.y <= 1.52f)
-                    {
-                        BallRigibody.velocity = Vector3.zero;
-                        BallTrans.position = new Vector3(BallTrans.position.x, 1.52f, BallTrans.position.z);
-
-                        BallRigibody.AddForce(movement * 10, ForceMode.VelocityChange);
-                        BallRigibody.AddTorque(torqueDir * 100, ForceMode.VelocityChange);
-
-                        flickBallDown = false;
-                        flick = false;
-                        kickDelay = false;
-
-                        fallSpeed = 0;
-                    }
-
-                    return;
-                }
 
                 // 최고 높이 확인
                 if (BallTrans.position.y > ballMaxY)
@@ -152,7 +141,7 @@ public class BallMove : MonoBehaviour
     // 볼 위치 리셋
     public void Reset()
     {
-        BallTrans.position = new Vector3(PlayerTrans.position.x, 1.52f, PlayerTrans.position.z + 4);
+        BallTrans.position = new Vector3(PlayerTrans.position.x, 1.52f, PlayerTrans.position.z + 4.5f);
     }
 
     // 볼 킥 여러번 트리거 방지 딜레이
@@ -165,7 +154,7 @@ public class BallMove : MonoBehaviour
 
 
     
-    void OnTriggerStay(Collider collider)
+    void OnTriggerEnter(Collider collider)
     {
         // 플레이어 발 트리거로 인한 볼 이동 혹은 회전
         if (collider.gameObject.name == "PlayerFoot")
@@ -196,6 +185,26 @@ public class BallMove : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        // 볼이 땅에 닿았을때
+        if (collision.gameObject.CompareTag("Floor"))
+        {
+            // 포물선 특정 높이에서 떨어져야 할때
+            if (flickBallDown)
+            {
+                BallRigibody.velocity = new(BallRigibody.velocity.x, 0, BallRigibody.velocity.z);
+
+                BallRigibody.AddForce(movement * speed / 2, ForceMode.VelocityChange);
+                BallRigibody.AddTorque(torqueDir * 10, ForceMode.VelocityChange);
+
+                flickBallDown = false;
+                flick = false;
+                kickDelay = false;
+
+                fallSpeed = 0;
+                return;
+            }
+        }
+
         if (collision.gameObject.name == "Defender")
         {
             Vector3 direction = (collision.transform.position - collision.contacts[0].point).normalized;

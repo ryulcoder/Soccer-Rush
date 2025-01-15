@@ -24,7 +24,7 @@ public class FloorMove : MonoBehaviour
     {
         coroutine = true;
 
-        PoolManager.PoolObjects(GetComponentsInChildren<Transform>());
+        //PoolManager.PoolObjects(GetComponentsInChildren<Transform>());
 
         yield return new WaitForSeconds(1);
 

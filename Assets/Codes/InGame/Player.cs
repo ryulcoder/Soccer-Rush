@@ -16,7 +16,8 @@ public class Player : MonoBehaviour
     public float speed, jumpSpeed;
     float distance, totalSpeed, prev_x, next_x;
 
-    bool start, dribbleSlowStart;
+    bool start;
+    public bool dribbleSlowStart;
     public bool isDribble, isJump, isMove;
     bool ballKick, isWaitingForDoubleClick;
 
@@ -221,6 +222,5 @@ public class Player : MonoBehaviour
 
         }
     }
-
 
 }
