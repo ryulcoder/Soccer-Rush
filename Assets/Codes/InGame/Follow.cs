@@ -19,9 +19,9 @@ public class Follow : MonoBehaviour
 
     void FixedUpdate()
     {
-        targetVec = new(Target.position.x + defaultVec.x, transform.position.y, Target.position.z + defaultVec.z);
+        targetVec = new(Target.position.x < 0 ? Target.position.x * 0.7f + defaultVec.x : Target.position.x * 0.2f + defaultVec.x, transform.position.y, Target.position.z + defaultVec.z);
 
-        transform.position = Vector3.Lerp(transform.position, targetVec, Time.deltaTime * 5);
+        transform.position = Vector3.Lerp(transform.position, targetVec, Time.deltaTime * 3);
         transform.position = new Vector3(transform.position.x, transform.position.y, Target.position.z + defaultVec.z);
 
     }

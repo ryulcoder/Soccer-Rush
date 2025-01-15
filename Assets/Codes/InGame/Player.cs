@@ -33,7 +33,9 @@ public class Player : MonoBehaviour
 
     public void Start()
     {
-        distance = TileTransform.localScale.y / 4;
+        isJump = true; isMove = true;
+
+        distance = TileTransform.localScale.y / 3;
 
         prev_x = PlayerRigibody.position.x;
 
@@ -78,7 +80,7 @@ public class Player : MonoBehaviour
                 }
                 else
                 {
-                    PlayerTransform.position += 13 * Time.deltaTime * direction;
+                    PlayerTransform.position += 22 * Time.deltaTime * direction;
 
                     float moveDis = Mathf.Abs(next_x - prev_x);
 
@@ -105,6 +107,9 @@ public class Player : MonoBehaviour
                         if (totalSpeed >= speed)
                         {
                             dribbleSlowStart = false;
+                            isJump = false;
+                            isMove = false;
+
                             totalSpeed = speed;
                         }
                     }
@@ -182,6 +187,10 @@ public class Player : MonoBehaviour
         BallMove.Flick();
     }
 
+    public void JumpEnd()
+    {
+        isJump = false;
+    }
 
     private void OnTriggerEnter(Collider collider)
     {
