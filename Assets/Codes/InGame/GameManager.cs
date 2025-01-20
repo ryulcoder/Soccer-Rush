@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
 
     public float playerMoveSpeed = 1;
     public float playerAniSpeed = 1.3f;
-    public float ballMoveSpeed = 60;
+    public float ballMoveSpeed = 58;
 
     public int count = 0;
     string nextTime;
@@ -90,8 +90,9 @@ public class GameManager : MonoBehaviour
 
     public void GameStart()
     {
-        Time.timeScale = gameSpeed;
+        //Time.timeScale = gameSpeed;
         Player.PlayerStart();
+        Time.timeScale = gameSpeed;
     }
 
     public void GamePause()

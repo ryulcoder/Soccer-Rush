@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Floor
+  - Front_Tackle
   layers:
   - Default
   - TransparentFX
