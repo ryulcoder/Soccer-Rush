@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class Defender : MonoBehaviour
 {
+    Animator DefenderAni;
+
+    public string anomalyUserState;
 
     bool isTackle;
-    public string anomalyStr;
+    float floorDis;
+    string anomalyStr;
 
     public enum States
     {
@@ -18,34 +22,54 @@ public class Defender : MonoBehaviour
     // enum 타입의 변수를 선언
     public States currentState;
 
+    private void Awake()
+    {
+        DefenderAni = gameObject.GetComponent<Animator>();
+        floorDis = GameObject.FindGameObjectWithTag("Floor").transform.localScale.y / 3;
+    }
+
     void Tackle()
     {
-        gameObject.GetComponent<Animator>().SetBool(currentState.ToString(), true);
+        DefenderAni.SetBool(currentState.ToString(), true);
 
     }
 
     void Tackle(Transform player)
     {
-        float playerX = player.position.x;
+        float playerdis = player.position.x - transform.position.x;
 
-        if (playerX < 0)
+        if (playerdis < 0)
+        {
             anomalyStr = "Sliding_Tackle_Right";
-        
-        else if (playerX > 0)
+            anomalyUserState = "GetTackled_Right";
+        }
+        else if (playerdis > 0)
+        {
             anomalyStr = "Sliding_Tackle_Left";
-        
+            anomalyUserState = "GetTackled_Left";
+        }
         else
+        {
             anomalyStr = "Stand_Tackle_Front";
-        
-        gameObject.GetComponent<Animator>().SetBool(anomalyStr, true);
+            anomalyUserState = "GetStandTackled_Front";
+        }
+
+        if (Mathf.Abs(playerdis) / floorDis >= 2)
+            DefenderAni.speed = 1.5f;
+
+        DefenderAni.SetBool(anomalyStr, true);
 
     }
 
     public void Reset()
     {
         isTackle = false;
+        DefenderAni.speed = 1;
 
-        gameObject.GetComponent<Animator>().SetBool(currentState.ToString(), false);
+        if (currentState.ToString() == "Sliding_Tackle_Anomaly")
+            DefenderAni.SetBool(anomalyStr, false);
+        else
+            DefenderAni.SetBool(currentState.ToString(), false);
     }
 
     private void OnTriggerEnter(Collider collider)

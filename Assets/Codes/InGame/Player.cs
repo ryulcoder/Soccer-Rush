@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -20,8 +19,8 @@ public class Player : MonoBehaviour
 
     bool start;
     public bool dribbleSlowStart;
-    public bool isDribble, isJump, isMove;
-    bool ballKick, isWaitingForDoubleClick, getFrontTackle;
+    bool isDribble, isJump, isMove;
+    bool isWaitingForDoubleClick, getTackled, dontMove;
 
     Vector3 direction;
 
@@ -34,10 +33,10 @@ public class Player : MonoBehaviour
     }
     public void DontMove()
     {
+        dontMove = true;
         dribbleSlowStart = false;
         isJump = false;
         isMove = false;
-        ballKick = false;
         isWaitingForDoubleClick = false;
     }
 
@@ -73,20 +72,22 @@ public class Player : MonoBehaviour
         // 플레이어 애니메이터 현재 애니메이션 확인
         stateInfo = PlayerAni.GetCurrentAnimatorStateInfo(0);
 
-        if (getFrontTackle)
+        if (getTackled)
         {
-            if (stateInfo.IsName("Dribble") || stateInfo.IsName("GetTackled_Front") || stateInfo.IsName("GetStandTackled_Front"))
+            if (stateInfo.IsName("Fallen") || stateInfo.IsName("GetStandTackled_Front"))
             {
-                PlayerTransform.position += Vector3.forward * totalSpeed;
-            }
-            else if (stateInfo.IsName("Fallen"))
-            {
-                getFrontTackle = false;
+                getTackled = false;
                 start = false;
                 isDribble = false;
 
                 totalSpeed = 0;
             }
+            else
+            {
+                PlayerTransform.position += Vector3.forward * totalSpeed;
+                totalSpeed *= 0.95f;
+            }
+                
 
         }
         
@@ -151,35 +152,34 @@ public class Player : MonoBehaviour
     // 좌 우 이동
     public void MoveLeftRight(int moveDirection)
     {
-        if (start) 
-        { 
-            if (isJump || dribbleSlowStart) { Debug.LogError("버튼 블락"); return; }
+        if (PlayerTransform.position.x > 0 && moveDirection > 0 || PlayerTransform.position.x < 0 && moveDirection < 0) return;
 
-            direction = new(moveDirection, 0, 0);
+        if (!start || dontMove || isJump || dribbleSlowStart) { Debug.LogError("버튼 블락"); return; }
 
-            next_x += direction.x * distance;
+        direction = new(moveDirection, 0, 0);
 
-            // 더블클릭 체크
-            StartCoroutine(DoubleClickCheck());
+        next_x += moveDirection * distance;
 
-            if (moveDirection > 0)
-            {
-                PlayerAni.SetBool("MoveRight", true);
-                PlayerAni.SetBool("MoveLeft", false);
-            }
-            else
-            {
-                PlayerAni.SetBool("MoveLeft", true);
-                PlayerAni.SetBool("MoveRight", false);
-            }
-                
-            if (Mathf.Abs(next_x) >= distance)
-            {
-                next_x = moveDirection * distance;
-            }
+        // 더블클릭 체크
+        StartCoroutine(DoubleClickCheck());
 
-            isMove = true;
+        if (moveDirection > 0)
+        {
+            PlayerAni.SetBool("MoveRight", true);
+            PlayerAni.SetBool("MoveLeft", false);
         }
+        else
+        {
+            PlayerAni.SetBool("MoveLeft", true);
+            PlayerAni.SetBool("MoveRight", false);
+        }
+
+        if (Mathf.Abs(next_x) >= distance)
+        {
+            next_x = moveDirection * distance;
+        }
+
+        isMove = true;
 
     }
 
@@ -212,7 +212,7 @@ public class Player : MonoBehaviour
     // 점프
     public void Jump()
     {
-        if (isJump || dribbleSlowStart) { Debug.LogError("버튼 블락"); return; }
+        if (dontMove || isJump || dribbleSlowStart) { Debug.LogError("버튼 블락"); return; }
 
         isJump = true;
 
@@ -228,42 +228,10 @@ public class Player : MonoBehaviour
 
     public void GetTackled(string tackleName)
     {
+        if ((tackleName == "GetTackled_Right" || tackleName == "GetTackled_Left") && isJump && !dontMove) return;
+        
+        getTackled = true;
         PlayerAni.SetTrigger(tackleName);
     }
-
-
-    private void OnTriggerEnter(Collider collider)
-    {
-        // 볼 콜라이더 트리거 시
-        if (collider.gameObject.name == "Ball")
-        {
-            ballKick = true;
-            //if (isJump) isJump = false;
-        }
-
-        if (collider.gameObject.name == "SlidingTakle_Defender")
-        {
-            // 태클을 당했을 때 점프시
-            if (isJump)
-            {
-                Debug.Log("점프중 무적");
-                return;
-            }
-
-            PlayerAni.SetTrigger("GetTackled_Front");
-        }
-    }
-
-    private void OnTriggerExit(Collider collider)
-    {
-        // 볼 콜라이더랑 멀어질 시
-        if (collider.gameObject.name == "Ball")
-        {
-            ballKick = false;
-
-        }
-    }
-
-   
 
 }

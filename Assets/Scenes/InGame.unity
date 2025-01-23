@@ -97,7 +97,8 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: b5b5c000bae7254479ad8598201a9d7b,
+    type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -552,7 +553,7 @@ GameObject:
   m_Component:
   - component: {fileID: 469547368}
   m_Layer: 0
-  m_Name: Front_Tackle
+  m_Name: StandTackle_Front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -762,6 +763,16 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: b3b572ad27c0918478e5dccff80d5689,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5605304064255753239, guid: b3b572ad27c0918478e5dccff80d5689,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5605304064255753239, guid: b3b572ad27c0918478e5dccff80d5689,
+        type: 3}
+      propertyPath: m_ReceiveShadows
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4128383740851021839, guid: b3b572ad27c0918478e5dccff80d5689,
@@ -2011,12 +2022,12 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 0697d42391a4e4d4ea446955b91dbc79,
         type: 3}
       propertyPath: m_Name
-      value: Defender_SlidingTackle (1)
+      value: Defender_SlidingTackle_Front
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 0697d42391a4e4d4ea446955b91dbc79,
         type: 3}
       propertyPath: m_TagString
-      value: Front_Tackle
+      value: SlidingTackle_Front
       objectReference: {fileID: 0}
     - target: {fileID: 2408001348110326286, guid: 0697d42391a4e4d4ea446955b91dbc79,
         type: 3}
@@ -2895,7 +2906,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -2928,7 +2939,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 1
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -2947,13 +2958,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.47588313, y: -0.6630096, z: 0.43371665, w: 0.38189465}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalRotation: {x: 0.3420201, y: 0, z: 0, w: 0.9396927}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 69.816, y: -164.259, z: -60.319}
+  m_LocalEulerAnglesHint: {x: 40, y: 0, z: 0}
 --- !u!1 &787667267
 GameObject:
   m_ObjectHideFlags: 0
@@ -3199,7 +3210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8497a3fddf5bedc49b2e15407cc41b38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anomalyStr: 
+  anomalyUserState: 
   currentState: 0
 --- !u!54 &835559944
 Rigidbody:
@@ -3285,7 +3296,7 @@ GameObject:
   m_Component:
   - component: {fileID: 836540507}
   m_Layer: 0
-  m_Name: Right_SlidingTackle
+  m_Name: SlidingTackle_Anomaly
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3928,7 +3939,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 928fa127c3c51204cbd5770669e0bc58,
         type: 3}
       propertyPath: m_TagString
-      value: Front_Tackle
+      value: StandTackle_Front
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3965,7 +3976,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1183113886}
   m_Layer: 0
-  m_Name: Left_SlidingTackle
+  m_Name: SlidingTackle_Front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4723,12 +4734,12 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 0697d42391a4e4d4ea446955b91dbc79,
         type: 3}
       propertyPath: m_Name
-      value: Defender_SlidingTackle
+      value: Defender_SlidingTackle_Anomaly
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 0697d42391a4e4d4ea446955b91dbc79,
         type: 3}
       propertyPath: m_TagString
-      value: Front_Tackle
+      value: SlidingTackle_Anomaly
       objectReference: {fileID: 0}
     - target: {fileID: 2408001348110326286, guid: 0697d42391a4e4d4ea446955b91dbc79,
         type: 3}
@@ -5030,8 +5041,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 65.022064, y: 9.892322, z: 5.809784}
-  m_Center: {x: -0.01586914, y: 4.446161, z: -16.543747}
+  m_Size: {x: 65.022064, y: 9.892322, z: 4.8624573}
+  m_Center: {x: -0.01586914, y: 4.446161, z: -13.683212}
 --- !u!114 &1354529939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5044,7 +5055,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8497a3fddf5bedc49b2e15407cc41b38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anomalyStr: 
+  anomalyUserState: 
   currentState: 2
 --- !u!1 &1360049846
 GameObject:
@@ -5145,7 +5156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8497a3fddf5bedc49b2e15407cc41b38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anomalyStr: 
+  anomalyUserState: 
   currentState: 1
 --- !u!1 &1452395629
 GameObject:
@@ -5176,8 +5187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 431278513c7d78f4aa4319436e0e3ca4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefenderPreFabs:
-  - {fileID: 6923922394528790521, guid: b04e3e687d53b8d46ac0dc1563484752, type: 3}
+  DefenderPrefabs: []
 --- !u!4 &1452395631
 Transform:
   m_ObjectHideFlags: 0

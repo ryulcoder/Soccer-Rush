@@ -161,6 +161,10 @@ public class BallMove : MonoBehaviour
         // 정면 태클을 당했을 때
         if (!isTackled && collider.gameObject.name == "TackleFoot")
         {
+            Defender defender = collider.GetComponent<DefenderFootTrigger>().Defender;
+
+            if ((defender.anomalyUserState == "GetTackled_Right" || defender.anomalyUserState == "GetTackled_Left") && flick) return;
+
             kick = false;
             isTackled = true;
 

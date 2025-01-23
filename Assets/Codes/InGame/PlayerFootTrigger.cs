@@ -27,12 +27,16 @@ public class PlayerFootTrigger : MonoBehaviour
                 case "Sliding_Tackle_Front":
                     stateName = "GetTackled_Front";
                     break;
+                case "Sliding_Tackle_Anomaly":
+                    stateName = defender.anomalyUserState;
+                    break;
             }
 
-            Debug.Log("태클 시작");
+            Debug.Log("태클 : "+ stateName);
 
             Player.GetTackled(stateName);
 
+            getTackle = false;
         }
     }
 }
