@@ -20,11 +20,11 @@ public class StageSlide : MonoBehaviour
         {
             if (i < currentStage)
             {
-                panels[i].anchoredPosition = new Vector2(-1920, 0);
+                panels[i].anchoredPosition = new Vector2(-4, 0);
             }
             else if (i > currentStage)
             {
-                panels[i].anchoredPosition = new Vector2(1920, 0);
+                panels[i].anchoredPosition = new Vector2(4, 0);
             }
         }
     }
@@ -35,7 +35,7 @@ public class StageSlide : MonoBehaviour
         if (currentStage > 0)
         {
             // 현재 패널 이동
-            panels[currentStage].DOAnchorPosX(1920, slideDuration); // 화면 오른쪽으로 이동
+            panels[currentStage].DOAnchorPosX(4, slideDuration); // 화면 오른쪽으로 이동
             currentStage--;
             // 왼쪽 패널 중앙으로 이동
             panels[currentStage].DOAnchorPosX(0, slideDuration);
@@ -48,7 +48,7 @@ public class StageSlide : MonoBehaviour
         if (currentStage < panels.Length - 1)
         {
             // 현재 패널 이동
-            panels[currentStage].DOAnchorPosX(-1920, slideDuration); // 화면 왼쪽으로 이동
+            panels[currentStage].DOAnchorPosX(-4, slideDuration); // 화면 왼쪽으로 이동
             currentStage++;
             // 오른쪽 패널 중앙으로 이동
             panels[currentStage].DOAnchorPosX(0, slideDuration);

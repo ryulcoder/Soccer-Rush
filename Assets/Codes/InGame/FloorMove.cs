@@ -6,6 +6,7 @@ public class FloorMove : MonoBehaviour
 {
     public GameManager GameManager;
     public PoolManager PoolManager;
+    public GameObject grass;
 
     public Transform FloorTrans;
 
@@ -31,6 +32,7 @@ public class FloorMove : MonoBehaviour
         if (onPlayer) yield break;
 
         FloorTrans.position += new Vector3(0, 0, FloorTrans.localScale.z * GameManager.Tiles.Length);
+        //Instantiate(grass, FloorTrans.position, Quaternion.identity);
 
         inPlayer = false;
         coroutine = false;

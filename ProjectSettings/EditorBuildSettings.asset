@@ -8,12 +8,15 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DataLoad.unity
     guid: b5744288fad18124f85b7a5dfe50a7b3
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/InGameUIBackUp.unity
     guid: c850ee8c3b14cc8459e7e186857cf567
   - enabled: 1
     path: Assets/Scenes/Lobby.unity
     guid: bb6773a2d44c9224fa34f7d4aad17d3e
+  - enabled: 1
+    path: Assets/Scenes/InGame.unity
+    guid: 55b1e1645b7e7b84eb2ff20370e93207
   m_configObjects:
     com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000,
       guid: b7e387135d5e56e4582192f6f7844bf1, type: 2}
