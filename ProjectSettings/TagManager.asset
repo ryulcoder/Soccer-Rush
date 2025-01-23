@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Floor
+  - StandTackle_Front
+  - SlidingTackle_Front
+  - SlidingTackle_Anomaly
   layers:
   - Default
   - TransparentFX

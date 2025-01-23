@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class BallMove : MonoBehaviour
@@ -21,7 +20,7 @@ public class BallMove : MonoBehaviour
     float dampingFactor = 0.98f;
     float ballMaxY, fallSpeed;
 
-    bool deceleration, kick, moveKick, flick, flickBallDown, ballVelLimit;
+    bool deceleration, kick, moveKick, flick, flickBallDown, ballVelLimit, isTackled;
     static bool kickDelay;
 
     Vector3 movement = Vector3.forward;
@@ -59,8 +58,8 @@ public class BallMove : MonoBehaviour
         if (kick)
         {
             // 공이 이탈 시 위치 조정
-            if (BallTrans.position.z < PlayerTrans.position.z + 3)
-                BallTrans.position = new Vector3(0, BallTrans.position.y, PlayerTrans.position.z + 5);
+            if (!isTackled && BallTrans.position.z < PlayerTrans.position.z + 3)
+                BallTrans.position = new Vector3(0, BallTrans.position.y, PlayerTrans.position.z + 4.5f);
 
             playerVec = PlayerTrans.position;
             ballVec = BallTrans.position;
@@ -122,6 +121,16 @@ public class BallMove : MonoBehaviour
 
     }
 
+    // 볼 위치 리셋
+    public void Reset()
+    {
+        BallTrans.GetComponent<Collider>().isTrigger = false;
+        BallRigibody.constraints |= RigidbodyConstraints.FreezePositionX;
+
+        BallTrans.position = new Vector3(PlayerTrans.position.x, 1.52f, PlayerTrans.position.z + 4.5f);
+    }
+
+
     // 플레이어 점프 시 볼 띄우기
     public void Flick()
     {
@@ -132,16 +141,10 @@ public class BallMove : MonoBehaviour
         ballMaxY = 0;
 
         BallRigibody.velocity = Vector3.zero;
-        Reset();
+        BallTrans.position = new Vector3(PlayerTrans.position.x, 1.52f, PlayerTrans.position.z + 4.5f);
 
         BallRigibody.AddForce(new(0, 55, 9), ForceMode.VelocityChange);
         BallRigibody.AddTorque(torqueDir * 100, ForceMode.VelocityChange);
-    }
-
-    // 볼 위치 리셋
-    public void Reset()
-    {
-        BallTrans.position = new Vector3(PlayerTrans.position.x, 1.52f, PlayerTrans.position.z + 4.5f);
     }
 
     // 볼 킥 여러번 트리거 방지 딜레이
@@ -152,15 +155,37 @@ public class BallMove : MonoBehaviour
         kickDelay = false;
     }
 
-
     
     void OnTriggerEnter(Collider collider)
     {
-        // 플레이어 발 트리거로 인한 볼 이동 혹은 회전
-        if (collider.gameObject.name == "PlayerFoot")
+        // 정면 태클을 당했을 때
+        if (!isTackled && collider.gameObject.name == "TackleFoot")
         {
-            if (kickDelay) return;
+            Defender defender = collider.GetComponent<DefenderFootTrigger>().Defender;
 
+            if ((defender.anomalyUserState == "GetTackled_Right" || defender.anomalyUserState == "GetTackled_Left") && flick) return;
+
+            kick = false;
+            isTackled = true;
+
+            Player.DontMove();
+
+            BallTrans.GetComponent<Collider>().isTrigger = true;
+            BallRigibody.constraints &= ~RigidbodyConstraints.FreezePositionX;
+
+            BallRigibody.velocity = Vector3.zero;
+
+            Vector3 direction = new Vector3(BallTrans.position.x - collider.transform.position.x, 1, BallTrans.position.z - collider.transform.position.z);
+
+            BallRigibody.AddForce(direction * 100, ForceMode.VelocityChange);
+            BallRigibody.AddTorque(direction * 100, ForceMode.VelocityChange);
+
+            Debug.Log("수비 커트");
+        }
+
+        // 플레이어 발 트리거로 인한 볼 이동 혹은 회전
+        if (!kickDelay && !isTackled && collider.gameObject.name == "PlayerFoot")
+        {
             BallRigibody.velocity = Vector3.zero;
 
             deceleration = true;
@@ -180,7 +205,17 @@ public class BallMove : MonoBehaviour
             return;
         }
 
+       
 
+
+    }
+
+    private void OnTriggerExit(Collider collider)
+    {
+        if (!isTackled && collider.gameObject.name == "PlayerFoot")
+        {
+            isTackled = false;
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -207,13 +242,6 @@ public class BallMove : MonoBehaviour
             }
         }
 
-        if (collision.gameObject.name == "Defender")
-        {
-            Vector3 direction = (collision.transform.position - collision.contacts[0].point).normalized;
-
-            BallRigibody.AddForce(direction * speed, ForceMode.Impulse);
-            BallRigibody.AddTorque(direction * speed, ForceMode.Impulse);
-        }
     }
 
 }

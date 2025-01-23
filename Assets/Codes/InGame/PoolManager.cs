@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PoolManager : MonoBehaviour
 {
-    public GameObject[] DefenderPreFabs;
+    public GameObject[] DefenderPrefabs;
 
     void Start()
     {
