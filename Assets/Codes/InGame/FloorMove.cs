@@ -27,7 +27,7 @@ public class FloorMove : MonoBehaviour
 
         //PoolManager.PoolObjects(GetComponentsInChildren<Transform>());
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(3);
 
         if (onPlayer) yield break;
 
