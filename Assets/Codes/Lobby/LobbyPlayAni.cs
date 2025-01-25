@@ -8,6 +8,8 @@ public class LobbyPlayAni : MonoBehaviour
     public PlayableDirector playableDirector;
     public GameObject StageFont;
     public GameObject StageArrow;
+    public GameObject PlayText;
+
     public void PlayTimeline()
     {
         if (playableDirector != null)
@@ -15,6 +17,7 @@ public class LobbyPlayAni : MonoBehaviour
             playableDirector.Play();
             StageFont.SetActive(false);
             StageArrow.SetActive(false);
+            PlayText.SetActive(false);
         }
     }
 }
