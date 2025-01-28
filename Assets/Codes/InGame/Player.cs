@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
@@ -17,10 +16,9 @@ public class Player : MonoBehaviour
     public float speed, jumpSpeed;
     float distance, totalSpeed, prev_x, next_x;
 
-    bool start;
-    public bool dribbleSlowStart;
-    bool isDribble, isJump, isMove;
-    bool isWaitingForDoubleClick, getTackled, dontMove;
+    public bool dribbleSlowStart, getTackled;
+    bool start, isDribble, isJump;
+    bool isWaitingForDoubleClick, dontMove;
 
     Vector3 direction;
 
@@ -36,15 +34,14 @@ public class Player : MonoBehaviour
         dontMove = true;
         dribbleSlowStart = false;
         isJump = false;
-        isMove = false;
         isWaitingForDoubleClick = false;
     }
 
     public void Start()
     {
-        isJump = true; isMove = true;
+        isJump = true;
 
-        distance = TileTransform.localScale.y / 3;
+        distance = TileTransform.localScale.x / 3;
 
         prev_x = PlayerRigibody.position.x;
 
@@ -72,11 +69,11 @@ public class Player : MonoBehaviour
         // 플레이어 애니메이터 현재 애니메이션 확인
         stateInfo = PlayerAni.GetCurrentAnimatorStateInfo(0);
 
+        // 태클을 당했을시 특정 모션전 감속 로직
         if (getTackled)
         {
             if (stateInfo.IsName("Fallen") || stateInfo.IsName("GetStandTackled_Front"))
             {
-                getTackled = false;
                 start = false;
                 isDribble = false;
 
@@ -87,24 +84,20 @@ public class Player : MonoBehaviour
                 PlayerTransform.position += Vector3.forward * totalSpeed;
                 totalSpeed *= 0.95f;
             }
-                
-
         }
-        
-        
+
+
 
         if (start)
         {
             Vector3 position = PlayerTransform.position;
 
-            // 좌 우 움직임 update
+            // 좌 우 움직임 로직
             if (next_x != position.x)
             {
                 // 도착위치 도달 시 스탑 후 초기화
                 if (direction.x > 0 && position.x >= next_x - 0.1f || direction.x < 0 && position.x <= next_x + 0.1f)
                 {
-                    isMove = false;
-
                     PlayerTransform.position = new(next_x, position.y, position.z);
 
                     PlayerAni.SetBool("MoveLeft", false);
@@ -134,7 +127,6 @@ public class Player : MonoBehaviour
                         {
                             dribbleSlowStart = false;
                             isJump = false;
-                            isMove = false;
                             totalSpeed = speed;
                         }
                     }
@@ -142,9 +134,6 @@ public class Player : MonoBehaviour
                     // 드리블 이동
                     PlayerTransform.position += Vector3.forward * totalSpeed;
                 }
-
-
-               
             }
         }
     }
@@ -179,7 +168,6 @@ public class Player : MonoBehaviour
             next_x = moveDirection * distance;
         }
 
-        isMove = true;
 
     }
 
@@ -228,10 +216,18 @@ public class Player : MonoBehaviour
 
     public void GetTackled(string tackleName)
     {
-        if ((tackleName == "GetTackled_Right" || tackleName == "GetTackled_Left") && isJump && !dontMove) return;
-        
+        if ((tackleName == "GetTackled_Right" || tackleName == "GetTackled_Left" || tackleName == "GetTackled_Front") && isJump && !dontMove)
+        {
+            Debug.LogWarning("점프로 태클 피함!!");
+            return;
+        }
+
+        if (getTackled) return;
         getTackled = true;
+
         PlayerAni.SetTrigger(tackleName);
+
+        Debug.LogError("태클 : " + tackleName);
     }
 
 }

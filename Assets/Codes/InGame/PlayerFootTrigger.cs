@@ -32,8 +32,6 @@ public class PlayerFootTrigger : MonoBehaviour
                     break;
             }
 
-            Debug.Log("ебе╛ : "+ stateName);
-
             Player.GetTackled(stateName);
 
             getTackle = false;
