@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class Defender : MonoBehaviour
@@ -8,9 +9,11 @@ public class Defender : MonoBehaviour
 
     public string anomalyUserState;
 
+    float floorDis, totalSpeed;
     bool isTackle;
-    float floorDis;
     string anomalyStr;
+
+    AnimatorStateInfo stateInfo;
 
     public enum States
     {
@@ -22,10 +25,34 @@ public class Defender : MonoBehaviour
     // enum 타입의 변수를 선언
     public States currentState;
 
-    private void Awake()
+    void Awake()
     {
+        totalSpeed = 0;
         DefenderAni = gameObject.GetComponent<Animator>();
-        floorDis = GameObject.FindGameObjectWithTag("Floor").transform.localScale.y / 3;
+        floorDis = GameObject.FindGameObjectWithTag("Floor").transform.localScale.x / 3;
+    }
+
+    void FixedUpdate()
+    {
+        if (isTackle && currentState.ToString() == "Sliding_Tackle_Front")
+        {
+            stateInfo = DefenderAni.GetCurrentAnimatorStateInfo(0);
+
+            if (!stateInfo.IsName("Wait") && !stateInfo.IsName("Tackle_Run_Front"))
+            {
+                // 러닝 태클 시 천천히 속도 올리기
+                if (totalSpeed >= 0.7f)
+                {
+                    totalSpeed = 0.7f;
+                }
+                else
+                    totalSpeed += 0.1f;
+
+                // 드리블 이동
+                transform.position += Vector3.back * totalSpeed;
+            }
+           
+        }
     }
 
     void Tackle()
@@ -38,12 +65,12 @@ public class Defender : MonoBehaviour
     {
         float playerdis = player.position.x - transform.position.x;
 
-        if (playerdis < 0)
+        if (playerdis < -0.5f)
         {
             anomalyStr = "Sliding_Tackle_Right";
             anomalyUserState = "GetTackled_Right";
         }
-        else if (playerdis > 0)
+        else if (playerdis > 0.5f)
         {
             anomalyStr = "Sliding_Tackle_Left";
             anomalyUserState = "GetTackled_Left";
@@ -64,12 +91,18 @@ public class Defender : MonoBehaviour
     public void Reset()
     {
         isTackle = false;
+        totalSpeed = 0; 
         DefenderAni.speed = 1;
 
         if (currentState.ToString() == "Sliding_Tackle_Anomaly")
             DefenderAni.SetBool(anomalyStr, false);
         else
             DefenderAni.SetBool(currentState.ToString(), false);
+
+        anomalyStr = "";
+        anomalyUserState = "";
+
+        gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider collider)

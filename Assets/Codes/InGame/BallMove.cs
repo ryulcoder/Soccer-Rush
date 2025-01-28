@@ -18,7 +18,7 @@ public class BallMove : MonoBehaviour
     public float speed; 
 
     float dampingFactor = 0.98f;
-    float ballMaxY, fallSpeed;
+    float ballMaxY;
 
     bool deceleration, kick, moveKick, flick, flickBallDown, ballVelLimit, isTackled;
     static bool kickDelay;
@@ -154,11 +154,15 @@ public class BallMove : MonoBehaviour
 
         kickDelay = false;
     }
+    IEnumerator Delay()
+    {
+        yield return new WaitForSeconds(0.2f);
+    }
 
-    
+
     void OnTriggerEnter(Collider collider)
     {
-        // 정면 태클을 당했을 때
+        // 태클을 당했을 때
         if (!isTackled && collider.gameObject.name == "TackleFoot")
         {
             Defender defender = collider.GetComponent<DefenderFootTrigger>().Defender;
@@ -180,7 +184,27 @@ public class BallMove : MonoBehaviour
             BallRigibody.AddForce(direction * 100, ForceMode.VelocityChange);
             BallRigibody.AddTorque(direction * 100, ForceMode.VelocityChange);
 
-            Debug.Log("수비 커트");
+            Debug.LogWarning("수비 커트");
+
+            // 볼만 태클 당했을 시 플레이어 강제 모션 
+            string stateName = defender.currentState.ToString();
+
+            switch (stateName)
+            {
+                case "Stand_Tackle_Front":
+                    stateName = "GetStandTackled_Front";
+                    break;
+                case "Sliding_Tackle_Front":
+                    stateName = "GetTackled_Front";
+                    break;
+                case "Sliding_Tackle_Anomaly":
+                    stateName = defender.anomalyUserState;
+                    break;
+            }
+
+            StartCoroutine(Delay());
+
+            Player.GetTackled(stateName);
         }
 
         // 플레이어 발 트리거로 인한 볼 이동 혹은 회전
@@ -237,7 +261,6 @@ public class BallMove : MonoBehaviour
                 flick = false;
                 kickDelay = false;
 
-                fallSpeed = 0;
                 return;
             }
         }

@@ -1,19 +1,25 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using Debug = UnityEngine.Debug;
 
 public class GameManager : MonoBehaviour
 {
-    public float gameSpeed = 1;
+    [Header("[ Game Setting ]")]
+    [SerializeField] float gameSpeed = 1;
+    [SerializeField] float playerMoveSpeed = 1;
+    [SerializeField] float playerAniSpeed = 1.3f;
+    [SerializeField] float ballMoveSpeed = 58;
 
-    public float playerMoveSpeed = 1;
-    public float playerAniSpeed = 1.3f;
-    public float ballMoveSpeed = 58;
+    [Header("[ Def Setting ]")]
+    [SerializeField] float minGap = 60;
+    [SerializeField] float maxGap = 80;
+    [SerializeField] float[] defPer = { 60, 30, 10 };
 
-    public int count = 0;
-    string nextTime;
 
     [Header("[ Code ]")]
     public PoolManager PoolManager;
@@ -22,6 +28,9 @@ public class GameManager : MonoBehaviour
 
     [Header("[ UI ]")]
     public Text Timer;
+    public GameObject SuccessPanel;
+    public GameObject PausePanel;
+    public GameObject FailPanel;
 
     [Header("[ Tile ]")]
     public Transform[] Tiles;
@@ -31,9 +40,15 @@ public class GameManager : MonoBehaviour
     public Animator TakleDefenderAnimator;
     public Animator SlidingDefenderAnimator;
 
-    AnimatorStateInfo PlayerStateInfo;
 
+    public (float minGap, float maxGap) DefGap => (minGap, maxGap);
+    public float[] DefPer { get { return defPer; } }
 
+    int count = 0;
+    string nextTime;
+    bool coroutine;
+
+    Stopwatch PlayTime = new();
 
     void Awake()
     {
@@ -46,33 +61,39 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (Time.timeScale > 0)
+        if (PlayTime.IsRunning)
         {
-            nextTime = TimeSpan.FromSeconds(Time.unscaledTime).ToString(@"mm\:ss").Replace(":", " : ");
+            nextTime = TimeSpan.FromSeconds(PlayTime.Elapsed.TotalSeconds).ToString(@"mm\:ss").Replace(":", " : ");
 
             if (Timer.text != nextTime)
                 Timer.text = nextTime;
         }
-    }
 
-    void FixedUpdate()
-    {
-        PlayerStateInfo = PlayerAnimator.GetCurrentAnimatorStateInfo(0);
-
-        if (PlayerStateInfo.IsName("Jump_Run"))
+        if (Player.getTackled && !coroutine)
         {
-
+            coroutine = true;
+            StartCoroutine(GameFail());
         }
-
     }
+
     void LateUpdate()
     {
-        if ((int)Time.unscaledTime / 10 - count >= 1)
+        if ((int)PlayTime.Elapsed.TotalSeconds / 10 - count >= 1)
         {
             count += 1;
 
             //GameSpeedUp();
         }
+    }
+
+
+    IEnumerator GameFail()
+    {
+        PlayTime.Stop();
+
+        yield return new WaitForSecondsRealtime(1.7f);
+
+        FailPanel.SetActive(true);
     }
 
     public void BallReset()
@@ -90,18 +111,26 @@ public class GameManager : MonoBehaviour
 
     public void GameStart()
     {
-        //Time.timeScale = gameSpeed;
         Player.PlayerStart();
         Time.timeScale = gameSpeed;
+
+        PlayTime.Start();
     }
 
     public void GamePause()
     {
+        PlayTime.Stop();
         Time.timeScale = 0;
     }
+    public void GameResume()
+    {
+        PlayTime.Start();
+        Time.timeScale = gameSpeed;
+    }
+
     public void GameReStart()
     {
-        Time.timeScale = gameSpeed;
+        SceneManager.LoadScene("InGame");
     }
 
 }
