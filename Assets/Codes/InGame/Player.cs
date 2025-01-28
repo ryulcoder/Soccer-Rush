@@ -96,7 +96,7 @@ public class Player : MonoBehaviour
             if (next_x != position.x)
             {
                 // 도착위치 도달 시 스탑 후 초기화
-                if (direction.x > 0 && position.x >= next_x - 0.1f || direction.x < 0 && position.x <= next_x + 0.1f)
+                if (direction.x > 0 && position.x >= next_x - 0.05f || direction.x < 0 && position.x <= next_x + 0.05f)
                 {
                     PlayerTransform.position = new(next_x, position.y, position.z);
 

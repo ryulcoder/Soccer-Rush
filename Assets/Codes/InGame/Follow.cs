@@ -9,6 +9,9 @@ public class Follow : MonoBehaviour
     public Vector3 defaultVec;
     public Vector3 targetVec;
 
+    public float left = 0.9f;
+    public float right = 0.6f;
+
     float targetdis;
 
     void Awake()
@@ -19,9 +22,9 @@ public class Follow : MonoBehaviour
 
     void FixedUpdate()
     {
-        targetVec = new(Target.position.x < 0 ? Target.position.x * 0.7f + defaultVec.x : Target.position.x * 0.2f + defaultVec.x, transform.position.y, Target.position.z + defaultVec.z);
+        targetVec = new(Target.position.x < 0 ? Target.position.x * left + defaultVec.x : Target.position.x * right + defaultVec.x, transform.position.y, Target.position.z + defaultVec.z);
 
-        transform.position = Vector3.Lerp(transform.position, targetVec, Time.deltaTime * 3);
+        transform.position = Vector3.Lerp(transform.position, targetVec, Target.position.x < 0 ? Time.deltaTime * 7 : Time.deltaTime * 5);
         transform.position = new Vector3(transform.position.x, transform.position.y, Target.position.z + defaultVec.z);
 
     }

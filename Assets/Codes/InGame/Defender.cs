@@ -81,9 +81,6 @@ public class Defender : MonoBehaviour
             anomalyUserState = "GetStandTackled_Front";
         }
 
-        if (Mathf.Abs(playerdis) / floorDis >= 2)
-            DefenderAni.speed = 1.5f;
-
         DefenderAni.SetBool(anomalyStr, true);
 
     }
