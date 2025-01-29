@@ -96,12 +96,11 @@ public class Player : MonoBehaviour
             if (next_x != position.x)
             {
                 // 도착위치 도달 시 스탑 후 초기화
-                if (direction.x > 0 && position.x >= next_x - 0.05f || direction.x < 0 && position.x <= next_x + 0.05f)
+                if (direction.x > 0 && position.x >= next_x - 1 || direction.x < 0 && position.x <= next_x + 1)
                 {
                     PlayerTransform.position = new(next_x, position.y, position.z);
 
-                    PlayerAni.SetBool("MoveLeft", false);
-                    PlayerAni.SetBool("MoveRight", false);
+                    PlayerAni.SetTrigger("ReDribble");
 
                     prev_x = next_x;
                 }
@@ -141,27 +140,19 @@ public class Player : MonoBehaviour
     // 좌 우 이동
     public void MoveLeftRight(int moveDirection)
     {
-        if (PlayerTransform.position.x > 0 && moveDirection > 0 || PlayerTransform.position.x < 0 && moveDirection < 0) return;
+        if ((moveDirection > 0 && PlayerTransform.position.x >= distance) || (moveDirection < 0 && PlayerTransform.position.x <= -distance)) return;
 
-        if (!start || dontMove || isJump || dribbleSlowStart) { Debug.LogError("버튼 블락"); return; }
+        if (!start || dontMove || getTackled || isJump || dribbleSlowStart) { Debug.LogError("버튼 블락"); return; }
 
         direction = new(moveDirection, 0, 0);
 
         next_x += moveDirection * distance;
 
-        // 더블클릭 체크
-        StartCoroutine(DoubleClickCheck());
-
         if (moveDirection > 0)
-        {
-            PlayerAni.SetBool("MoveRight", true);
-            PlayerAni.SetBool("MoveLeft", false);
-        }
+            PlayerAni.SetTrigger("MoveRight");
         else
-        {
-            PlayerAni.SetBool("MoveLeft", true);
-            PlayerAni.SetBool("MoveRight", false);
-        }
+            PlayerAni.SetTrigger("MoveLeft");
+        
 
         if (Mathf.Abs(next_x) >= distance)
         {
@@ -200,7 +191,7 @@ public class Player : MonoBehaviour
     // 점프
     public void Jump()
     {
-        if (dontMove || isJump || dribbleSlowStart) { Debug.LogError("버튼 블락"); return; }
+        if (dontMove || getTackled || isJump || dribbleSlowStart) { Debug.LogError("버튼 블락"); return; }
 
         isJump = true;
 
