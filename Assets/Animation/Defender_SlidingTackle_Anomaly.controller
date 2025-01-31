@@ -38,7 +38,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Tackle_Left
-  m_Speed: 1
+  m_Speed: 0.8
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -421731891256729448}
@@ -128,7 +128,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Tackle_Right
-  m_Speed: 1
+  m_Speed: 0.8
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -5174014045553881487}
@@ -165,10 +165,10 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.1139692
+  m_TransitionDuration: 0.11396909
   m_TransitionOffset: 0
-  m_ExitTime: 0.378975
-  m_HasExitTime: 0
+  m_ExitTime: 0.47481686
+  m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -190,10 +190,10 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.11396918
+  m_TransitionDuration: 0.1139691
   m_TransitionOffset: 0
-  m_ExitTime: 0.37897503
-  m_HasExitTime: 0
+  m_ExitTime: 0.4748169
+  m_HasExitTime: 1
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -231,7 +231,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Tackle_Stand_Front
-  m_Speed: 1
+  m_Speed: 0.68
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 3611679092121717602}
@@ -308,9 +308,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.1386147
-  m_TransitionOffset: 0.28428635
-  m_ExitTime: 3.9957734e-10
+  m_TransitionDuration: 0.13861462
+  m_TransitionOffset: 0.3503207
+  m_ExitTime: 0
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -324,7 +324,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Turn_Left
-  m_Speed: 3
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -1077412353547613109}
@@ -360,9 +360,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.13861468
-  m_TransitionOffset: 0.27595717
-  m_ExitTime: 0.0000000012012796
+  m_TransitionDuration: 0.1386146
+  m_TransitionOffset: 0.3503207
+  m_ExitTime: 0
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -426,7 +426,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Turn_Right
-  m_Speed: 3
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -1219442126624177362}

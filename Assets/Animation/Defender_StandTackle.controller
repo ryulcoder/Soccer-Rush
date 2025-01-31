@@ -8,7 +8,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Tackle_Stand_Front
-  m_Speed: 0.82
+  m_Speed: 0.68
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -68569649921977893}
@@ -151,9 +151,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.2725795
+  m_TransitionDuration: 0.27257955
   m_TransitionOffset: 0
-  m_ExitTime: 1.3134907e-10
+  m_ExitTime: 0.0000000015758246
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
