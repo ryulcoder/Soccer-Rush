@@ -13,12 +13,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] float gameSpeed = 1;
     [SerializeField] float playerMoveSpeed = 1;
     [SerializeField] float playerAniSpeed = 1.3f;
-    [SerializeField] float ballMoveSpeed = 58;
+    [SerializeField] float ballMoveSpeed = 60;
 
     [Header("[ Def Setting ]")]
-    [SerializeField] float minGap = 60;
-    [SerializeField] float maxGap = 80;
-    [SerializeField] float[] defPer = { 60, 30, 10 };
+    [SerializeField] float minGap = 80;
+    [SerializeField] float maxGap = 100;
+    [SerializeField] float[] defPer = { 25, 25, 25, 15, 10};
 
 
     [Header("[ Code ]")]

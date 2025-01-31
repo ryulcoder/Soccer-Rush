@@ -40,16 +40,38 @@ public class PoolManager : MonoBehaviour
         
     }
 
-    public GameObject PopObject(int defIdx)
+    public GameObject PopObject(string tag)
     {
-        Transform targetParent = transform.GetChild(defIdx);
+        Transform targetParent = null;
+        GameObject targetObj = null;
 
-        if (targetParent.childCount != 0)
+        foreach (Transform obj in transform)
         {
-            return targetParent.GetChild(0).gameObject;
+            if (obj.CompareTag(tag))
+            {
+                targetParent = obj;
+                break;
+            }
         }
 
-        return DefenderPrefabs[defIdx];
+        if (targetParent)
+        {
+            targetObj = targetParent.GetChild(0).gameObject;
+        }
+        else
+        {
+            foreach (GameObject obj in DefenderPrefabs)
+            {
+                if (obj.CompareTag(tag))
+                {
+                    targetObj = Instantiate(obj);
+                    targetObj.SetActive(false);
+                }
+            }
+        }
+        
+
+        return targetObj;
     }
 
     public void LeftObjectDestroy()
