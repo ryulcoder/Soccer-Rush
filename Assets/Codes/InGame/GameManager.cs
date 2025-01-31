@@ -9,6 +9,10 @@ using Debug = UnityEngine.Debug;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("[ Game ]")]
+    [SerializeField] int score = 0;
+    [SerializeField] float distance = 0;
+
     [Header("[ Game Setting ]")]
     [SerializeField] float gameSpeed = 1;
     [SerializeField] float playerMoveSpeed = 1;
@@ -40,7 +44,8 @@ public class GameManager : MonoBehaviour
     public Animator TakleDefenderAnimator;
     public Animator SlidingDefenderAnimator;
 
-
+    public int Score { get { return score; }}
+    public int Distance { get { return (int)distance;}}
     public (float minGap, float maxGap) DefGap => (minGap, maxGap);
     public float[] DefPer { get { return defPer; } }
 
@@ -66,7 +71,11 @@ public class GameManager : MonoBehaviour
             nextTime = TimeSpan.FromSeconds(PlayTime.Elapsed.TotalSeconds).ToString(@"mm\:ss").Replace(":", " : ");
 
             if (Timer.text != nextTime)
+            {
+                score += 1;
+                distance += 0.1f;
                 Timer.text = nextTime;
+            }
         }
 
         if (Player.getTackled && !coroutine)

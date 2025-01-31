@@ -38,7 +38,7 @@ public class Defender : MonoBehaviour
         {
             stateInfo = DefenderAni.GetCurrentAnimatorStateInfo(0);
 
-            if (!stateInfo.IsName("Wait") && !stateInfo.IsName("Tackle_Run_Front"))
+            if (!stateInfo.IsName("Wait") && !stateInfo.IsName("Tackle_Front"))
             {
                 // 러닝 태클 시 천천히 속도 올리기
                 if (totalSpeed >= 0.7f)
