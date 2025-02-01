@@ -35,9 +35,11 @@ public class GoogleManager : MonoBehaviour
             string ImgUrl = PlayGamesPlatform.Instance.GetUserImageUrl();
 
             logText.text = "Success \n" + name;
-            
-            DataConnectGP dataConnectGP = GetComponent<DataConnectGP>();
-            dataConnectGP.LoadData();
+            SceneManager.LoadScene("Lobby");
+
+            //클라우드 세이브 오류나서 일단 꺼둠
+            //DataConnectGP dataConnectGP = GetComponent<DataConnectGP>();
+            //dataConnectGP.LoadData();
         }
         else
         {

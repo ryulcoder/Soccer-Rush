@@ -10,8 +10,8 @@ using Debug = UnityEngine.Debug;
 public class GameManager : MonoBehaviour
 {
     [Header("[ Game ]")]
-    [SerializeField] int score = 0;
-    [SerializeField] float distance = 0;
+    //[SerializeField] int score = 0;
+    //[SerializeField] int distance = 0;
 
     [Header("[ Game Setting ]")]
     [SerializeField] float gameSpeed = 1;
@@ -29,12 +29,13 @@ public class GameManager : MonoBehaviour
     public PoolManager PoolManager;
     public Player Player;
     public BallMove BallMove;
+    public ScoreCal ScoreCal;
 
     [Header("[ UI ]")]
     public Text Timer;
-    public GameObject SuccessPanel;
+    public GameObject GameEndBlurPanel;
     public GameObject PausePanel;
-    public GameObject FailPanel;
+    public GameObject GameEndPanel;
 
     [Header("[ Tile ]")]
     public Transform[] Tiles;
@@ -44,8 +45,6 @@ public class GameManager : MonoBehaviour
     public Animator TakleDefenderAnimator;
     public Animator SlidingDefenderAnimator;
 
-    public int Score { get { return score; }}
-    public int Distance { get { return (int)distance;}}
     public (float minGap, float maxGap) DefGap => (minGap, maxGap);
     public float[] DefPer { get { return defPer; } }
 
@@ -70,18 +69,18 @@ public class GameManager : MonoBehaviour
         {
             nextTime = TimeSpan.FromSeconds(PlayTime.Elapsed.TotalSeconds).ToString(@"mm\:ss").Replace(":", " : ");
 
-            if (Timer.text != nextTime)
-            {
-                score += 1;
-                distance += 0.1f;
-                Timer.text = nextTime;
-            }
+            //if (Timer.text != nextTime)
+            //{
+            //    score += 1;
+            //    distance += 0.1f;
+            //    Timer.text = nextTime;
+            //}
         }
 
         if (Player.getTackled && !coroutine)
         {
             coroutine = true;
-            StartCoroutine(GameFail());
+            StartCoroutine(GameEnd());
         }
     }
 
@@ -96,13 +95,15 @@ public class GameManager : MonoBehaviour
     }
 
 
-    IEnumerator GameFail()
+    IEnumerator GameEnd()
     {
         PlayTime.Stop();
 
         yield return new WaitForSecondsRealtime(1.7f);
-
-        FailPanel.SetActive(true);
+        
+        GameEndPanel.SetActive(true);
+        GameEndBlurPanel.SetActive(true);
+        ScoreCal.SetResult();
     }
 
     public void BallReset()
@@ -141,5 +142,4 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene("InGame");
     }
-
 }
