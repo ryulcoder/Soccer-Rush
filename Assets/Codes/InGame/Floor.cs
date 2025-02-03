@@ -14,8 +14,8 @@ public class Floor : MonoBehaviour
     public List<Vector3> posList;
 
     static float leftGap = 0;
-    static float prevX = 0;
-    static bool useLeftGap;
+    static float prevX = -2;
+    static bool useLeftGap, prevLineIs2;
 
     Vector3 floorScale;
     float[] defXs;
@@ -122,7 +122,7 @@ public class Floor : MonoBehaviour
         {
             ranXs = defXs.OrderBy(_ => Random.value).ToArray();
             string defStr = defNames[RanDef()];
-            
+
             // 3라인 수비 패턴
             if (defStr == "Three_Defenders")
             {
@@ -152,19 +152,59 @@ public class Floor : MonoBehaviour
             }
             // 1라인
             else
+            {
                 targetObj.Add(PoolManager.PopObject(defStr));
+            }
+                
+            
+
+            Vector3 settingVec;
 
             // 오브젝트pop 혹시 프리팹인경우 복제 생성 후 정해진 위치 이동
             for (int i= 0;i < targetObj.Count; i++)
             {
-                Vector3 vec = new(targetObj.Count == 1 ? ranXs[i+1] : ranXs[i], pos.y, pos.z);
+                if (prevLineIs2 && targetObj.Count == 2 && i == 1 && ranXs[0] != prevX && ranXs[1] != prevX)
+                {
+                    prevX = ranXs[1];
+                    ranXs[1] = ranXs[2];
+                    ranXs[2] = prevX;
+                }
 
-                targetObj[i].transform.position = vec;
+                if (i == 0 && targetObj.Count == 1)
+                {
+                    if (!prevLineIs2 && prevX == ranXs[0])
+                    {
+                        prevX = ranXs[Random.Range(1, 3)];
+                    }
+                    else if (!prevLineIs2)
+                    {
+                        prevX = ranXs[0];
+                    }
 
+                    settingVec = new(prevX, pos.y, pos.z);
+                }
+                else
+                {
+                    settingVec = new(ranXs[i], pos.y, pos.z);
+                }
+                    
+                targetObj[i].transform.position = settingVec;
                 targetObj[i].transform.SetParent(transform);
-                targetObj[i].name = gameObject.name + " " + (pos.z - prev);
+
+                string[] nameStrs = targetObj[i].name.Split("_");
+                targetObj[i].name = "Z(" +(pos.z - prev) + ")_" + nameStrs[1].Replace("(clone)", "") + "_" + nameStrs[2].Split("(")[0];
 
                 targetObj[i].SetActive(true);
+            }
+
+            if (targetObj.Count == 2)
+            {
+                prevLineIs2 = true;
+                prevX = ranXs[2];
+            }
+            else
+            {
+                prevLineIs2 = false;
             }
 
             prev = pos.z;

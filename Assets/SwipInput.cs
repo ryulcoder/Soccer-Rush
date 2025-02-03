@@ -47,9 +47,14 @@ public class SwipInput : MonoBehaviour
         else // 상하 스와이프
         {
             if (delta.y > swipeThreshold)
+            {
                 Player.Jump();
+            }
             else if (delta.y < -swipeThreshold)
-                OnSwipeDown();
+            {
+                Player.Spin();
+            }
+               
         }
     }
 

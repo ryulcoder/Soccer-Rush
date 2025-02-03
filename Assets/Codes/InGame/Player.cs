@@ -16,9 +16,8 @@ public class Player : MonoBehaviour
     public float speed, jumpSpeed;
     float distance, totalSpeed, prev_x, next_x;
 
-    public bool dribbleSlowStart, getTackled;
-    bool start, isDribble, isJump;
-    bool isWaitingForDoubleClick, dontMove;
+    public bool dribbleSlowStart, getTackled, spinRight;
+    public bool start, dontMove, isDribble, isJump, isSpin;
 
     Vector3 direction;
 
@@ -31,10 +30,12 @@ public class Player : MonoBehaviour
     }
     public void DontMove()
     {
+        Debug.LogWarning("볼이 수비에 걸림");
+
         dontMove = true;
         dribbleSlowStart = false;
         isJump = false;
-        isWaitingForDoubleClick = false;
+
     }
 
     public void Start()
@@ -114,7 +115,8 @@ public class Player : MonoBehaviour
             // 드리블중
             if (isDribble)
             {
-                if (stateInfo.IsName("Start_Run") || stateInfo.IsName("Dribble") || stateInfo.IsName("Jump_Run")
+                if (stateInfo.IsName("Start_Run") || stateInfo.IsName("Dribble") || stateInfo.IsName("Jump_Run") 
+                    || stateInfo.IsName("Spin_Left") || stateInfo.IsName("Spin_Right")
                     || stateInfo.IsName("Move_Left") || stateInfo.IsName("Move_Right"))
                 {
                     // 처음 드리블 시 천천히 속도 올리기
@@ -142,7 +144,7 @@ public class Player : MonoBehaviour
     {
         if ((moveDirection > 0 && PlayerTransform.position.x >= distance) || (moveDirection < 0 && PlayerTransform.position.x <= -distance)) return;
 
-        if (!start || dontMove || getTackled || isJump || dribbleSlowStart) { Debug.LogError("버튼 블락"); return; }
+        if (!start || dontMove || getTackled || isSpin || isJump || dribbleSlowStart) { Debug.LogWarning("Block"); return; }
 
         direction = new(moveDirection, 0, 0);
 
@@ -162,36 +164,34 @@ public class Player : MonoBehaviour
 
     }
 
-    IEnumerator DoubleClickCheck()
+    // 개인기
+    public void Spin()
     {
-        // 더블클릭 처리
-        if (isWaitingForDoubleClick)
-        {
-            Debug.Log("더블클릭!");
-            isWaitingForDoubleClick = false; // 대기 상태 초기화
+        if (dontMove || getTackled || isSpin || isJump || dribbleSlowStart) { Debug.LogWarning("Block"); return; }
 
+        isSpin = true;
+
+        if (!spinRight)
+        { 
+            PlayerAni.SetTrigger("Spin_Left");
+            BallMove.SpinMove("Left");
+            
         }
-
-        // 싱글 클릭 처리 대기
         else
         {
-            isWaitingForDoubleClick = true;
-            yield return new WaitForSecondsRealtime(0.2f);
-
-            // 대기 중 더블클릭이 발생하지 않으면 싱글 클릭 처리
-            if (isWaitingForDoubleClick)
-            {
-                isWaitingForDoubleClick = false; // 대기 상태 초기화
-            }
-            else
-                yield break;
+            PlayerAni.SetTrigger("Spin_Right");
+            BallMove.SpinMove("Right");
         }
+    }
+    public void SpinEnd()
+    {
+        isSpin = false;
     }
 
     // 점프
     public void Jump()
     {
-        if (dontMove || getTackled || isJump || dribbleSlowStart) { Debug.LogError("버튼 블락"); return; }
+        if (dontMove || getTackled || isSpin || isJump || dribbleSlowStart) { Debug.LogWarning("Block"); return; }
 
         isJump = true;
 
@@ -212,13 +212,20 @@ public class Player : MonoBehaviour
             Debug.LogWarning("점프로 태클 피함!!");
             return;
         }
+        
+        if(tackleName == "GetStandTackled_Front" && isSpin && !dontMove)
+        {
+            Debug.LogWarning("마르세유로 태클 피함!!");
+            return;
+        }
+
 
         if (getTackled) return;
         getTackled = true;
 
         PlayerAni.SetTrigger(tackleName);
 
-        Debug.LogError("태클 : " + tackleName);
+        Debug.LogWarning("태클 : " + tackleName);
     }
 
 }
