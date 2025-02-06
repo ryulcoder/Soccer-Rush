@@ -82,7 +82,6 @@ public class PoolManager : MonoBehaviour
 
             foreach (Transform chilchild in child)
             {
-                Debug.LogWarning("삭제! 삭제!!");
                 Destroy(chilchild.gameObject);
             }
 
