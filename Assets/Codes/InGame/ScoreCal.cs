@@ -1,3 +1,5 @@
+using GooglePlayGames.BasicApi;
+using GooglePlayGames;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Mime;
@@ -33,6 +35,7 @@ public class ScoreCal : MonoBehaviour
         scoreText.text = Score.ToString();
     }
     
+    // 결과창 보여주기
     public void SetResult()
     {
         distanceResult.text = "Distance: " + Distance.ToString() + "m";
@@ -54,5 +57,33 @@ public class ScoreCal : MonoBehaviour
         distanceText.gameObject.SetActive(false);
         scoreText.gameObject.SetActive(false);
         settingButton.SetActive(false);
+    }
+
+    // 스코어 저장
+    public void SaveScore()
+    {
+        int highScore = PlayerPrefs.GetInt("BestScore", 0);
+
+        if (Score > highScore)
+        {
+            PlayerPrefs.SetInt("BestScore", Score);
+            PlayerPrefs.Save();
+            Debug.Log($"새로운 하이스코어 저장: {Score}");
+
+
+            // 서버에 점수 제출
+            Social.ReportScore(Score, GPGSIds.leaderboard_ranking, success =>
+            {
+                if (success)
+                {
+                    Debug.Log($"점수 {Score} 서버 전송 성공!");
+                    SetResult();
+                }
+                else
+                {
+                    Debug.Log("점수 서버 전송 실패");
+                }
+            });
+        }
     }
 }

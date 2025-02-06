@@ -10,8 +10,8 @@ using UnityEngine.SceneManagement;
 public class GoogleManager : MonoBehaviour
 {
     public Text logText;
-
-    void Start()
+    
+    public void SignButton()
     {
         PlayGamesPlatform.DebugLogEnabled = true;
         PlayGamesPlatform.Activate();
@@ -35,6 +35,8 @@ public class GoogleManager : MonoBehaviour
             string ImgUrl = PlayGamesPlatform.Instance.GetUserImageUrl();
 
             logText.text = "Success \n" + name;
+            PlayerPrefs.SetInt("Login", 1);
+            PlayerPrefs.Save();
             SceneManager.LoadScene("Lobby");
 
             //클라우드 세이브 오류나서 일단 꺼둠

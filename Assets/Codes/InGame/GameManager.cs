@@ -103,7 +103,7 @@ public class GameManager : MonoBehaviour
         
         GameEndPanel.SetActive(true);
         GameEndBlurPanel.SetActive(true);
-        ScoreCal.SetResult();
+        ScoreCal.SaveScore();
     }
 
     public void BallReset()
@@ -141,5 +141,11 @@ public class GameManager : MonoBehaviour
     public void GameReStart()
     {
         SceneManager.LoadScene("InGame");
+    }
+
+    public void GoLobby()
+    {
+        SceneManager.LoadScene("Lobby");
+
     }
 }
