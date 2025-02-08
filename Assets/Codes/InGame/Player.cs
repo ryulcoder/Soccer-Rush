@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
     float distance, totalSpeed, prev_x, next_x;
 
     public bool dribbleSlowStart, getTackled, spinRight;
-    public bool start, dontMove, isDribble, isJump, isSpin;
+    bool start, dontMove, isDribble, isJump, isSpin;
 
     Vector3 direction;
 

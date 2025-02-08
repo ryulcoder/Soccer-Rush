@@ -303,7 +303,7 @@ public class BallMove : MonoBehaviour
         }
 
         // 플레이어 발 트리거로 인한 볼 이동 혹은 회전
-        if (!kickDelay && !isTackled && collider.gameObject.name == "PlayerFoot")
+        if (!spin && !flick && !kickDelay && !isTackled && collider.gameObject.name == "PlayerFoot")
         {
             BallRigibody.velocity = Vector3.zero;
 

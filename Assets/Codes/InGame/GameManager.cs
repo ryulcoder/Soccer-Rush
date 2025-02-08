@@ -10,7 +10,7 @@ using Debug = UnityEngine.Debug;
 public class GameManager : MonoBehaviour
 {
     [Header("[ Game ]")]
-    //[SerializeField] int score = 0;
+    [SerializeField] int score = 0;
     //[SerializeField] int distance = 0;
 
     [Header("[ Game Setting ]")]
@@ -69,12 +69,6 @@ public class GameManager : MonoBehaviour
         {
             nextTime = TimeSpan.FromSeconds(PlayTime.Elapsed.TotalSeconds).ToString(@"mm\:ss").Replace(":", " : ");
 
-            //if (Timer.text != nextTime)
-            //{
-            //    score += 1;
-            //    distance += 0.1f;
-            //    Timer.text = nextTime;
-            //}
         }
 
         if (Player.getTackled && !coroutine)
