@@ -9,7 +9,7 @@ public class Defender : MonoBehaviour
 
     public string anomalyUserState;
 
-    float floorDis, totalSpeed;
+    float totalSpeed;
     bool isTackle;
     string anomalyStr;
 
@@ -29,7 +29,6 @@ public class Defender : MonoBehaviour
     {
         totalSpeed = 0;
         DefenderAni = gameObject.GetComponent<Animator>();
-        floorDis = GameObject.FindGameObjectWithTag("Floor").transform.localScale.x / 3;
     }
 
     void FixedUpdate()
