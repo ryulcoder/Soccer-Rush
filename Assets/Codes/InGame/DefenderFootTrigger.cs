@@ -35,11 +35,11 @@ public class DefenderFootTrigger : MonoBehaviour
     {
         if (Player && checkLimitOn)
         {
-            if (!debugMessage) 
+            /*if (!debugMessage) 
             {
                 debugMessage = true;
-                //Debug.LogWarning("limit 확인중..");
-            }
+                Debug.LogWarning("limit 확인중..");
+            }*/
 
             StartCoroutine(CheckLimitCoroutine());
             
@@ -54,19 +54,19 @@ public class DefenderFootTrigger : MonoBehaviour
         if (DefenderTrans.position.z - PlayerTrans.position.z <= 0)
         {
             checkLimitOn = false;
-            debugMessage = debugMessage2 = false;
+            //debugMessage = debugMessage2 = false;
             //Debug.Log("limit 확인 종료");
             yield break;
         }
 
         // 플레이어가 다른라인에 있을 시 대기
-        if (!isAnomaly && Mathf.Abs(PlayerTrans.position.x - DefenderTrans.position.x) > Player.distance - 2)
+        if (!isAnomaly && Mathf.Abs(PlayerTrans.position.x - DefenderTrans.position.x) > Player.distance / 2 - 0.5f)
         {
-            if (!debugMessage2)
+            /*if (!debugMessage2)
             {
                 debugMessage2 = true;
-                //Debug.Log("limit 다른 라인 대기중");
-            }
+                Debug.Log("limit 다른 라인 대기중");
+            }*/
             
             yield return null;
         }
@@ -79,7 +79,7 @@ public class DefenderFootTrigger : MonoBehaviour
             // 선 스킬 사용 시 limit 강제종료
             if (Player.Instance.isAct) 
             {
-                debugMessage = debugMessage2 = false;
+                //debugMessage = debugMessage2 = false;
                 //Debug.LogError("스킬 이미 사용 limit 강제종료");
                 yield break;
             }
@@ -91,7 +91,7 @@ public class DefenderFootTrigger : MonoBehaviour
 
             ExtraScore.instance.LimitEnd();
 
-            debugMessage = debugMessage2 = false;
+            //debugMessage = debugMessage2 = false;
             //Debug.LogWarning("limit 활성화 종료");
             yield break;
         }
@@ -109,7 +109,8 @@ public class DefenderFootTrigger : MonoBehaviour
     // 플레이어와 수비수 라인 확인
     public bool LineCheck()
     {
-        if (Mathf.Abs(PlayerTrans.position.x - DefenderTrans.position.x) > Player.distance - 2)
+        // 특정 거리 이상 점수 인정x
+        if (Mathf.Abs(PlayerTrans.position.x - DefenderTrans.position.x) > Player.distance / 2 - 0.5f)
         {
             return true;
         }
