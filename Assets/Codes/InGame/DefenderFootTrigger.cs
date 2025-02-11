@@ -11,7 +11,7 @@ public class DefenderFootTrigger : MonoBehaviour
 
     Transform DefenderTrans;
 
-    bool checkLimitOn, isAnomaly, debugMessage, debugMessage2;
+    bool checkLimitOn, isAnomaly;//, debugMessage, debugMessage2;
     float limitCheckDis, limitCheckTime;
 
     void Start()
@@ -24,7 +24,7 @@ public class DefenderFootTrigger : MonoBehaviour
 
         DefenderTrans = Defender.gameObject.transform;
 
-        checkLimitOn = isAnomaly = debugMessage = debugMessage2 = false;
+        checkLimitOn = isAnomaly = false;//debugMessage = debugMessage2 = false;
 
         limitCheckDis = ExtraScore.instance.limitDis;
         limitCheckTime = ExtraScore.instance.limitTime;
