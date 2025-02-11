@@ -34,6 +34,13 @@ public class PlayerFootTrigger : MonoBehaviour
 
             Player.GetTackled(stateName);
 
+        }
+    }
+
+    private void OnTriggerExit(Collider collider)
+    {
+        if (getTackle && collider.gameObject.name == "TackleFoot")
+        {
             getTackle = false;
         }
     }

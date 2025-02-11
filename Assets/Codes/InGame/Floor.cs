@@ -5,10 +5,12 @@ using UnityEngine;
 
 public class Floor : MonoBehaviour
 {
+    [Header("[ Code ]")]
     public GameManager GameManager;
     public PoolManager PoolManager;
     public Player Player;
 
+    [Header("[ Floor ]")]
     public Floor otherFloor;
 
     public List<Vector3> posList;
@@ -25,16 +27,17 @@ public class Floor : MonoBehaviour
     [SerializeField] float minGap, maxGap; 
     bool onPlayer, inPlayer, coroutine, firstSet;
 
-    private void Awake()
+    void Awake()
     {
+        (minGap, maxGap) = GameManager.DefGap;
+        defPer = GameManager.DefPer;
+
         floorScale = transform.localScale;
         posList = new List<Vector3>();
 
         defXs = new float[] { -floorScale.x / 3, 0, floorScale.x / 3 };
-
-        (minGap, maxGap) = GameManager.DefGap;
-        defPer = GameManager.DefPer;
     }
+
     void Start()
     {
         // 시작시 첫 floor 제외 순차적 수비 세팅
@@ -75,6 +78,8 @@ public class Floor : MonoBehaviour
         coroutine = false;
 
         PoolManager.LeftObjectDestroy();
+
+        yield break;
     }
 
     // 수비 세팅
@@ -118,7 +123,7 @@ public class Floor : MonoBehaviour
         float prev = transform.TransformPoint(new(0, 0, -0.5f)).z;
 
         // 세팅한 수비 좌표 리스트를 토대로 수비 옵젝 세팅
-        foreach (Vector3 pos in posList)
+        for (int posIdx=0; posIdx < posList.Count; posIdx++)
         {
             ranXs = defXs.OrderBy(_ => Random.value).ToArray();
             string defStr = defNames[RanDef()];
@@ -126,7 +131,12 @@ public class Floor : MonoBehaviour
             // 3라인 수비 패턴
             if (defStr == "Three_Defenders")
             {
-                defStr = defNames[1];//defNames[Random.Range(0, 2)];
+                int ran = Random.Range(0, 2);
+
+                defStr = defNames[ran];
+
+                if (ran == 1)
+                    posList[posIdx] += Vector3.forward * 10;
 
                 for (int i = 0; i < 3; i++)
                     targetObj.Add(PoolManager.PopObject(defStr));
@@ -181,18 +191,18 @@ public class Floor : MonoBehaviour
                         prevX = ranXs[0];
                     }
 
-                    settingVec = new(prevX, pos.y, pos.z);
+                    settingVec = new(prevX, posList[posIdx].y, posList[posIdx].z);
                 }
                 else
                 {
-                    settingVec = new(ranXs[i], pos.y, pos.z);
+                    settingVec = new(ranXs[i], posList[posIdx].y, posList[posIdx].z);
                 }
                     
                 targetObj[i].transform.position = settingVec;
                 targetObj[i].transform.SetParent(transform);
 
                 string[] nameStrs = targetObj[i].name.Split("_");
-                targetObj[i].name = "Z(" +(pos.z - prev) + ")_" + nameStrs[1].Replace("(clone)", "") + "_" + nameStrs[2].Split("(")[0];
+                targetObj[i].name = "Z(" +(posList[posIdx].z - prev) + ")_" + nameStrs[1].Replace("(clone)", "") + "_" + nameStrs[2].Split("(")[0];
 
                 targetObj[i].SetActive(true);
             }
@@ -207,7 +217,7 @@ public class Floor : MonoBehaviour
                 prevLineIs2 = false;
             }
 
-            prev = pos.z;
+            prev = posList[posIdx].z;
             targetObj.Clear();
         }
 

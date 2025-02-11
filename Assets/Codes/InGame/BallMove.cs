@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class BallMove : MonoBehaviour
 {
-    public Player Player;
+    public static BallMove instance;
+
+    Player Player;
 
     [Header("[ Player ]")]
-    public Transform PlayerTrans;
-    public Animator PlayerAni;
+    Transform PlayerTrans;
+    Animator PlayerAni;
 
     [Header("[ Ball ]")]
-    public Transform BallTrans;
-    public Rigidbody BallRigibody;
-    public Animator BallAni;
+    Transform BallTrans;
+    Rigidbody BallRigibody;
+    Animator BallAni;
 
     [Space]
     public float speed; 
@@ -40,14 +42,51 @@ public class BallMove : MonoBehaviour
 
     Vector3 playerVec, ballVec, moveTorqueDir;
 
+    void Awake()
+    {
+        instance = this;
+    }
+
     void Start()
     {
+        Player = Player.Instance;
+
+        PlayerTrans = Player.gameObject.transform;
+        PlayerAni = Player.gameObject.GetComponent<Animator>();
+
+        BallTrans = transform;
+        BallRigibody = GetComponent<Rigidbody>();
+        BallAni = GetComponent<Animator>();
+
         BallRigibody.maxAngularVelocity = 20;
+        
     }
 
     void FixedUpdate()
     {
-        // 볼 이동, 회전 감속 로직 적용
+        BallDeceleration_Update();
+
+        // 볼을 찼을 시
+        if (kick)
+        {
+            BallPositionReset_Update();
+
+            playerVec = PlayerTrans.position;
+            ballVec = BallTrans.position;
+
+            BallMove_Update();
+            BallFlick_Update();
+        }
+
+    }
+    void LateUpdate()
+    {
+        BallSpinEnd_Update();
+    }
+
+    // 볼 이동, 회전 감속 업데이트 로직
+    void BallDeceleration_Update()
+    {
         if (deceleration)
         {
             if (Player.dribbleSlowStart)
@@ -65,96 +104,88 @@ public class BallMove : MonoBehaviour
 
             //Debug.Log(BallRigibody.velocity);
         }
-
-        // 볼을 찼을 시
-        if (kick)
+    }
+    // 공이 이탈 시 위치 조정 업데이트 로직
+    void BallPositionReset_Update()
+    {
+        if (!isTackled && !spin && BallTrans.position.z < PlayerTrans.position.z + 3)
         {
-            // 공이 이탈 시 위치 조정
-            if (!isTackled && !spin && BallTrans.position.z < PlayerTrans.position.z + 3)
-            {
-                Debug.LogWarning("pos: " + BallTrans.position + " 볼 위치 조정");
-                BallTrans.position = new Vector3(0, BallTrans.position.y, PlayerTrans.position.z + 4.5f);
+            Debug.LogWarning("pos: " + BallTrans.position + " 볼 위치 조정");
+            BallTrans.position = new Vector3(0, BallTrans.position.y, PlayerTrans.position.z + 4.5f);
 
-                BallRigibody.velocity = Vector3.zero;
-                BallRigibody.AddForce(1.2f * speed * movement, ForceMode.VelocityChange);
-                BallRigibody.AddTorque(Vector3.right * 90, ForceMode.VelocityChange);
+            BallRigibody.velocity = Vector3.zero;
+            BallRigibody.AddForce(1.2f * speed * movement, ForceMode.VelocityChange);
+            BallRigibody.AddTorque(Vector3.right * 90, ForceMode.VelocityChange);
+        }
+    }
+    // 좌/우 로 플레이어가 움직일 시 플레이어 따라 볼 이동 혹은 회전 업데이트 로직
+    void BallMove_Update()
+    {
+        if (!spin && ballVec.x != playerVec.x)
+        {
+            if (!moveKick)
+            {
+                if (ballVec.x < playerVec.x)
+                    moveTorqueDir = new Vector3(1, 1, 0);
+                else if (ballVec.x > playerVec.x)
+                    moveTorqueDir = new Vector3(1, -1, 0);
+                else
+                    moveTorqueDir = Vector3.right;
+
+
+                BallRigibody.AddTorque(moveTorqueDir * 90, ForceMode.VelocityChange);
+
+                moveKick = true;
             }
 
+            BallTrans.position = new(playerVec.x, ballVec.y, ballVec.z);
+        }
+        else
+        {
+            moveKick = false;
+        }
+    }
+    // 플레이어 점프시 공 띄우기 업데이트 로직
+    void BallFlick_Update()
+    {
+        if (flick)
+        {
+            BallTrans.position += Vector3.forward * 0.9f; // 플레이어 이동 속도와 같이
+            BallRigibody.AddForce(Vector3.down * 100, ForceMode.Acceleration); // 볼 떨어지는 가중력
+            BallRigibody.AddTorque(Vector3.right, ForceMode.Acceleration);
 
-            playerVec = PlayerTrans.position;
-            ballVec = BallTrans.position;
-
-            // 좌/우 로 플레이어가 움직일 시 플레이어 따라 볼 이동 혹은 회전
-            if (!spin && ballVec.x != playerVec.x)
+            // 최고 높이 확인
+            if (BallTrans.position.y > ballMaxY)
             {
-                if (!moveKick)
+                ballMaxY = BallTrans.position.y;
+
+                if (!ballVelLimit && BallRigibody.velocity.y > 4)
+                    ballVelLimit = true;
+                if (ballVelLimit && BallRigibody.velocity.y <= 4)
                 {
-                    if (ballVec.x < playerVec.x)
-                        moveTorqueDir = new Vector3(1, 1, 0);
-                    else if (ballVec.x > playerVec.x)
-                        moveTorqueDir = new Vector3(1, -1, 0);
-                    else
-                        moveTorqueDir = Vector3.right;
-                    
-
-                    BallRigibody.AddTorque(moveTorqueDir * 90, ForceMode.VelocityChange);
-
-                    moveKick = true;
+                    ballVelLimit = false;
+                    ballMaxY = 1000;
                 }
-                
-                BallTrans.position = new(playerVec.x, ballVec.y, ballVec.z);
             }
             else
             {
-                moveKick = false;
+                flickBallDown = true;
             }
-
-            
-            // 공 띄우기 
-            if (flick)
-            {
-                BallTrans.position += Vector3.forward * 0.9f; // 플레이어 이동 속도와 같이
-                BallRigibody.AddForce(Vector3.down * 100, ForceMode.Acceleration); // 볼 떨어지는 가중력
-                BallRigibody.AddTorque(Vector3.right, ForceMode.Acceleration);
-
-                // 최고 높이 확인
-                if (BallTrans.position.y > ballMaxY)
-                {
-                    ballMaxY = BallTrans.position.y;
-
-                    if (!ballVelLimit && BallRigibody.velocity.y > 4)
-                        ballVelLimit = true;
-                    if (ballVelLimit && BallRigibody.velocity.y <= 4)
-                    {
-                        ballVelLimit = false;
-                        ballMaxY = 1000;
-                    }
-                }
-                else
-                {
-                    flickBallDown = true;
-                }
-            }
-
         }
-
-       
-
     }
-
-    private void LateUpdate()
+    // 볼 스핀 애니메이션이 끝났을 때 부모 해제 업데이트 로직
+    void BallSpinEnd_Update()
     {
-        // 애니메이션이 끝났을 때 부모 해제
         if (spin && !BallAni.isActiveAndEnabled)
         {
             spin = false;
             Player.SpinEnd();
 
-            BallTrans.SetParent(null); 
+            BallTrans.SetParent(null);
 
             kickDelay = false;
 
-            BallTrans.position = new Vector3(0, BallTrans.position.y, PlayerTrans.position.z + 4.5f);
+            BallTrans.position = new Vector3(PlayerTrans.position.x, BallTrans.position.y, PlayerTrans.position.z + 4.5f);
 
             BallRigibody.velocity = Vector3.zero;
             BallRigibody.AddForce(1.2f * speed * movement, ForceMode.VelocityChange);
@@ -186,19 +217,11 @@ public class BallMove : MonoBehaviour
         BallAni.enabled = true;
 
         if (dir == "Left")
-        {
             BallAni.SetTrigger("Spin_Left");
-            //torqueDir = new Vector3(1, -1, 0);
-            //next_x = PlayerTrans.position.x - 3;
-        }
         else
-        {
             BallAni.SetTrigger("Spin_Right");
-            //BallAni.SetTrigger("BallSpin_Right");
-            //spin_right = true;
-            //torqueDir = new Vector3(1, 1, 0);
-            //next_x = PlayerTrans.position.x + 3;
-        }
+
+
     }
     public void SpinMoveEnd()
     {
@@ -245,40 +268,41 @@ public class BallMove : MonoBehaviour
             // 좌우 슬라이딩 태클 회피
             if ((defender.anomalyUserState == "GetTackled_Right" || defender.anomalyUserState == "GetTackled_Left") && flick) 
             {
-                //StartCoroutine(Delay(0.1f));
                 return;
             }
 
             // 정면 스탠드 태클 회피
             if((defender.currentState.ToString() == "Stand_Tackle_Front" || defender.anomalyUserState == "GetStandTackled_Front") && spin)
             {
-                //StartCoroutine(Delay(0.1f));
                 return;
             }
 
             isTackled = true;
             kick = false;
 
+            // 볼에 태클이 적중했을 시 실행중인 애니메이션 강제종료
             if (BallAni.isActiveAndEnabled == true)
             {
                 SpinMoveEnd();
-                Debug.LogWarning("볼 애니 스탑");
+                Debug.LogWarning("볼 애니 강제종료");
             }
 
-            
-
+            // 볼에 태클이 적중했을 시 플레이어 움직임 막기
             Player.DontMove();
 
-            BallTrans.GetComponent<Collider>().isTrigger = true;
-            BallRigibody.constraints &= ~RigidbodyConstraints.FreezePositionX;
+            // 볼에 태클이 적중했을 시 물리 작용 적용
+            {
+                BallTrans.GetComponent<Collider>().isTrigger = true;
+                BallRigibody.constraints &= ~RigidbodyConstraints.FreezePositionX;
 
-            BallRigibody.velocity = Vector3.zero;
+                BallRigibody.velocity = Vector3.zero;
 
-            Vector3 direction = new Vector3(BallTrans.position.x - collider.transform.position.x, 1, BallTrans.position.z - collider.transform.position.z);
+                Vector3 direction = new Vector3(BallTrans.position.x - collider.transform.position.x, 1, BallTrans.position.z - collider.transform.position.z);
 
-            BallRigibody.AddForce(direction * 100, ForceMode.VelocityChange);
-            BallRigibody.AddTorque(direction * 90, ForceMode.VelocityChange);
-
+                BallRigibody.AddForce(direction * 100, ForceMode.VelocityChange);
+                BallRigibody.AddTorque(direction * 90, ForceMode.VelocityChange);
+            }
+           
             Debug.LogWarning("수비 커트");
 
             // 볼만 태클 당했을 시 플레이어 강제 모션 

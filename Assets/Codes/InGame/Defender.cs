@@ -1,20 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class Defender : MonoBehaviour
 {
-    Animator DefenderAni;
-
-    public string anomalyUserState;
-
-    float totalSpeed;
-    bool isTackle;
-    string anomalyStr;
-
-    AnimatorStateInfo stateInfo;
-
+    // 수비 타입
     public enum States
     {
         Stand_Tackle_Front,
@@ -25,6 +15,20 @@ public class Defender : MonoBehaviour
     // enum 타입의 변수를 선언
     public States currentState;
 
+    public string anomalyUserState;
+    public bool isTackle;
+
+    [Space]
+
+    public DefenderFootTrigger[] FootTriggers;
+
+    Animator DefenderAni;
+
+    float totalSpeed;
+    string anomalyStr;
+
+    AnimatorStateInfo stateInfo;
+
     void Awake()
     {
         totalSpeed = 0;
@@ -32,6 +36,12 @@ public class Defender : MonoBehaviour
     }
 
     void FixedUpdate()
+    {
+        SlidingTackleFront_Update();
+    }
+
+    // 달리기 후 슬라이딩 태클을 하는 수비수 업데이트 로직
+    void SlidingTackleFront_Update()
     {
         if (isTackle && currentState.ToString() == "Sliding_Tackle_Front")
         {
@@ -50,16 +60,16 @@ public class Defender : MonoBehaviour
                 // 드리블 이동
                 transform.position += Vector3.back * totalSpeed;
             }
-           
+
         }
     }
 
+    // 태클 시작
     void Tackle()
     {
         DefenderAni.SetBool(currentState.ToString(), true);
-
     }
-
+    // 특수 수비수 전용 태클 함수
     void Tackle(Transform player)
     {
         float playerdis = player.position.x - transform.position.x;
@@ -84,6 +94,7 @@ public class Defender : MonoBehaviour
 
     }
 
+    // 리셋
     public void Reset()
     {
         isTackle = false;
@@ -103,11 +114,15 @@ public class Defender : MonoBehaviour
 
     private void OnTriggerEnter(Collider collider)
     {
+        // 특정 거리 플레이어가 트리거에 들어올 시 태클 시작
         if (collider.gameObject.name == "PlayerTriggerBox")
         {
             if (isTackle) return;
 
             isTackle = true;
+
+            FootTriggers[0].CheckLimit();
+            FootTriggers[1].CheckLimit();
 
             if (currentState.ToString() == "Sliding_Tackle_Anomaly")
                 Tackle(collider.transform);

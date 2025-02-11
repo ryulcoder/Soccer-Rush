@@ -9,8 +9,10 @@ using Debug = UnityEngine.Debug;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
+
     [Header("[ Game ]")]
-    [SerializeField] int score = 0;
+    public int score = 0;
     //[SerializeField] int distance = 0;
 
     [Header("[ Game Setting ]")]
@@ -27,12 +29,11 @@ public class GameManager : MonoBehaviour
 
     [Header("[ Code ]")]
     public PoolManager PoolManager;
-    public Player Player;
-    public BallMove BallMove;
     public ScoreCal ScoreCal;
+    Player Player;
+    BallMove BallMove;
 
     [Header("[ UI ]")]
-    public Text Timer;
     public GameObject GameEndBlurPanel;
     public GameObject PausePanel;
     public GameObject GameEndPanel;
@@ -56,25 +57,30 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        Instance = this;
+        Time.timeScale = 0;
+    }
+
+    private void Start()
+    {
+        Player = Player.Instance;
+        BallMove = BallMove.instance;
+
         Player.speed = playerMoveSpeed;
         BallMove.speed = ballMoveSpeed;
         PlayerAnimator.speed = playerAniSpeed;
-
-        Time.timeScale = 0;
     }
 
     void Update()
     {
-        if (PlayTime.IsRunning)
-        {
-            nextTime = TimeSpan.FromSeconds(PlayTime.Elapsed.TotalSeconds).ToString(@"mm\:ss").Replace(":", " : ");
-
-        }
-
         if (Player.getTackled && !coroutine)
         {
             coroutine = true;
+
+            ExtraScore.instance.CheckEndScore();
+
             StartCoroutine(GameEnd());
+            
         }
     }
 
