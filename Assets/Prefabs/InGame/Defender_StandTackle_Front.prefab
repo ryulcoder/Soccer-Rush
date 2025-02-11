@@ -165,7 +165,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 928fa127c3c51204cbd5770669e0bc58,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.75
+      value: 0.19
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 928fa127c3c51204cbd5770669e0bc58,
         type: 3}
@@ -210,7 +210,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 928fa127c3c51204cbd5770669e0bc58,
         type: 3}
       propertyPath: m_Name
-      value: Defender_StandTackle
+      value: Defender_StandTackle_Front
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 928fa127c3c51204cbd5770669e0bc58,
         type: 3}

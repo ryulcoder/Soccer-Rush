@@ -40,7 +40,7 @@ Shader "Curved/CurvedSurface" {
 	// put more per-instance properties here
 	UNITY_INSTANCING_BUFFER_END(Props)
 
-	#include "CurvedSurfaceCore.cginc"
+	#include "Assets/Shaders/Curved/CurvedSurfaceCore.cginc"
 
 	void surf (Input IN, inout SurfaceOutputStandard o) 
 	//void surf (Input IN, inout SurfaceOutput o) 

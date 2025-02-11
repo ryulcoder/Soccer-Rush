@@ -2,16 +2,22 @@ using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
+using DG.Tweening;
+
 
 public class LeaderBoard : MonoBehaviour
 {
     public Text score;
     public Text[] playerIdText;
     public Text[] playerScoreText;
+    public GameObject setting;
+    public TextMeshProUGUI messageText; // 로그인 필요 메시지
+
     public void ShowLeaderboardUI_Ranking()
     => ((PlayGamesPlatform)Social.Active).ShowLeaderboardUI(GPGSIds.leaderboard_ranking);
     //내 리더보드 목록중 랭킹이라는 이름의 리더보드를 바로 보여준다
@@ -31,12 +37,14 @@ public class LeaderBoard : MonoBehaviour
             {
                 Debug.Log(Social.localUser.id);
                 Debug.Log("연결됨");
-
                 LoadTopScores();
             }
             else
             {
                 Debug.Log("연결안됨");
+                setting.SetActive(true);
+                ShowLoginMessage();
+                gameObject.SetActive(false);
             }
         });
     }
@@ -87,6 +95,25 @@ public class LeaderBoard : MonoBehaviour
                     });
                 }
             });
+    }
+
+    public void ShowLoginMessage()
+    {
+        float duration = 1.5f; // 애니메이션 지속 시간
+        Vector3 moveOffset = new Vector3(0, 100, 0); // 이동 거리
+
+        messageText.gameObject.SetActive(true);
+        messageText.color = new Color(messageText.color.r, messageText.color.g, messageText.color.b, 1); // 알파값 초기화
+
+        // 현재 위치에서 moveOffset 만큼 위로 이동
+        messageText.rectTransform.anchoredPosition += new Vector2(0, -moveOffset.y);
+
+        // DOTween 애니메이션 실행
+        messageText.rectTransform.DOAnchorPosY(messageText.rectTransform.anchoredPosition.y + moveOffset.y, duration);
+        messageText.DOFade(0, duration).OnComplete(() =>
+        {
+            messageText.gameObject.SetActive(false); // 애니메이션 완료 후 비활성화
+        });
     }
 }
 //GPGSIds 스크립트는 static이어서 따로 참조할 필요가없다
