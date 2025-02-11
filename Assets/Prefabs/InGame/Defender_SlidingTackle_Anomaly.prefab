@@ -781,7 +781,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8497a3fddf5bedc49b2e15407cc41b38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FootTriggers:
+  - {fileID: 2198085061216442617}
+  - {fileID: 1959707464254429508}
   anomalyUserState: 
+  isTackle: 0
   currentState: 2
 --- !u!65 &2278450891968107321
 BoxCollider:
