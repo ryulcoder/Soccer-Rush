@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BallMove : MonoBehaviour
 {
@@ -42,6 +43,15 @@ public class BallMove : MonoBehaviour
 
     Vector3 playerVec, ballVec, moveTorqueDir;
 
+    [Header("[ shoot ]")]
+    public float shootSpeed = 10f;  // 공의 이동 속도
+    public float shootDistance = 5f; // 공이 이동할 거리
+    public Image shootBlurImage;
+    public Button shootButton;
+    private Vector3 startPosition;
+    private bool isShooting = false;
+    float ballMaxZ = 10000f;
+
     void Awake()
     {
         instance = this;
@@ -67,7 +77,7 @@ public class BallMove : MonoBehaviour
         BallDeceleration_Update();
 
         // 볼을 찼을 시
-        if (kick)
+        if (kick&&!isShooting)
         {
             BallPositionReset_Update();
 
@@ -76,8 +86,9 @@ public class BallMove : MonoBehaviour
 
             BallMove_Update();
             BallFlick_Update();
+            
         }
-
+        ShootingUpdate();
     }
     void LateUpdate()
     {
@@ -108,7 +119,7 @@ public class BallMove : MonoBehaviour
     // 공이 이탈 시 위치 조정 업데이트 로직
     void BallPositionReset_Update()
     {
-        if (!isTackled && !spin && BallTrans.position.z < PlayerTrans.position.z + 3)
+        if (!isTackled && !spin && BallTrans.position.z < PlayerTrans.position.z + 3 &&!isShooting)
         {
             Debug.LogWarning("pos: " + BallTrans.position + " 볼 위치 조정");
             BallTrans.position = new Vector3(0, BallTrans.position.y, PlayerTrans.position.z + 4.5f);
@@ -261,7 +272,7 @@ public class BallMove : MonoBehaviour
     void OnTriggerEnter(Collider collider)
     {
         // 태클을 당했을 때
-        if (!isTackled && collider.gameObject.name == "TackleFoot")
+        if (!isTackled && collider.gameObject.name == "TackleFoot" && !isShooting)
         {
             Defender defender = collider.GetComponent<DefenderFootTrigger>().Defender;
 
@@ -327,7 +338,7 @@ public class BallMove : MonoBehaviour
         }
 
         // 플레이어 발 트리거로 인한 볼 이동 혹은 회전
-        if (!spin && !flick && !kickDelay && !isTackled && collider.gameObject.name == "PlayerFoot")
+        if (!spin && !flick && !kickDelay && !isTackled && collider.gameObject.name == "PlayerFoot" &&!isShooting)
         {
             BallRigibody.velocity = Vector3.zero;
 
@@ -376,7 +387,73 @@ public class BallMove : MonoBehaviour
                 return;
             }
         }
-
+        if (collision.gameObject.CompareTag("Player") && isShooting)
+        {
+            isShooting = false;
+            kickDelay = false;
+        }
     }
 
+    public void Shoot()
+    {
+        if (isShooting) return; // 이미 슛 중이면 무시
+
+        isShooting = true;
+        kickDelay = true;
+
+        startPosition = transform.position;
+        BallRigibody.velocity = Vector3.zero;
+        BallRigibody.AddForce(new(0, 0, 250), ForceMode.VelocityChange);
+        BallRigibody.AddTorque(Vector3.right * 90, ForceMode.VelocityChange);
+        shootBlurImage.fillAmount = 1;
+        StartCoroutine(ShootCooltime());
+    }
+
+    private IEnumerator ShootCoroutine()
+    {
+        Vector3 targetPosition = startPosition + transform.forward * shootDistance; // Z축 방향 이동
+        float journey = 0f;
+
+        while (journey < shootDistance)
+        {
+            float step = shootSpeed * Time.deltaTime;
+            transform.position += transform.forward * step;
+            journey += step;
+            Debug.Log(journey);
+            yield return null;
+        }
+
+        // 다시 원래 자리로 복귀
+        while (journey > 0)
+        {
+            float step = shootSpeed * Time.deltaTime;
+            transform.position -= transform.forward * step;
+            journey -= step;
+            yield return null;
+        }
+
+        isShooting = false;
+    }
+    private IEnumerator ShootCooltime()
+    {
+        float cooldownTime = 5f;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < cooldownTime)
+        {
+            shootBlurImage.fillAmount = 1 - (elapsedTime / cooldownTime);
+            elapsedTime += Time.deltaTime;
+            yield return null; // 다음 프레임까지 대기
+        }
+        shootBlurImage.fillAmount = 0; // 최종적으로 0으로 설정
+        shootButton.interactable = true;
+    }
+    void ShootingUpdate()
+    {
+        if (transform.position.z - startPosition.z > ballMaxZ && isShooting)
+        {
+            BallRigibody.velocity = Vector3.zero;
+            Debug.Log("나 멈춘다잉");
+        }
+    }
 }

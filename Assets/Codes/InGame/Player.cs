@@ -129,7 +129,8 @@ public class Player : MonoBehaviour
         {
             if (stateInfo.IsName("Start_Run") || stateInfo.IsName("Dribble") || stateInfo.IsName("Jump_Run")
                 || stateInfo.IsName("Spin_Left") || stateInfo.IsName("Spin_Right")
-                || stateInfo.IsName("Move_Left") || stateInfo.IsName("Move_Right"))
+                || stateInfo.IsName("Move_Left") || stateInfo.IsName("Move_Right")
+                || stateInfo.IsName("ShootingRun"))
             {
                 // 처음 드리블 시 천천히 속도 올리기
                 if (dribbleSlowStart)
@@ -256,4 +257,13 @@ public class Player : MonoBehaviour
         Debug.LogWarning("태클 : " + tackleName);
     }
 
+    public void ShootingAni()
+    {
+        Debug.Log("버튼 누름");
+        PlayerAni.SetTrigger("Shooting");
+    }
+    public void ShootingBall()
+    {
+        BallMove.Shoot();
+    }
 }
