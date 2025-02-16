@@ -8,6 +8,7 @@ TagManager:
   - StandTackle_Front
   - SlidingTackle_Front
   - SlidingTackle_Anomaly
+  - Ball
   layers:
   - Default
   - TransparentFX

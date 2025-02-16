@@ -17,6 +17,7 @@ public class Defender : MonoBehaviour
 
     public string anomalyUserState;
     public bool isTackle;
+    public bool isHit;
 
     [Space]
 
@@ -128,6 +129,15 @@ public class Defender : MonoBehaviour
                 Tackle(collider.transform);
             else
                 Tackle();
+        }
+
+        if (collider.CompareTag("Ball"))
+        {
+            if (isHit) return;
+
+            isHit = true;
+
+            transform.gameObject.SetActive(false);
         }
     }
 }
