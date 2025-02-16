@@ -137,7 +137,7 @@ public class Defender : MonoBehaviour
 
             isHit = true;
 
-            transform.gameObject.SetActive(false);
+            //transform.gameObject.SetActive(false);
         }
     }
 }
