@@ -49,7 +49,7 @@ public class BallMove : MonoBehaviour
     public Image shootBlurImage;
     public Button shootButton;
     private Vector3 startPosition;
-    private bool isShooting = false;
+    public bool isShooting = false;
     float ballMaxZ = 10000f;
 
     void Awake()

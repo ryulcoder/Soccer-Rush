@@ -18,16 +18,14 @@ public class Defender : MonoBehaviour
 
     public string anomalyUserState;
     public bool isTackle;
-    public bool isHit;
+    public bool isHit;  // 공에 맞았는지 확인
 
     [Space]
 
     public DefenderFootTrigger[] FootTriggers;
 
     Animator DefenderAni;
-    BoxCollider boxCollider;
-    SkinnedMeshRenderer skinRenderer;
-
+    CapsuleCollider capsuleCollider;    // 슛팅 히트박스
     float fadeDuration = 2f; // 페이드 지속 시간
     float totalSpeed;
     string anomalyStr;
@@ -38,8 +36,7 @@ public class Defender : MonoBehaviour
     {
         totalSpeed = 0;
         DefenderAni = gameObject.GetComponent<Animator>();
-        skinRenderer = gameObject.GetComponentInChildren<SkinnedMeshRenderer>();
-        boxCollider = gameObject.GetComponent<BoxCollider>();
+        capsuleCollider = gameObject.GetComponent<CapsuleCollider>();
     }
 
     void FixedUpdate()
@@ -122,7 +119,7 @@ public class Defender : MonoBehaviour
     private void OnTriggerEnter(Collider collider)
     {
         // 특정 거리 플레이어가 트리거에 들어올 시 태클 시작
-        if (collider.gameObject.name == "PlayerTriggerBox")
+        if (collider.gameObject.name == "PlayerTriggerBox" && !isHit)
         {
             if (isTackle) return;
 
@@ -136,25 +133,17 @@ public class Defender : MonoBehaviour
             else
                 Tackle();
         }
+    }
 
-        if (collider.CompareTag("Ball"))
-        {
-            if (isHit) return;
+    // 공 맞을시 플레이어 죽지 않게 콜라이더 작용 끔
+    public void ShootingHitOffCollider()
+    {
+        isHit = true;
+    }
 
-            isHit = true;
-            boxCollider.enabled = false;
-            if (skinRenderer != null)
-            {
-                Debug.Log("랜더러 있음");
-                Material material = skinRenderer.material;
-                Color startColor = material.color;
-
-                material.DOFade(0, fadeDuration).OnComplete(() =>
-                {
-                    gameObject.SetActive(false); // 페이드 완료 후 오브젝트 비활성화
-                });
-            }
-            //transform.gameObject.SetActive(false);
-        }
+    // 공맞아 뒤짐
+    public void ShootingHitDeath()
+    {
+        transform.gameObject.SetActive(false);
     }
 }
