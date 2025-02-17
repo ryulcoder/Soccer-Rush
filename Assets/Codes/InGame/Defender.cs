@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Defender : MonoBehaviour
 {
@@ -24,7 +25,10 @@ public class Defender : MonoBehaviour
     public DefenderFootTrigger[] FootTriggers;
 
     Animator DefenderAni;
+    BoxCollider boxCollider;
+    SkinnedMeshRenderer skinRenderer;
 
+    float fadeDuration = 2f; // 페이드 지속 시간
     float totalSpeed;
     string anomalyStr;
 
@@ -34,6 +38,8 @@ public class Defender : MonoBehaviour
     {
         totalSpeed = 0;
         DefenderAni = gameObject.GetComponent<Animator>();
+        skinRenderer = gameObject.GetComponentInChildren<SkinnedMeshRenderer>();
+        boxCollider = gameObject.GetComponent<BoxCollider>();
     }
 
     void FixedUpdate()
@@ -136,7 +142,18 @@ public class Defender : MonoBehaviour
             if (isHit) return;
 
             isHit = true;
+            boxCollider.enabled = false;
+            if (skinRenderer != null)
+            {
+                Debug.Log("랜더러 있음");
+                Material material = skinRenderer.material;
+                Color startColor = material.color;
 
+                material.DOFade(0, fadeDuration).OnComplete(() =>
+                {
+                    gameObject.SetActive(false); // 페이드 완료 후 오브젝트 비활성화
+                });
+            }
             //transform.gameObject.SetActive(false);
         }
     }

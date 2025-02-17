@@ -9,7 +9,12 @@ Shader "Curved/CurvedSurface" {
 
  SubShader {
 
-	Tags { "RenderType"="Opaque" }
+	Tags { "RenderType"="Transparent" "Queue"="Overlay" }
+    
+    // 투명도를 위한 ZWrite Off 설정
+    ZWrite On
+    Blend SrcAlpha OneMinusSrcAlpha
+
 	LOD 200
 
 	CGPROGRAM
@@ -48,13 +53,13 @@ Shader "Curved/CurvedSurface" {
 		// Albedo comes from a texture tinted by color
 		fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
 		o.Albedo = c.rgb;
-		o.Alpha = c.a;
+		o.Alpha = c.a * _Color.a;
 	}
 
 	ENDCG
 
 }
 
- FallBack "Diffuse"
+ FallBack "Transparent"
 
 }
