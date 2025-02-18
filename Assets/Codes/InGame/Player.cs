@@ -12,8 +12,11 @@ public class Player : MonoBehaviour
     Rigidbody PlayerRigibody;
     Animator PlayerAni;
 
+    [Header("Particles")]
     public GameObject SpinParticle;
+    public GameObject SpinSuccessParticle;
 
+    [Space]
     public Transform TileTransform;
 
     public float speed, jumpSpeed, distance;
@@ -54,11 +57,12 @@ public class Player : MonoBehaviour
         PlayerRigibody = GetComponent<Rigidbody>();
         PlayerAni = GetComponent<Animator>();
 
-        isJump = true;
+        isJump = isSpin = true;
 
         distance = TileTransform.localScale.x / 3;
 
         prev_x = PlayerRigibody.position.x;
+
 
         PlayerAni.SetTrigger("WaitRun");
 
@@ -142,7 +146,7 @@ public class Player : MonoBehaviour
                     if (totalSpeed >= speed)
                     {
                         dribbleSlowStart = false;
-                        isJump = false;
+                        isJump = isSpin = false;
                         totalSpeed = speed;
                     }
                 }
@@ -207,6 +211,7 @@ public class Player : MonoBehaviour
         isAvoid = false;
 
         SpinParticle.SetActive(false);
+        SpinSuccessParticle.SetActive(false);
     }
 
     // 플레이어 점프 함수
@@ -247,6 +252,8 @@ public class Player : MonoBehaviour
         {
             if (isAvoid) return;
             isAvoid = true;
+
+            SpinSuccessParticle.SetActive(true);
 
             Debug.LogWarning("마르세유 성공");
             ExtraScore.instance.CheckStart("AvoidSkill");
