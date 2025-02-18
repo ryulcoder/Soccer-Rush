@@ -21,7 +21,7 @@ public class BallMove : MonoBehaviour
     [Space]
     public float speed; 
 
-    static bool kickDelay;
+    bool kickDelay;
     float dampingFactor = 0.98f;
     public bool deceleration, kick, isTackled;
     

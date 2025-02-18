@@ -19,6 +19,11 @@ public class ShootingHit : MonoBehaviour
         ballMove = ball.GetComponent<BallMove>();
     }
 
+    void OnEnable()
+    {
+        isHit = false;
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Ball") && !isHit && ballMove.isShooting)
