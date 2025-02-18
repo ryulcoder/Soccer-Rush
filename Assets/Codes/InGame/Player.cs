@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     Rigidbody PlayerRigibody;
     Animator PlayerAni;
 
+    public GameObject SpinParticle;
+
     public Transform TileTransform;
 
     public float speed, jumpSpeed, distance;
@@ -195,6 +197,8 @@ public class Player : MonoBehaviour
             PlayerAni.SetTrigger("Spin_Right");
             BallMove.SpinMove("Right");
         }
+
+        SpinParticle.SetActive(true);
     }
     public void SpinEnd()
     {
@@ -202,6 +206,7 @@ public class Player : MonoBehaviour
         isAct = false;
         isAvoid = false;
 
+        SpinParticle.SetActive(false);
     }
 
     // 플레이어 점프 함수
