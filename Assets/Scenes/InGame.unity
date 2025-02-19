@@ -5341,6 +5341,74 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!1001 &254415525
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1619519825906542538, guid: 06443fd813dc7d945b8a9a78648ff649,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1619519825906542538, guid: 06443fd813dc7d945b8a9a78648ff649,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1619519825906542538, guid: 06443fd813dc7d945b8a9a78648ff649,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 124.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 1619519825906542538, guid: 06443fd813dc7d945b8a9a78648ff649,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1619519825906542538, guid: 06443fd813dc7d945b8a9a78648ff649,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1619519825906542538, guid: 06443fd813dc7d945b8a9a78648ff649,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1619519825906542538, guid: 06443fd813dc7d945b8a9a78648ff649,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1619519825906542538, guid: 06443fd813dc7d945b8a9a78648ff649,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1619519825906542538, guid: 06443fd813dc7d945b8a9a78648ff649,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1619519825906542538, guid: 06443fd813dc7d945b8a9a78648ff649,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2103849666011266416, guid: 06443fd813dc7d945b8a9a78648ff649,
+        type: 3}
+      propertyPath: m_Name
+      value: Defender_SlidingTackle_Front
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 06443fd813dc7d945b8a9a78648ff649, type: 3}
 --- !u!1001 &256448620
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29759,6 +29827,7 @@ SceneRoots:
   - {fileID: 1203308577}
   - {fileID: 500493348213081172}
   - {fileID: 1580704084}
+  - {fileID: 254415525}
   - {fileID: 5903297864780688752}
   - {fileID: 798788930}
   - {fileID: 697958334}
