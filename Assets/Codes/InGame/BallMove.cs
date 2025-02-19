@@ -272,7 +272,7 @@ public class BallMove : MonoBehaviour
     void OnTriggerEnter(Collider collider)
     {
         // 태클을 당했을 때
-        if (!isTackled && collider.gameObject.name == "TackleFoot" && !isShooting && !collider.gameObject.GetComponent<Defender>().isHit)
+        if (!isTackled && collider.gameObject.name == "TackleFoot" && !isShooting && !collider.gameObject.GetComponent<DefenderFootTrigger>().Defender.isHit)
         {
             Defender defender = collider.GetComponent<DefenderFootTrigger>().Defender;
 

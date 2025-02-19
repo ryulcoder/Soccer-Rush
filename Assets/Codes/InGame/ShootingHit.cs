@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class ShootingHit : MonoBehaviour
 {
+    public Defender Defender;
+
     CapsuleCollider capsuleCollider;
     Animator animator;
     BallMove ballMove;
 
     GameObject ball;
-    bool isHit;
 
     void Awake()
     {
@@ -21,14 +22,14 @@ public class ShootingHit : MonoBehaviour
 
     void OnEnable()
     {
-        isHit = false;
+        Defender.isHit = false;
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Ball") && !isHit && ballMove.isShooting)
+        if (other.CompareTag("Ball") && !Defender.isHit && ballMove.isShooting)
         {
-            isHit = true;
+            Defender.isHit = true;
             animator.SetTrigger("ShootingDeath");   
         }
     }

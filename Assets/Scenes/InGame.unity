@@ -7152,6 +7152,7 @@ MonoBehaviour:
   getTackled: 0
   spinRight: 0
   isAct: 0
+  isShooting: 0
 --- !u!136 &835559948
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -29676,6 +29677,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: IngameUi
+      objectReference: {fileID: 0}
+    - target: {fileID: 6515485710778594324, guid: 1304aa17af2e90a4d95a29058c6ad36f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8046434546036837522, guid: 1304aa17af2e90a4d95a29058c6ad36f,
         type: 3}

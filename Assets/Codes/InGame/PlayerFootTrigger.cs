@@ -11,7 +11,7 @@ public class PlayerFootTrigger : MonoBehaviour
     private void OnTriggerEnter(Collider collider)
     {
         // 태클을 당했을 시
-        if (!getTackle && collider.gameObject.name == "TackleFoot"&& !collider.gameObject.GetComponent<Defender>().isHit)
+        if (!getTackle && collider.gameObject.name == "TackleFoot"&& !collider.gameObject.GetComponent<DefenderFootTrigger>().Defender.isHit)
         {
             getTackle = true;
 

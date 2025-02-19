@@ -140,11 +140,11 @@ public class Defender : MonoBehaviour
         }
     }
 
-    // 공 맞을시 플레이어 죽지 않게 콜라이더 작용 끔
-    public void ShootingHitOffCollider()
-    {
-        isHit = true;
-    }
+    //// 공 맞을시 플레이어 죽지 않게 콜라이더 작용 끔
+    //public void ShootingHitOffCollider()
+    //{
+    //    isHit = true;
+    //}
 
     // 공맞아 뒤짐
     public void ShootingHitDeath()
