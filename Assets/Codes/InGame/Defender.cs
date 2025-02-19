@@ -39,6 +39,11 @@ public class Defender : MonoBehaviour
         capsuleCollider = gameObject.GetComponent<CapsuleCollider>();
     }
 
+    void OnEnable()
+    {
+        isHit = false;
+    }
+
     void FixedUpdate()
     {
         SlidingTackleFront_Update();
@@ -47,7 +52,7 @@ public class Defender : MonoBehaviour
     // 달리기 후 슬라이딩 태클을 하는 수비수 업데이트 로직
     void SlidingTackleFront_Update()
     {
-        if (isTackle && currentState.ToString() == "Sliding_Tackle_Front")
+        if (isTackle && currentState.ToString() == "Sliding_Tackle_Front" && !isHit)
         {
             stateInfo = DefenderAni.GetCurrentAnimatorStateInfo(0);
 

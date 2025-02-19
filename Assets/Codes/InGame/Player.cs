@@ -28,6 +28,7 @@ public class Player : MonoBehaviour
     Vector3 direction;
 
     AnimatorStateInfo stateInfo;
+    public bool isShooting;
 
     public void PlayerStart()
     {

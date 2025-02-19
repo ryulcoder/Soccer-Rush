@@ -272,7 +272,7 @@ public class BallMove : MonoBehaviour
     void OnTriggerEnter(Collider collider)
     {
         // 태클을 당했을 때
-        if (!isTackled && collider.gameObject.name == "TackleFoot" && !isShooting)
+        if (!isTackled && collider.gameObject.name == "TackleFoot" && !isShooting && !collider.gameObject.GetComponent<Defender>().isHit)
         {
             Defender defender = collider.GetComponent<DefenderFootTrigger>().Defender;
 
@@ -400,6 +400,7 @@ public class BallMove : MonoBehaviour
 
         isShooting = true;
         kickDelay = true;
+        Player.Instance.isShooting = true;
 
         startPosition = transform.position;
         BallRigibody.velocity = Vector3.zero;
