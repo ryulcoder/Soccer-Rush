@@ -119,7 +119,7 @@ public class BallMove : MonoBehaviour
     // 공이 이탈 시 위치 조정 업데이트 로직
     void BallPositionReset_Update()
     {
-        if (!isTackled && !spin && BallTrans.position.z < PlayerTrans.position.z + 3 &&!isShooting || BallTrans.position.z > PlayerTrans.position.z + 25! && isTackled && !spin && !isShooting)
+        if (!isTackled && !spin && BallTrans.position.z < PlayerTrans.position.z + 3 &&!isShooting || BallTrans.position.z > PlayerTrans.position.z + 15! && isTackled && !spin && !isShooting)
         {
             Debug.LogWarning("pos: " + BallTrans.position + " 볼 위치 조정");
             BallTrans.position = new Vector3(0, BallTrans.position.y, PlayerTrans.position.z + 4.5f);
@@ -338,7 +338,7 @@ public class BallMove : MonoBehaviour
         }
 
         // 플레이어 발 트리거로 인한 볼 이동 혹은 회전
-        if (!spin && !flick && !kickDelay && !isTackled && collider.gameObject.name == "PlayerFoot" &&!isShooting)
+        if (!spin && !flick && !kickDelay && !isTackled && collider.gameObject.name == "PlayerFoot" )
         {
             BallRigibody.velocity = Vector3.zero;
 
@@ -358,17 +358,10 @@ public class BallMove : MonoBehaviour
 
             return;
         }
-        // 슛하고 공이 다시올때 변수꺼주기
-        if (collider.gameObject.CompareTag("PlayerFoot") && isShooting)
-        {
-            BallRigibody.velocity = Vector3.zero;
-            isShooting = false;
-            kickDelay = false;
-        }
+       
 
         HitDefender(collider);
     }
-
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -391,6 +384,14 @@ public class BallMove : MonoBehaviour
 
                 return;
             }
+        }
+
+        // 슛하고 공이 다시올때 변수꺼주기
+        if (collision.gameObject.CompareTag("Player") && isShooting)
+        {
+            BallRigibody.velocity = Vector3.zero;
+            isShooting = false;
+            kickDelay = false;
         }
     }
 
