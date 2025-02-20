@@ -40,9 +40,16 @@ public class SwipInput : MonoBehaviour
         if (Mathf.Abs(delta.x) > Mathf.Abs(delta.y)) // 좌우 스와이프
         {
             if (delta.x > swipeThreshold)
+            {
                 Player.MoveLeftRight(1);
+                Debug.Log("왼쪽 슬라이드");
+            }
             else if (delta.x < -swipeThreshold)
+            {
                 Player.MoveLeftRight(-1);
+                Debug.Log("오른쪽 슬라이드");
+
+            }
         }
         else // 상하 스와이프
         {

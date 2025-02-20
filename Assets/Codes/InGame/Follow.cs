@@ -12,21 +12,28 @@ public class Follow : MonoBehaviour
     public float left = 0.9f;
     public float right = 0.6f;
 
-    float targetdis;
+    public float followSpeed = 50f; // 속도 조절 변수
 
     void Awake()
     {
         defaultVec = transform.position;
-        targetdis = Target.position.x - transform.position.x;
     }
 
-    void FixedUpdate()
+    void LateUpdate()
     {
-        targetVec = new(Target.position.x < 0 ? Target.position.x * left + defaultVec.x : Target.position.x * right + defaultVec.x, transform.position.y, Target.position.z + defaultVec.z);
+        // 목표 위치 계산
+        targetVec = new Vector3(
+            Target.position.x < 0 ? Target.position.x * left + defaultVec.x : Target.position.x * right + defaultVec.x,
+            transform.position.y,
+            Target.position.z + defaultVec.z
+        );
 
-        transform.position = Vector3.Lerp(transform.position, targetVec, Target.position.x < 0 ? Time.deltaTime * 7 : Time.deltaTime * 5);
-        transform.position = new Vector3(transform.position.x, transform.position.y, Target.position.z + defaultVec.z);
-
+        // 직접 이동 (Lerp 없이)
+        float step = followSpeed * Time.deltaTime;
+        transform.position = new Vector3(
+            Mathf.MoveTowards(transform.position.x, targetVec.x, step),
+            transform.position.y,
+            targetVec.z
+        );
     }
-
 }

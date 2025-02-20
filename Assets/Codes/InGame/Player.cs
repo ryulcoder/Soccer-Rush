@@ -162,9 +162,9 @@ public class Player : MonoBehaviour
     // 플레이어 좌우 이동 함수
     public void MoveLeftRight(int moveDirection)
     {
-        if ((moveDirection > 0 && PlayerTransform.position.x >= distance) || (moveDirection < 0 && PlayerTransform.position.x <= -distance)) return;
+        if ((moveDirection > 0 && PlayerTransform.position.x >= distance) || (moveDirection < 0 && PlayerTransform.position.x <= -distance)) { Debug.LogWarning("Block1"); return; }
 
-        if (!start || dontMove || getTackled || isSpin || isJump || dribbleSlowStart) { Debug.LogWarning("Block"); return; }
+        if (!start || dontMove || getTackled || isSpin || isJump || dribbleSlowStart || BallMove.isShooting) { Debug.LogWarning("Block"); return; }
 
         direction = new(moveDirection, 0, 0);
         next_x += moveDirection * distance;
@@ -186,7 +186,7 @@ public class Player : MonoBehaviour
     // 플레이어 개인기 함수
     public void Spin()
     {
-        if (dontMove || getTackled || isSpin || isJump || dribbleSlowStart) { Debug.LogWarning("Block"); return; }
+        if (dontMove || getTackled || isSpin || isJump || dribbleSlowStart || BallMove.isShooting) { Debug.LogWarning("Block"); return; }
 
         isSpin = true;
         isAct = true;
@@ -218,7 +218,7 @@ public class Player : MonoBehaviour
     // 플레이어 점프 함수
     public void Jump()
     {
-        if (dontMove || getTackled || isSpin || isJump || dribbleSlowStart) { Debug.LogWarning("Block"); return; }
+        if (dontMove || getTackled || isSpin || isJump || dribbleSlowStart || BallMove.isShooting) { Debug.LogWarning("Block"); return; }
 
         isJump = true;
         isAct = true;

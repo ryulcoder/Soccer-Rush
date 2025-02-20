@@ -9,6 +9,8 @@ TagManager:
   - SlidingTackle_Front
   - SlidingTackle_Anomaly
   - Ball
+  - DefenderHitBox
+  - PlayerFoot
   layers:
   - Default
   - TransparentFX

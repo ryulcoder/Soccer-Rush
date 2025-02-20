@@ -5404,6 +5404,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Defender_SlidingTackle_Front
       objectReference: {fileID: 0}
+    - target: {fileID: 2103849666011266416, guid: 06443fd813dc7d945b8a9a78648ff649,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7194,7 +7199,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 118
   m_CollisionDetection: 0
@@ -7421,6 +7426,7 @@ MonoBehaviour:
   targetVec: {x: 0, y: 0, z: 0}
   left: 0.9
   right: 0.6
+  followSpeed: 15
 --- !u!114 &963194231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12984,7 +12990,7 @@ GameObject:
   - component: {fileID: 1605345121}
   m_Layer: 0
   m_Name: PlayerFoot
-  m_TagString: Untagged
+  m_TagString: PlayerFoot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
