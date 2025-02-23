@@ -13,8 +13,9 @@ public class Player : MonoBehaviour
     Animator PlayerAni;
 
     [Header("Particles")]
+    public Transform ExtraParticleGroup;
     public GameObject SpinParticle;
-    public GameObject SpinSuccessParticle;
+    public GameObject DustParticle;
 
     [Space]
     public Transform TileTransform;
@@ -180,6 +181,19 @@ public class Player : MonoBehaviour
             next_x = moveDirection * distance;
         }
 
+        // 좌우 이동시 파티클 위치 조정
+        if (next_x > 0)
+        {
+            if (ExtraParticleGroup.localPosition.x == 6)
+                ExtraParticleGroup.localPosition -= Vector3.right * 13;
+        }
+        else
+        {
+            if (ExtraParticleGroup.localPosition.x == -7)
+                ExtraParticleGroup.localPosition += Vector3.right * 13;
+        }
+            
+
         ExtraScore.instance.CheckStart("AvoidMove");
     }
 
@@ -212,7 +226,6 @@ public class Player : MonoBehaviour
         isAvoid = false;
 
         SpinParticle.SetActive(false);
-        SpinSuccessParticle.SetActive(false);
     }
 
     // 플레이어 점프 함수
@@ -254,8 +267,6 @@ public class Player : MonoBehaviour
             if (isAvoid) return;
             isAvoid = true;
 
-            SpinSuccessParticle.SetActive(true);
-
             Debug.LogWarning("마르세유 성공");
             ExtraScore.instance.CheckStart("AvoidSkill");
             return;
@@ -278,5 +289,10 @@ public class Player : MonoBehaviour
     public void ShootingBall()
     {
         BallMove.Shoot();
+    }
+
+    public void DustOn()
+    {
+        DustParticle.SetActive(true);
     }
 }

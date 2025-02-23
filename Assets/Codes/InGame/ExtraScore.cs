@@ -18,10 +18,10 @@ public class ExtraScore : MonoBehaviour
     [SerializeField] float[] moveExtra = new float[] { 0, 10 };
     [SerializeField] float[] skillExtra = new float[] { 15, 30 };
 
-    [Header("[ ExtraScore UI]")]
-    public Transform ExtraScoreTextParent;
-    public GameObject ExtraScoreTextPrefab;
-    string scoreText;
+    [Header("[ ExtraScore Particle ]")]
+    [SerializeField] GameObject ExtraParticle;
+    public GameObject MoveExtraParticle;
+    public GameObject SkillExtraParticle;
 
     [Header("[ Limit ]")]
     public float limitDis = 28;
@@ -68,11 +68,11 @@ public class ExtraScore : MonoBehaviour
         {
             case "AvoidMove":
                 extraScore = moveExtra;
-                scoreText = "무빙!\n";
+                ExtraParticle = MoveExtraParticle;
                 break;
             case "AvoidSkill":
                 extraScore = skillExtra;
-                scoreText = "회피!\n";
+                ExtraParticle = SkillExtraParticle;
                 break;
         }
 
@@ -95,16 +95,35 @@ public class ExtraScore : MonoBehaviour
                     yield break;
                 }
             }
+            // 스킬 회피 시 자식에 있는 특수 파티클 활성화
+            else
+            {
+                GameObject child = ExtraParticle.transform.GetChild(3).gameObject;
+
+                if (child.activeSelf)
+                    child.SetActive(false);
+
+                child.SetActive(true);
+            }
+
+            if (ExtraParticle.activeSelf)
+                ExtraParticle.SetActive(false);
+
+            ExtraParticle.SetActive(true);
 
             totalScore += extraScore[1];
-            CreateExtraScoreText("아슬아슬 "+scoreText, extraScore[1]);
+            Debug.LogWarning("추가점수 +" + extraScore[1]);
         }
         else
         {
             if (extraScore[0] == 0) yield break;
 
+            // 스킬 회피 시 파티클 활성화
+            if (scoreType == "AvoidSkill")
+                ExtraParticle.SetActive(true);
+            
             totalScore += extraScore[0];
-            CreateExtraScoreText(scoreText, extraScore[0]);
+            Debug.LogWarning("추가점수 +" + extraScore[0]);
         }
 
         yield break;
@@ -121,15 +140,5 @@ public class ExtraScore : MonoBehaviour
         isLimit = false;
     }
 
-
-    // 추가 점수 ui
-    void CreateExtraScoreText(string text, float score)
-    {
-        GameObject ExtraScoreText = Instantiate(ExtraScoreTextPrefab, ExtraScoreTextParent);
-        ExtraScoreText.GetComponent<ExtraScoreUI>().score = text + "  + " + score;
-        ExtraScoreText.SetActive(true);
-
-        Debug.LogWarning("추가점수 +" + score);
-    }
 
 }
