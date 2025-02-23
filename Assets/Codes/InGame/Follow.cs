@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,22 +7,33 @@ public class Follow : MonoBehaviour
 {
     public Transform Target;
 
+    public CinemachineVirtualCamera virtualCamera;
+    CinemachineTransposer transposer;
+
     public Vector3 defaultVec;
     public Vector3 targetVec;
 
-    public float left = 0.9f;
-    public float right = 0.6f;
+    public float left = -0.2f;
+    public float right = 0.4f;
 
     public float followSpeed = 50f; // 속도 조절 변수
 
     void Awake()
     {
-        defaultVec = transform.position;
+        transposer = virtualCamera.GetCinemachineComponent<CinemachineTransposer>();
+
+        defaultVec = transposer.m_FollowOffset;
     }
 
     void LateUpdate()
     {
-        // 목표 위치 계산
+        float offsetX = Target.position.x < 0 ? Target.position.x * left + defaultVec.x : -Target.position.x * right + defaultVec.x;
+
+        targetVec = new Vector3(offsetX, transposer.m_FollowOffset.y, transposer.m_FollowOffset.z);
+        
+        transposer.m_FollowOffset = Vector3.Lerp(transposer.m_FollowOffset, targetVec, Target.position.x < 0 ? Time.deltaTime * 2 : Time.deltaTime * 15);
+
+        /*// 목표 위치 계산
         targetVec = new Vector3(
             Target.position.x < 0 ? Target.position.x * left + defaultVec.x : Target.position.x * right + defaultVec.x,
             transform.position.y,
@@ -34,6 +46,6 @@ public class Follow : MonoBehaviour
             Mathf.MoveTowards(transform.position.x, targetVec.x, step),
             transform.position.y,
             targetVec.z
-        );
+        );*/
     }
 }
