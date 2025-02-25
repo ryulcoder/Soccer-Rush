@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class ExtraScoreParticle : MonoBehaviour
 {
+    public enum ScoreType
+    {
+        AvoidMove,
+        AvoidSkill
+    }
+
+    public ScoreType scoreType;
+
     private void Update()
     {
         StartCoroutine(DestroyExtraScore());
@@ -12,9 +20,6 @@ public class ExtraScoreParticle : MonoBehaviour
     IEnumerator DestroyExtraScore()
     {
         yield return new WaitForSeconds(0.8f);
-
-        if (gameObject.name.Contains("SkillExtraParticle"))
-            transform.GetChild(3).gameObject.SetActive(false);
 
         gameObject.SetActive(false);
     }

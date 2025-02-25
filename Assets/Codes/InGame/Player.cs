@@ -13,8 +13,6 @@ public class Player : MonoBehaviour
     Animator PlayerAni;
 
     [Header("Particles")]
-    public Transform ExtraParticleGroup;
-    public GameObject SpinParticle;
     public GameObject DustParticle;
 
     [Space]
@@ -181,19 +179,6 @@ public class Player : MonoBehaviour
             next_x = moveDirection * distance;
         }
 
-        // 좌우 이동시 파티클 위치 조정
-        if (next_x > 0)
-        {
-            if (ExtraParticleGroup.localPosition.x == 6)
-                ExtraParticleGroup.localPosition -= Vector3.right * 13;
-        }
-        else
-        {
-            if (ExtraParticleGroup.localPosition.x == -7)
-                ExtraParticleGroup.localPosition += Vector3.right * 13;
-        }
-            
-
         ExtraScore.instance.CheckStart("AvoidMove");
     }
 
@@ -217,7 +202,6 @@ public class Player : MonoBehaviour
             BallMove.SpinMove("Right");
         }
 
-        SpinParticle.SetActive(true);
     }
     public void SpinEnd()
     {
@@ -225,7 +209,6 @@ public class Player : MonoBehaviour
         isAct = false;
         isAvoid = false;
 
-        SpinParticle.SetActive(false);
     }
 
     // 플레이어 점프 함수
@@ -257,7 +240,7 @@ public class Player : MonoBehaviour
             isAvoid = true;
 
             Debug.LogWarning("점프 성공");
-            ExtraScore.instance.CheckStart("AvoidSkill");
+            ExtraScore.instance.CheckStart("AvoidJump");
             return;
         }
 
@@ -268,13 +251,17 @@ public class Player : MonoBehaviour
             isAvoid = true;
 
             Debug.LogWarning("마르세유 성공");
-            ExtraScore.instance.CheckStart("AvoidSkill");
+            ExtraScore.instance.CheckStart("AvoidSpin");
             return;
         }
 
 
         if (getTackled) return;
         getTackled = true;
+
+        if (tackleName == "GetStandTackled_Front_Anomaly")
+            tackleName = "GetStandTackled_Front";
+
 
         PlayerAni.SetTrigger(tackleName);
 

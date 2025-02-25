@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 
 public class Defender : MonoBehaviour
 {
@@ -96,7 +95,7 @@ public class Defender : MonoBehaviour
         else
         {
             anomalyStr = "Stand_Tackle_Front";
-            anomalyUserState = "GetStandTackled_Front";
+            anomalyUserState = "GetStandTackled_Front_Anomaly";
         }
 
         DefenderAni.SetBool(anomalyStr, true);

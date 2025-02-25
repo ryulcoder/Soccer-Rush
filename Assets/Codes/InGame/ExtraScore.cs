@@ -21,7 +21,8 @@ public class ExtraScore : MonoBehaviour
     [Header("[ ExtraScore Particle ]")]
     [SerializeField] GameObject ExtraParticle;
     public GameObject MoveExtraParticle;
-    public GameObject SkillExtraParticle;
+    public GameObject SpinExtraParticle;
+    public GameObject JumpExtraParticle;
 
     [Header("[ Limit ]")]
     public float limitDis = 28;
@@ -70,10 +71,15 @@ public class ExtraScore : MonoBehaviour
                 extraScore = moveExtra;
                 ExtraParticle = MoveExtraParticle;
                 break;
-            case "AvoidSkill":
+            case "AvoidJump":
                 extraScore = skillExtra;
-                ExtraParticle = SkillExtraParticle;
+                ExtraParticle = JumpExtraParticle;
                 break;
+            case "AvoidSpin":
+                extraScore = skillExtra;
+                ExtraParticle = SpinExtraParticle;
+                break;
+                
         }
 
         scoreCoroutine = true;
@@ -95,16 +101,6 @@ public class ExtraScore : MonoBehaviour
                     yield break;
                 }
             }
-            // 스킬 회피 시 자식에 있는 특수 파티클 활성화
-            else
-            {
-                GameObject child = ExtraParticle.transform.GetChild(3).gameObject;
-
-                if (child.activeSelf)
-                    child.SetActive(false);
-
-                child.SetActive(true);
-            }
 
             if (ExtraParticle.activeSelf)
                 ExtraParticle.SetActive(false);
@@ -118,10 +114,6 @@ public class ExtraScore : MonoBehaviour
         {
             if (extraScore[0] == 0) yield break;
 
-            // 스킬 회피 시 파티클 활성화
-            if (scoreType == "AvoidSkill")
-                ExtraParticle.SetActive(true);
-            
             totalScore += extraScore[0];
             Debug.LogWarning("추가점수 +" + extraScore[0]);
         }
