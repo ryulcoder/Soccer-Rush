@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     public ScoreCal ScoreCal;
     Player Player;
     BallMove BallMove;
+    public GoogleAd googleAd;
 
     [Header("[ UI ]")]
     public GameObject GameEndBlurPanel;
@@ -148,5 +149,17 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene("Lobby");
 
+    }
+
+    // ÇÃ·¹ÀÌ¾î Á×À¸¸é ±¤°í ¶ç¿ì±â
+    public void PlayerDeathAd()
+    {
+        googleAd.ShowInterstitialAd();
+    }
+
+    // ºÎÈ° ±¤°í ¶ç¿ì±â
+    public void ReviveAd()
+    {
+        googleAd.ShowRewardedAd();
     }
 }
