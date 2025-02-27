@@ -15,8 +15,13 @@ public class LeaderBoard : MonoBehaviour
     public Text score;
     public Text[] playerIdText;
     public Text[] playerScoreText;
+    public Text myPlayerIdText;
+    public Text myPlayerScore;
+    public Text myPlayerRankText;
     public GameObject setting;
     public TextMeshProUGUI messageText; // 로그인 필요 메시지
+    public GameObject LoadingPanel;
+
 
     public void ShowLeaderboardUI_Ranking()
     => ((PlayGamesPlatform)Social.Active).ShowLeaderboardUI(GPGSIds.leaderboard_ranking);
@@ -27,9 +32,21 @@ public class LeaderBoard : MonoBehaviour
 
     public void AddLeaderboard()//점수를 기록하는 함수
     => Social.ReportScore(int.Parse(score.text), GPGSIds.leaderboard_ranking, (bool success) => { });
+    
+    private bool isAuthenticated = false; // 인증 여부 저장
 
-    // 리더보드 부르기전에 접속
-    void OnEnable()
+    void Start()
+    {
+        if (!PlayGamesPlatform.Instance.localUser.authenticated)
+        {
+            Debug.Log("PlayGamesPlatform 다시 활성화");
+            PlayGamesPlatform.Activate();
+        }
+
+        AuthenticateUser();
+    }
+
+    void AuthenticateUser()
     {
         Social.localUser.Authenticate((bool success) =>
         {
@@ -37,7 +54,8 @@ public class LeaderBoard : MonoBehaviour
             {
                 Debug.Log(Social.localUser.id);
                 Debug.Log("연결됨");
-                LoadTopScores();
+                isAuthenticated = true; // 인증 완료 플래그 설정
+                LoadMyScores();
             }
             else
             {
@@ -49,15 +67,34 @@ public class LeaderBoard : MonoBehaviour
         });
     }
 
+    void OnEnable()
+    {
+        StartCoroutine(WaitForAuthentication());
+    }
+
+    // 인증이 끝날 때까지 대기하는 코루틴
+    IEnumerator WaitForAuthentication()
+    {
+        while (!isAuthenticated) // 인증이 완료될 때까지 대기
+        {
+            yield return null; // 다음 프레임까지 기다림
+        }
+
+        LoadMyScores();
+    }
+
+
+    // 탑스코어로 부르기
     public void LoadTopScores()
     {
         PlayGamesPlatform.Instance.LoadScores(
             GPGSIds.leaderboard_ranking, // 리더보드 ID
             LeaderboardStart.TopScores, // 상위 점수부터 시작
-            10, // 불러올 점수의 개수
+            12, // 불러올 점수의 개수
             LeaderboardCollection.Public, // 공개 리더보드
             LeaderboardTimeSpan.AllTime, // 전체 기간
-            (LeaderboardScoreData data) => {
+            (LeaderboardScoreData data) =>
+            {
                 if (data.Valid)
                 {
                     Debug.Log("점수를 성공적으로 불러왔습니다.");
@@ -70,7 +107,8 @@ public class LeaderBoard : MonoBehaviour
                         userIds[i] = playerId;
                     }
 
-                    PlayGamesPlatform.Instance.LoadUsers(userIds, (IUserProfile[] users) => {
+                    PlayGamesPlatform.Instance.LoadUsers(userIds, (IUserProfile[] users) =>
+                    {
                         if (users.Length > 0)
                         {
                             for (int i = 0; i < numScores; i++)
@@ -88,15 +126,17 @@ public class LeaderBoard : MonoBehaviour
                                     }
                                 }
                                 // 데이터를 처리하는 부분!
-                                playerIdText[i].text = playerId;
+                                playerIdText[i].text = playerName;
                                 playerScoreText[i].text = playerScore.ToString();
                             }
                         }
+                        LoadingPanel.SetActive(false);
                     });
                 }
             });
     }
 
+    // 로그인을 안했을시 로그인을 하라는 메시지
     public void ShowLoginMessage()
     {
         float duration = 1.5f; // 애니메이션 지속 시간
@@ -115,5 +155,37 @@ public class LeaderBoard : MonoBehaviour
             messageText.gameObject.SetActive(false); // 애니메이션 완료 후 비활성화
         });
     }
+
+    // 내점수 부르기
+    public void LoadMyScores()
+    {
+        PlayGamesPlatform.Instance.LoadScores(
+            GPGSIds.leaderboard_ranking,
+            LeaderboardStart.PlayerCentered, // 내 점수가 어디 있든 불러오기
+            1, // 내 점수만 불러오기
+            LeaderboardCollection.Public,
+            LeaderboardTimeSpan.AllTime,
+            (LeaderboardScoreData myData) =>
+            {
+                if (myData.Valid && myData.PlayerScore != null)
+                {
+                    string myName = Social.localUser.userName;
+                    long myScore = myData.PlayerScore.value;
+                    int myRank = myData.PlayerScore.rank; // 내 등수 가져오기
+
+                    myPlayerIdText.text = myName;
+                    myPlayerScore.text = myScore.ToString();
+                    myPlayerRankText.text = myRank.ToString(); // 등수 UI에 표시
+                }
+                else
+                {
+                    myPlayerIdText.text = "No data";
+                    myPlayerScore.text = "0";
+                    myPlayerRankText.text = "-";
+                }
+                LoadTopScores();
+            });
+    }
+
 }
 //GPGSIds 스크립트는 static이어서 따로 참조할 필요가없다

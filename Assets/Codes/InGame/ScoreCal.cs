@@ -22,6 +22,26 @@ public class ScoreCal : MonoBehaviour
     public int Distance { get { return (int)distance; } }
     public int Score { get { return (int)score; } }
 
+    void Start()
+    {
+        if (!PlayGamesPlatform.Instance.localUser.authenticated)
+        {
+            Debug.Log("PlayGamesPlatform 다시 활성화");
+            PlayGamesPlatform.Activate();
+            Social.localUser.Authenticate(success =>
+            {
+                if (success)
+                    Debug.Log("재로그인 성공!");
+                else
+                    Debug.Log("재로그인 실패");
+            });
+        }
+        else
+        {
+            Debug.Log("이미 로그인되어 있음");
+        }
+    }
+
     void Update()
     {
         score = player.position.z / 10;
@@ -64,26 +84,27 @@ public class ScoreCal : MonoBehaviour
     {
         int highScore = PlayerPrefs.GetInt("BestScore", 0);
 
-        if (Score > highScore)
+        //if (Score > highScore)
+        //{
+        PlayerPrefs.SetInt("BestScore", Score);
+        PlayerPrefs.Save();
+        Debug.Log($"새로운 하이스코어 저장: {Score}");
+
+
+        // 서버에 점수 제출
+        PlayGamesPlatform.Instance.ReportScore(Score, GPGSIds.leaderboard_ranking, success =>
         {
-            PlayerPrefs.SetInt("BestScore", Score);
-            PlayerPrefs.Save();
-            Debug.Log($"새로운 하이스코어 저장: {Score}");
-
-
-            // 서버에 점수 제출
-            Social.ReportScore(Score, GPGSIds.leaderboard_ranking, success =>
+            if (success)
             {
-                if (success)
-                {
-                    Debug.Log($"점수 {Score} 서버 전송 성공!");
-                    SetResult();
-                }
-                else
-                {
-                    Debug.Log("점수 서버 전송 실패");
-                }
-            });
-        }
+                Debug.Log($"점수 {Score} 서버 전송 성공!");
+                SetResult();
+            }
+            else
+            {
+                Debug.Log("점수 서버 전송 실패");
+            }
+        });
+        //}
+
     }
 }

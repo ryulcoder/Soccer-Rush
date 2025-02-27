@@ -365,6 +365,25 @@ public class BallMove : MonoBehaviour
        
 
         HitDefender(collider);
+
+        // 슛하고 공이 다시올때 변수꺼주기
+        if (collider.gameObject.CompareTag("PlayerFoot") && isShooting)
+        {
+            ballReset = true;
+            Debug.LogWarning("pos: " + BallTrans.position + " 슛팅 볼 위치 조정");
+            BallTrans.position = new Vector3(0, BallTrans.position.y, PlayerTrans.position.z + 4.5f);
+
+            BallRigibody.velocity = Vector3.zero;
+            BallRigibody.angularVelocity = Vector3.zero;  // 회전 속도도 초기화
+            BallRigibody.AddForce(1.2f * speed * movement, ForceMode.VelocityChange);
+            BallRigibody.AddTorque(Vector3.right * 90, ForceMode.VelocityChange);
+
+            isShooting = false;
+            kickDelay = false;
+
+            StartCoroutine(ResetCooltime());
+        }
+
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -390,23 +409,23 @@ public class BallMove : MonoBehaviour
             }
         }
 
-        // 슛하고 공이 다시올때 변수꺼주기
-        if (collision.gameObject.CompareTag("Player") && isShooting)
-        {
-            ballReset = true;
-            Debug.LogWarning("pos: " + BallTrans.position + " 볼 위치 조정");
-            BallTrans.position = new Vector3(0, BallTrans.position.y, PlayerTrans.position.z + 4.5f);
+        //// 슛하고 공이 다시올때 변수꺼주기
+        //if (collision.gameObject.CompareTag("Player") && isShooting)
+        //{
+        //    ballReset = true;
+        //    Debug.LogWarning("pos: " + BallTrans.position + " 볼 위치 조정");
+        //    BallTrans.position = new Vector3(0, BallTrans.position.y, PlayerTrans.position.z + 4.5f);
 
-            BallRigibody.velocity = Vector3.zero;
-            BallRigibody.angularVelocity = Vector3.zero;  // 회전 속도도 초기화
-            BallRigibody.AddForce(1.2f * speed * movement, ForceMode.VelocityChange);
-            BallRigibody.AddTorque(Vector3.right * 90, ForceMode.VelocityChange);
+        //    BallRigibody.velocity = Vector3.zero;
+        //    BallRigibody.angularVelocity = Vector3.zero;  // 회전 속도도 초기화
+        //    BallRigibody.AddForce(1.2f * speed * movement, ForceMode.VelocityChange);
+        //    BallRigibody.AddTorque(Vector3.right * 90, ForceMode.VelocityChange);
 
-            isShooting = false;
-            kickDelay = false;
+        //    isShooting = false;
+        //    kickDelay = false;
             
-            StartCoroutine(ResetCooltime());
-        }
+        //    StartCoroutine(ResetCooltime());
+        //}
     }
 
     public void Shoot()

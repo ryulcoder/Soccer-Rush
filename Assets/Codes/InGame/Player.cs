@@ -1,6 +1,8 @@
+using Ricimi;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -27,7 +29,9 @@ public class Player : MonoBehaviour
     Vector3 direction;
 
     AnimatorStateInfo stateInfo;
+    [Header("Shooting")]
     public bool isShooting;
+    public Button shootButton;
 
     public void PlayerStart()
     {
@@ -268,11 +272,15 @@ public class Player : MonoBehaviour
         Debug.LogWarning("태클 : " + tackleName);
     }
 
+    // 슛팅 버튼 누를시
     public void ShootingAni()
     {
-        Debug.Log("버튼 누름");
+        if (dontMove || getTackled || isSpin || isJump || dribbleSlowStart || BallMove.isShooting) { Debug.LogWarning("Block"); return; }
+
         PlayerAni.SetTrigger("Shooting");
+        shootButton.interactable = false;
     }
+
     public void ShootingBall()
     {
         BallMove.Shoot();

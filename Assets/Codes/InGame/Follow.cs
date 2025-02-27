@@ -25,7 +25,7 @@ public class Follow : MonoBehaviour
         defaultVec = transposer.m_FollowOffset;
     }
 
-    void LateUpdate()
+    void FixedUpdate()
     {
         float offsetX = Target.position.x < 0 ? Target.position.x * left + defaultVec.x : -Target.position.x * right + defaultVec.x;
 
