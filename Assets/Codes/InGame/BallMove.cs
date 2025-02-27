@@ -371,7 +371,7 @@ public class BallMove : MonoBehaviour
         {
             ballReset = true;
             Debug.LogWarning("pos: " + BallTrans.position + " 슛팅 볼 위치 조정");
-            //BallTrans.position = new Vector3(0, BallTrans.position.y, PlayerTrans.position.z + 4.5f);
+            //BallTrans.position = new Vector3(BallTrans.position.x, BallTrans.position.y, PlayerTrans.position.z + 4.5f);
 
             BallRigibody.velocity = Vector3.zero;
             BallRigibody.angularVelocity = Vector3.zero;  // 회전 속도도 초기화
