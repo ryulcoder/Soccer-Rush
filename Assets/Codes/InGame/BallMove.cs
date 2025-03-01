@@ -133,6 +133,7 @@ public class BallMove : MonoBehaviour
             StartCoroutine(ResetCooltime());
         }
     }
+
     // 좌/우 로 플레이어가 움직일 시 플레이어 따라 볼 이동 혹은 회전 업데이트 로직
     void BallMove_Update()
     {
@@ -146,7 +147,6 @@ public class BallMove : MonoBehaviour
                     moveTorqueDir = new Vector3(1, -1, 0);
                 else
                     moveTorqueDir = Vector3.right;
-
 
                 BallRigibody.AddTorque(moveTorqueDir * 90, ForceMode.VelocityChange);
 
@@ -345,6 +345,7 @@ public class BallMove : MonoBehaviour
         // 플레이어 발 트리거로 인한 볼 이동 혹은 회전
         if (!spin && !flick && !kickDelay && !isTackled && collider.gameObject.name == "PlayerFoot" )
         {
+            Debug.Log("볼 참");
             BallRigibody.velocity = Vector3.zero;
             deceleration = true;
 
@@ -371,12 +372,12 @@ public class BallMove : MonoBehaviour
         {
             ballReset = true;
             Debug.LogWarning("pos: " + BallTrans.position + " 슛팅 볼 위치 조정");
-            //BallTrans.position = new Vector3(BallTrans.position.x, BallTrans.position.y, PlayerTrans.position.z + 4.5f);
+            BallTrans.position = new Vector3(BallTrans.position.x, BallTrans.position.y, PlayerTrans.position.z + 4.5f);
 
             BallRigibody.velocity = Vector3.zero;
             BallRigibody.angularVelocity = Vector3.zero;  // 회전 속도도 초기화
-            BallRigibody.AddForce(1.2f * speed * movement, ForceMode.VelocityChange);
-            BallRigibody.AddTorque(Vector3.right * 90, ForceMode.VelocityChange);
+            //BallRigibody.AddForce( speed * movement, ForceMode.VelocityChange);
+            //BallRigibody.AddTorque(Vector3.right * 90, ForceMode.VelocityChange);
 
             isShooting = false;
             kickDelay = false;
@@ -408,7 +409,9 @@ public class BallMove : MonoBehaviour
                 return;
             }
         }
-
+        if (collision.gameObject.CompareTag("Player")){
+            Debug.Log("부딫힘");
+        }
         //// 슛하고 공이 다시올때 변수꺼주기
         //if (collision.gameObject.CompareTag("Player") && isShooting)
         //{
@@ -416,16 +419,16 @@ public class BallMove : MonoBehaviour
         //    Debug.LogWarning("pos: " + BallTrans.position + " 볼 위치 조정");
         //    BallTrans.position = new Vector3(0, BallTrans.position.y, PlayerTrans.position.z + 4.5f);
 
-        //    BallRigibody.velocity = Vector3.zero;
-        //    BallRigibody.angularVelocity = Vector3.zero;  // 회전 속도도 초기화
-        //    BallRigibody.AddForce(1.2f * speed * movement, ForceMode.VelocityChange);
-        //    BallRigibody.AddTorque(Vector3.right * 90, ForceMode.VelocityChange);
+            //    BallRigibody.velocity = Vector3.zero;
+            //    BallRigibody.angularVelocity = Vector3.zero;  // 회전 속도도 초기화
+            //    BallRigibody.AddForce(1.2f * speed * movement, ForceMode.VelocityChange);
+            //    BallRigibody.AddTorque(Vector3.right * 90, ForceMode.VelocityChange);
 
-        //    isShooting = false;
-        //    kickDelay = false;
-            
-        //    StartCoroutine(ResetCooltime());
-        //}
+            //    isShooting = false;
+            //    kickDelay = false;
+
+            //    StartCoroutine(ResetCooltime());
+            //}
     }
 
     public void Shoot()

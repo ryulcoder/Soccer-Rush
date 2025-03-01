@@ -58279,15 +58279,20 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1360049847}
-    - target: {fileID: 2659842071201926400, guid: 1304aa17af2e90a4d95a29058c6ad36f,
+    - target: {fileID: 2489791271437348658, guid: 1304aa17af2e90a4d95a29058c6ad36f,
         type: 3}
-      propertyPath: m_Interactable
-      value: 1
+      propertyPath: m_AnchorMax.x
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2659842071201926400, guid: 1304aa17af2e90a4d95a29058c6ad36f,
+    - target: {fileID: 2489791271437348658, guid: 1304aa17af2e90a4d95a29058c6ad36f,
         type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2489791271437348658, guid: 1304aa17af2e90a4d95a29058c6ad36f,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2659842071201926400, guid: 1304aa17af2e90a4d95a29058c6ad36f,
         type: 3}
@@ -58299,16 +58304,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: IngameUi
       objectReference: {fileID: 0}
-    - target: {fileID: 6515485710778594324, guid: 1304aa17af2e90a4d95a29058c6ad36f,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8046434546036837522, guid: 1304aa17af2e90a4d95a29058c6ad36f,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1360049847}
+    - target: {fileID: 8732417624124815552, guid: 1304aa17af2e90a4d95a29058c6ad36f,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9107097370553390243, guid: 1304aa17af2e90a4d95a29058c6ad36f,
         type: 3}
       propertyPath: m_Pivot.x

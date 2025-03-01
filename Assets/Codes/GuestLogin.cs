@@ -10,6 +10,6 @@ public class GuestLogin : MonoBehaviour
     {
         PlayerPrefs.SetInt("FirstIn", 1);
         PlayerPrefs.Save();
-        SceneManager.LoadScene("InGame");
+        SceneManager.LoadScene("Lobby");
     }
 }

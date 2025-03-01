@@ -106,6 +106,7 @@ public class GameManager : MonoBehaviour
         GameEndPanel.SetActive(true);
         GameEndBlurPanel.SetActive(true);
         ScoreCal.SaveScore();
+        PlayerDeathAd();
     }
 
     public void BallReset()

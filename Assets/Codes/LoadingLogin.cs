@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using GooglePlayGames.BasicApi;
 using GooglePlayGames;
 using UnityEngine.SceneManagement;
@@ -8,6 +9,10 @@ using UnityEngine.SceneManagement;
 
 public class LoadingLogin : MonoBehaviour
 {
+    public GameObject loginButton;
+    public GameObject guestLoginButton;
+    public GameObject LoadingText;
+
     void Start()
     {
         if (PlayerPrefs.GetInt("Login") == 1)
@@ -15,6 +20,9 @@ public class LoadingLogin : MonoBehaviour
             PlayGamesPlatform.DebugLogEnabled = true;
             PlayGamesPlatform.Activate();
             SignIn(0);
+            loginButton.SetActive(false);
+            guestLoginButton.SetActive(false);
+            LoadingText.SetActive(true);
         }
         else if (PlayerPrefs.GetInt("FirstIn") == 0)
         {
@@ -22,7 +30,10 @@ public class LoadingLogin : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene("Lobby");
+            loginButton.SetActive(false);
+            guestLoginButton.SetActive(false);
+            LoadingText.SetActive(true);
+            StartCoroutine(WaitLobbyImage());
         }
     }
 
@@ -32,6 +43,9 @@ public class LoadingLogin : MonoBehaviour
         PlayGamesPlatform.DebugLogEnabled = true;
         PlayGamesPlatform.Activate();
         SignIn(1);
+        loginButton.SetActive(false);
+        guestLoginButton.SetActive(false);
+        LoadingText.SetActive(true);
     }
 
     public void SignIn(int first)
@@ -61,7 +75,7 @@ public class LoadingLogin : MonoBehaviour
             string ImgUrl = PlayGamesPlatform.Instance.GetUserImageUrl();
 
             //logText.text = "Success \n" + name;
-            SceneManager.LoadScene("Lobby");
+            StartCoroutine(WaitLobbyImage());
 
             //클라우드 세이브 오류나서 일단 꺼둠
             //DataConnectGP dataConnectGP = GetComponent<DataConnectGP>();
@@ -128,7 +142,7 @@ public class LoadingLogin : MonoBehaviour
                         PlayerPrefs.Save();
                     }
                     Debug.Log($"하이스코어 불러오기 성공: {highScore}");
-                    SceneManager.LoadScene("Lobby");
+                    StartCoroutine(WaitLobbyImage());
                 }
                 else
                 {
@@ -138,4 +152,10 @@ public class LoadingLogin : MonoBehaviour
 
     }
 
+    // 로비 이미지를 보여주기 위해 대기 시간
+    IEnumerator WaitLobbyImage()
+    {
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene("Lobby");
+    }
 }
