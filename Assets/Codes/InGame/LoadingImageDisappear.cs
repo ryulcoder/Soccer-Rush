@@ -31,5 +31,6 @@ public class LoadingImageDisappear : MonoBehaviour
             yield return null;
         }
         LoadingImage.SetActive(false);
+        GameManager.Instance.GameStart();
     }
 }
