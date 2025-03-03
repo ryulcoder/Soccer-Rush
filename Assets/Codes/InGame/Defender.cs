@@ -46,6 +46,11 @@ public class Defender : MonoBehaviour
     void FixedUpdate()
     {
         SlidingTackleFront_Update();
+
+        if (isTackle && GameManager.Instance.aroundDefenderClear)
+        {
+            Reset();
+        }
     }
 
     // 달리기 후 슬라이딩 태클을 하는 수비수 업데이트 로직

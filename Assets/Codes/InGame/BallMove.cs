@@ -31,9 +31,7 @@ public class BallMove : MonoBehaviour
     bool ballReset;
 
     // spinMove
-    float next_x;
-    public bool spin, spin_move, spin_revert;
-    public bool spin_right;
+    public bool spin;
 
     // flick
     bool flick, flickBallDown, ballVelLimit;
@@ -45,6 +43,7 @@ public class BallMove : MonoBehaviour
     Vector3 playerVec, ballVec, moveTorqueDir;
 
     [Header("[ shoot ]")]
+    public GameObject HitParticle;
     public float shootSpeed = 10f;  // 공의 이동 속도
     public float shootDistance = 5f; // 공이 이동할 거리
     public Image shootBlurImage;
@@ -124,7 +123,7 @@ public class BallMove : MonoBehaviour
         {
             ballReset = true;
             Debug.LogWarning("pos: " + BallTrans.position + " 볼 위치 조정");
-            BallTrans.position = new Vector3(0, BallTrans.position.y, PlayerTrans.position.z + 4.5f);
+            BallTrans.position = new Vector3(BallTrans.position.x, BallTrans.position.y, PlayerTrans.position.z + 4.5f);
 
             BallRigibody.velocity = Vector3.zero;
             BallRigibody.angularVelocity = Vector3.zero;  // 회전 속도도 초기화
@@ -211,11 +210,14 @@ public class BallMove : MonoBehaviour
     // 볼 위치 리셋
     public void Reset()
     {
+        isTackled = false;
+        deceleration = false;
+
         BallTrans.GetComponent<Collider>().isTrigger = false;
         BallRigibody.constraints |= RigidbodyConstraints.FreezePositionX;
 
         BallRigibody.velocity = Vector3.zero;
-        BallTrans.position = new Vector3(PlayerTrans.position.x, 1.926f, PlayerTrans.position.z + 4.5f);
+        BallTrans.position = new Vector3(PlayerTrans.position.x, 1.926f, PlayerTrans.position.z + 5);
     }
 
     // 플레이어 스핀개인기 시 볼 움직임
@@ -369,9 +371,9 @@ public class BallMove : MonoBehaviour
         // 슛하고 공이 다시올때 변수꺼주기
         if (collider.gameObject.CompareTag("ShootReceive") && isShooting)
         {
-            ballReset = true;
+            //ballReset = true;
             Debug.LogWarning("pos: " + BallTrans.position + " 슛팅 볼 위치 조정");
-            //BallTrans.position = new Vector3(BallTrans.position.x, BallTrans.position.y, PlayerTrans.position.z + 4.5f);
+            BallTrans.position = new Vector3(BallTrans.position.x, BallTrans.position.y, PlayerTrans.position.z + 4.5f);
 
             BallRigibody.velocity = Vector3.zero;
             BallRigibody.angularVelocity = Vector3.zero;  // 회전 속도도 초기화
@@ -480,6 +482,8 @@ public class BallMove : MonoBehaviour
             BallRigibody.velocity = Vector3.zero;
             BallRigibody.AddForce(new(0, 0, -50), ForceMode.VelocityChange);
             BallRigibody.AddTorque(Vector3.left * 90, ForceMode.VelocityChange);
+
+            Instantiate(HitParticle, collider.ClosestPoint(transform.position += Vector3.up * 2), Quaternion.identity);
         }
     }
 
