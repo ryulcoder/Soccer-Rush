@@ -95,7 +95,7 @@ public class ExtraScore : MonoBehaviour
         if (scoreType == "HitShoot")
         {
             totalScore += extraScore[0];
-            Debug.LogWarning("추가점수 +" + extraScore[0]);
+            //Debug.LogWarning("추가점수 +" + extraScore[0]);
 
             yield break;
         }
@@ -123,14 +123,14 @@ public class ExtraScore : MonoBehaviour
             }
 
             totalScore += extraScore[1];
-            Debug.LogWarning("추가점수 +" + extraScore[1]);
+            //Debug.LogWarning("추가점수 +" + extraScore[1]);
         }
         else
         {
             if (extraScore[0] == 0) yield break;
 
             totalScore += extraScore[0];
-            Debug.LogWarning("추가점수 +" + extraScore[0]);
+            //Debug.LogWarning("추가점수 +" + extraScore[0]);
         }
 
         yield break;

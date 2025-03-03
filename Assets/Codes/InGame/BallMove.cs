@@ -210,9 +210,9 @@ public class BallMove : MonoBehaviour
     // 볼 위치 리셋
     public void Reset()
     {
-        isTackled = false;
         deceleration = false;
-
+        isTackled = false;
+        
         BallTrans.GetComponent<Collider>().isTrigger = false;
         BallRigibody.constraints |= RigidbodyConstraints.FreezePositionX;
 

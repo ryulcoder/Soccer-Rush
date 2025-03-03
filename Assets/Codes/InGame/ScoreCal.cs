@@ -44,7 +44,7 @@ public class ScoreCal : MonoBehaviour
 
     void Update()
     {
-        score = player.position.z / 10;
+        score = player.position.z / 10 + ExtraScore.instance.CheckEndScore();
         distance = player.position.z / 20;
         SetScore();
     }
