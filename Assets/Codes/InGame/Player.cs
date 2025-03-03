@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
     float totalSpeed, prev_x, next_x;
 
     public bool dribbleSlowStart, getTackled, isAct;
-    bool start, dontMove, isDribble, isJump, isSpin, isAvoid;
+    bool start, dontMove, isDribble, isJump, isSpin, isAvoid, ballReset;
 
     Vector3 direction;
 
@@ -98,6 +98,13 @@ public class Player : MonoBehaviour
 
         if (getTackled)
         {
+            if (!ballReset && stateInfo.IsName("StandUp") || stateInfo.IsName("StandUp_StandTackle"))
+            {
+                ballReset = true;
+
+                BallMove.Reset();
+            }
+
             if (stateInfo.IsName("Fallen") || stateInfo.IsName("GetStandTackled_Front"))
             {
                 start = false;
@@ -107,7 +114,7 @@ public class Player : MonoBehaviour
             }
             else if (stateInfo.IsName("Wait_Run"))
             {
-                BallMove.Reset();
+                BallMove.gameObject.SetActive(true);
 
                 getTackled = false;
                 dontMove = false;
@@ -117,7 +124,7 @@ public class Player : MonoBehaviour
 
                 PlayerAni.SetTrigger("Dribble");
                 isDribble = true;
-                
+                ballReset = false;
             }
             else
             {
@@ -300,4 +307,19 @@ public class Player : MonoBehaviour
     {
         DustParticle.SetActive(true);
     }
+
+    public void PlayerReset()
+    {
+        float player_x = gameObject.transform.position.x;
+
+        if (player_x >= distance / 2)
+            player_x = distance;
+        else if (player_x >= -distance / 2)
+            player_x = 0;
+        else
+            player_x = -distance;
+
+        gameObject.transform.position = new(player_x, gameObject.transform.position.y, gameObject.transform.position.z);
+    }
+
 }

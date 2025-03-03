@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Debug = UnityEngine.Debug;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class GameManager : MonoBehaviour
 {
@@ -44,8 +45,6 @@ public class GameManager : MonoBehaviour
 
     [Header("[ Ani ]")]
     public Animator PlayerAnimator;
-    public Animator TakleDefenderAnimator;
-    public Animator SlidingDefenderAnimator;
 
     public (float minGap, float maxGap) DefGap => (minGap, maxGap);
     public float[] DefPer { get { return defPer; } }
@@ -117,7 +116,11 @@ public class GameManager : MonoBehaviour
 
         ScoreCal.SaveScore();
         PlayerDeathAd();
+
+        BallMove.gameObject.SetActive(false);
+        Player.Instance.PlayerReset();
     }
+
 
     public void BallReset()
     {

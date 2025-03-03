@@ -21,7 +21,7 @@ public class BallMove : MonoBehaviour
     [Space]
     public float speed; 
 
-    bool kickDelay;
+    [SerializeField] bool kickDelay;
     float dampingFactor = 0.98f;
     public bool deceleration, kick, isTackled;
     
@@ -123,7 +123,7 @@ public class BallMove : MonoBehaviour
         {
             ballReset = true;
             Debug.LogWarning("pos: " + BallTrans.position + " 볼 위치 조정");
-            BallTrans.position = new Vector3(BallTrans.position.x, BallTrans.position.y, PlayerTrans.position.z + 4.5f);
+            BallTrans.position = new Vector3(BallTrans.position.x, 1.926f, PlayerTrans.position.z + 4.5f);
 
             BallRigibody.velocity = Vector3.zero;
             BallRigibody.angularVelocity = Vector3.zero;  // 회전 속도도 초기화
@@ -210,6 +210,7 @@ public class BallMove : MonoBehaviour
     // 볼 위치 리셋
     public void Reset()
     {
+        kickDelay = false;
         deceleration = false;
         isTackled = false;
         
@@ -217,6 +218,7 @@ public class BallMove : MonoBehaviour
         BallRigibody.constraints |= RigidbodyConstraints.FreezePositionX;
 
         BallRigibody.velocity = Vector3.zero;
+        BallRigibody.angularVelocity = Vector3.zero;
         BallTrans.position = new Vector3(PlayerTrans.position.x, 1.926f, PlayerTrans.position.z + 5);
     }
 
@@ -374,7 +376,7 @@ public class BallMove : MonoBehaviour
         {
             //ballReset = true;
             Debug.LogWarning("pos: " + BallTrans.position + " 슛팅 볼 위치 조정");
-            BallTrans.position = new Vector3(BallTrans.position.x, BallTrans.position.y, PlayerTrans.position.z + 4.5f);
+            BallTrans.position = new Vector3(BallTrans.position.x, 1.926f, PlayerTrans.position.z + 4.5f);
 
             BallRigibody.velocity = Vector3.zero;
             BallRigibody.angularVelocity = Vector3.zero;  // 회전 속도도 초기화
