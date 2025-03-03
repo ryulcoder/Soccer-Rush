@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LoadingImageDisappear : MonoBehaviour
+public class LobbyLoading : MonoBehaviour
 {
     Slider loadingSlider;
     public GameObject LoadingImage;
@@ -16,7 +16,7 @@ public class LoadingImageDisappear : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Start()
+    void Update()
     {
         StartCoroutine(WaitLoading());
     }
@@ -24,10 +24,10 @@ public class LoadingImageDisappear : MonoBehaviour
     IEnumerator WaitLoading()
     {
         yield return new WaitForSeconds(1.2f);
-        while(loadingSlider.value < 1)
+        while (loadingSlider.value < 1)
         {
-            elapsed += Time.deltaTime * 1.3f;
-            loadingSlider.value = Mathf.Lerp(0, 1, elapsed / duration); 
+            elapsed += Time.deltaTime * 0.1f;
+            loadingSlider.value = Mathf.Lerp(0, 1, elapsed / duration);
             yield return null;
         }
         LoadingImage.SetActive(false);

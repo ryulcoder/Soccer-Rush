@@ -52,4 +52,5 @@ public class GoogleManager : MonoBehaviour
             // Login failed
         }
     }
+
 }

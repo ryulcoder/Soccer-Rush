@@ -5,13 +5,21 @@ using UnityEngine.UI;
 using GooglePlayGames.BasicApi;
 using GooglePlayGames;
 using UnityEngine.SceneManagement;
+using static UnityEngine.ParticleSystem;
 
 
 public class LoadingLogin : MonoBehaviour
 {
     public GameObject loginButton;
     public GameObject guestLoginButton;
-    public GameObject LoadingText;
+    public GameObject slider;
+
+    Slider loadingSlider;
+    float duration = 3f; // 3초 동안 채우기
+    float elapsed = 0f;  // 경과 시간
+
+    int loginGoogle = 1;
+    int guest = 2;
 
     void Start()
     {
@@ -19,10 +27,9 @@ public class LoadingLogin : MonoBehaviour
         {
             PlayGamesPlatform.DebugLogEnabled = true;
             PlayGamesPlatform.Activate();
-            SignIn(0);
             loginButton.SetActive(false);
             guestLoginButton.SetActive(false);
-            LoadingText.SetActive(true);
+            SliderOn(loginGoogle);
         }
         else if (PlayerPrefs.GetInt("FirstIn") == 0)
         {
@@ -30,10 +37,7 @@ public class LoadingLogin : MonoBehaviour
         }
         else
         {
-            loginButton.SetActive(false);
-            guestLoginButton.SetActive(false);
-            LoadingText.SetActive(true);
-            StartCoroutine(WaitLobbyImage());
+            GuestLogin();
         }
     }
 
@@ -42,10 +46,9 @@ public class LoadingLogin : MonoBehaviour
     {
         PlayGamesPlatform.DebugLogEnabled = true;
         PlayGamesPlatform.Activate();
-        SignIn(1);
         loginButton.SetActive(false);
         guestLoginButton.SetActive(false);
-        LoadingText.SetActive(true);
+        SliderOn(0);
     }
 
     public void SignIn(int first)
@@ -75,7 +78,7 @@ public class LoadingLogin : MonoBehaviour
             string ImgUrl = PlayGamesPlatform.Instance.GetUserImageUrl();
 
             //logText.text = "Success \n" + name;
-            StartCoroutine(WaitLobbyImage());
+            StartCoroutine(WaitLoadingSecond());
 
             //클라우드 세이브 오류나서 일단 꺼둠
             //DataConnectGP dataConnectGP = GetComponent<DataConnectGP>();
@@ -142,7 +145,7 @@ public class LoadingLogin : MonoBehaviour
                         PlayerPrefs.Save();
                     }
                     Debug.Log($"하이스코어 불러오기 성공: {highScore}");
-                    StartCoroutine(WaitLobbyImage());
+                    StartCoroutine(WaitLoadingSecond());
                 }
                 else
                 {
@@ -152,10 +155,66 @@ public class LoadingLogin : MonoBehaviour
 
     }
 
-    // 로비 이미지를 보여주기 위해 대기 시간
-    IEnumerator WaitLobbyImage()
+    // 로딩 슬라이더
+    IEnumerator WaitLoadingfirst(int first)
     {
         yield return new WaitForSeconds(1f);
+        while (loadingSlider.value < 0.8f)
+        {
+            elapsed += Time.deltaTime;
+            loadingSlider.value = Mathf.Lerp(0, 1, elapsed / duration);
+            yield return null;
+        }
+        SignIn(first);
+    }
+
+    // 로딩 두번째
+    IEnumerator WaitLoadingSecond()
+    {
+        while (loadingSlider.value < 1)
+        {
+            elapsed += Time.deltaTime;
+            loadingSlider.value = Mathf.Lerp(0, 1, elapsed / duration);
+            yield return null;
+        }
         SceneManager.LoadScene("Lobby");
     }
+
+
+    // 슬라이더 키기
+    void SliderOn(int first)
+    {
+        slider.SetActive(true);
+        loadingSlider = slider.GetComponent<Slider>();
+        if(first == guest)  // 게스트일때
+        {
+            StartCoroutine(WaitLoadingSecond());
+
+        }
+        else
+        {
+            StartCoroutine(WaitLoadingfirst(first));
+        }
+    }
+
+    public void GuestLogin()
+    {
+        loginButton.SetActive(false);
+        guestLoginButton.SetActive(false);
+        PlayerPrefs.SetInt("FirstIn", 1);
+        PlayerPrefs.Save();
+        SliderOn(guest);
+    }
+
+    //IEnumerator WaitForLogin()
+    //{
+    //    Debug.Log("로그인 확인 중...");
+
+    //    while (!PlayGamesPlatform.Instance.localUser.authenticated)
+    //    {
+    //        yield return new WaitForSeconds(0.5f);  // 0.5초마다 확인
+    //    }
+
+    //    Debug.Log("로그인 성공!");
+    //}
 }
