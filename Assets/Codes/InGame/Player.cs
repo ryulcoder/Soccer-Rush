@@ -1,4 +1,3 @@
-using Ricimi;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,6 +15,7 @@ public class Player : MonoBehaviour
 
     [Header("Particles")]
     public GameObject DustParticle;
+    public GameObject ShootDustParticle;
 
     [Space]
     public Transform TileTransform;
@@ -23,21 +23,24 @@ public class Player : MonoBehaviour
     public float speed, jumpSpeed, distance;
     float totalSpeed, prev_x, next_x;
 
-    public bool dribbleSlowStart, getTackled, spinRight, isAct;
+    public bool dribbleSlowStart, getTackled, isAct;
     bool start, dontMove, isDribble, isJump, isSpin, isAvoid;
 
     Vector3 direction;
 
     AnimatorStateInfo stateInfo;
+
     [Header("Shooting")]
     public bool isShooting;
     public Button shootButton;
 
     public void PlayerStart()
     {
+        dontMove = false;
         dribbleSlowStart = true;
         start = true;
     }
+
     // 볼이 수비 태클에 걸렸을 시 움직임 막기
     public void DontMove()
     {
@@ -102,6 +105,20 @@ public class Player : MonoBehaviour
 
                 totalSpeed = 0;
             }
+            else if (stateInfo.IsName("Wait_Run"))
+            {
+                BallMove.Reset();
+
+                getTackled = false;
+                dontMove = false;
+
+                dribbleSlowStart = true;
+                start = true;
+
+                PlayerAni.SetTrigger("Dribble");
+                isDribble = true;
+                
+            }
             else
             {
                 PlayerTransform.position += Vector3.forward * totalSpeed;
@@ -150,7 +167,7 @@ public class Player : MonoBehaviour
                     if (totalSpeed >= speed)
                     {
                         dribbleSlowStart = false;
-                        isJump = isSpin = false;
+                        isJump = isSpin = isAct = isAvoid = false;
                         totalSpeed = speed;
                     }
                 }
@@ -194,17 +211,9 @@ public class Player : MonoBehaviour
         isSpin = true;
         isAct = true;
 
-        if (!spinRight)
-        { 
-            PlayerAni.SetTrigger("Spin_Left");
-            BallMove.SpinMove("Left");
+        PlayerAni.SetTrigger("Spin_Left");
+        BallMove.SpinMove("Left");
             
-        }
-        else
-        {
-            PlayerAni.SetTrigger("Spin_Right");
-            BallMove.SpinMove("Right");
-        }
 
     }
     public void SpinEnd()
@@ -284,6 +293,7 @@ public class Player : MonoBehaviour
     public void ShootingBall()
     {
         BallMove.Shoot();
+        ShootDustParticle.SetActive(true);
     }
 
     public void DustOn()

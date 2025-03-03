@@ -17,6 +17,7 @@ public class ExtraScore : MonoBehaviour
     [SerializeField] float[] extraScore;
     [SerializeField] float[] moveExtra = new float[] { 0, 10 };
     [SerializeField] float[] skillExtra = new float[] { 15, 30 };
+    [SerializeField] float[] shootExtra = new float[] { 100 };
 
     [Header("[ ExtraScore Particle ]")]
     [SerializeField] GameObject ExtraParticle;
@@ -53,9 +54,9 @@ public class ExtraScore : MonoBehaviour
     }
 
     // 태클 당할시 최종 추가 스코어 전달
-    public void CheckEndScore()
+    public float CheckEndScore()
     {
-        Debug.LogWarning("최종스코어: " + totalScore);
+        return totalScore;
     }
 
     // 플레이어 스킬 사용시 추가점수
@@ -79,7 +80,10 @@ public class ExtraScore : MonoBehaviour
                 extraScore = skillExtra;
                 ExtraParticle = SpinExtraParticle;
                 break;
-                
+            case "HitShoot":
+                extraScore = shootExtra;
+                ExtraParticle = null;
+                break;
         }
 
         scoreCoroutine = true;
@@ -88,6 +92,14 @@ public class ExtraScore : MonoBehaviour
     // 플레이어 스킬 사용시 추가점수 코루틴
     IEnumerator CheckExtraScore(string scoreType)
     {
+        if (scoreType == "HitShoot")
+        {
+            totalScore += extraScore[0];
+            Debug.LogWarning("추가점수 +" + extraScore[0]);
+
+            yield break;
+        }
+
         // 극한 회피 점수 확인
         if (isLimit)
         {
@@ -102,10 +114,13 @@ public class ExtraScore : MonoBehaviour
                 }
             }
 
-            if (ExtraParticle.activeSelf)
-                ExtraParticle.SetActive(false);
+            if (ExtraParticle)
+            {
+                if (ExtraParticle.activeSelf)
+                    ExtraParticle.SetActive(false);
 
-            ExtraParticle.SetActive(true);
+                ExtraParticle.SetActive(true);
+            }
 
             totalScore += extraScore[1];
             Debug.LogWarning("추가점수 +" + extraScore[1]);

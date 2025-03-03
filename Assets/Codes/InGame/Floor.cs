@@ -24,8 +24,8 @@ public class Floor : MonoBehaviour
     [SerializeField] float[] defPer;
     [SerializeField] string[] defNames = { "StandTackle_Front", "SlidingTackle_Front", "SlidingTackle_Anomaly", "Two_Defenders" , "Three_Defenders" };
 
-    [SerializeField] float minGap, maxGap; 
-    bool onPlayer, inPlayer, coroutine, firstSet;
+    [SerializeField] float minGap, maxGap;
+    [SerializeField] bool onPlayer, inPlayer, coroutine, firstSet;
 
     void Awake()
     {
@@ -67,7 +67,11 @@ public class Floor : MonoBehaviour
 
         yield return new WaitForSeconds(3);
 
-        if (onPlayer || Player.getTackled) yield break;
+        if (onPlayer || Player.getTackled) 
+        {
+            coroutine = false;
+            yield break; 
+        }
 
         transform.position += new Vector3(0, 0, transform.localScale.z * GameManager.Tiles.Length);
 

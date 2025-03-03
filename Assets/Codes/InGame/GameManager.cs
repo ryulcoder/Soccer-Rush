@@ -54,6 +54,8 @@ public class GameManager : MonoBehaviour
     string nextTime;
     bool coroutine;
 
+    public bool aroundDefenderClear;
+
     Stopwatch PlayTime = new();
 
     void Awake()
@@ -79,10 +81,15 @@ public class GameManager : MonoBehaviour
         {
             coroutine = true;
 
-            ExtraScore.instance.CheckEndScore();
+            Debug.LogWarning("최종스코어: " + ExtraScore.instance.CheckEndScore());
 
-            StartCoroutine(GameEnd());
-            
+            StartCoroutine(GameOver());
+        }
+
+        if (!Player.getTackled && coroutine)
+        {
+            coroutine = false;
+            aroundDefenderClear = false;
         }
     }
 
@@ -97,14 +104,17 @@ public class GameManager : MonoBehaviour
     }
 
 
-    IEnumerator GameEnd()
+    IEnumerator GameOver()
     {
         PlayTime.Stop();
 
         yield return new WaitForSecondsRealtime(1.7f);
-        
+
+        aroundDefenderClear = true;
+
         GameEndPanel.SetActive(true);
         GameEndBlurPanel.SetActive(true);
+
         ScoreCal.SaveScore();
         PlayerDeathAd();
     }
@@ -116,7 +126,7 @@ public class GameManager : MonoBehaviour
 
     public void GameSpeedUp()
     {
-        Time.timeScale *= 1.1f;
+        Time.timeScale *= 1.05f;
 
         Debug.Log("속도업!!!");
     }
@@ -162,5 +172,15 @@ public class GameManager : MonoBehaviour
     public void ReviveAd()
     {
         googleAd.ShowRewardedAd();
+    }
+
+    public void PlayerRevive()
+    {
+        GameEndPanel.SetActive(false);
+        GameEndBlurPanel.SetActive(false);
+
+        Player.GetComponent<Animator>().SetTrigger("ReStart");
+
+        PlayTime.Start();
     }
 }

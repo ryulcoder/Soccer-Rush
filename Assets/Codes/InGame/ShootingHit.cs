@@ -30,7 +30,8 @@ public class ShootingHit : MonoBehaviour
         if (other.CompareTag("Ball") && !Defender.isHit && ballMove.isShooting)
         {
             Defender.isHit = true;
-            animator.SetTrigger("ShootingDeath");   
+            animator.SetTrigger("ShootingDeath");
+            ExtraScore.instance.CheckStart("HitShoot");
         }
     }
 }
