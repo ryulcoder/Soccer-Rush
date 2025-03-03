@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LoadingImageDisappear : MonoBehaviour
@@ -23,14 +24,14 @@ public class LoadingImageDisappear : MonoBehaviour
 
     IEnumerator WaitLoading()
     {
-        yield return new WaitForSeconds(1.2f);
+
+        yield return new WaitForSeconds(0.5f);
         while(loadingSlider.value < 1)
         {
-            elapsed += Time.deltaTime * 1.3f;
+            elapsed += Time.deltaTime;
             loadingSlider.value = Mathf.Lerp(0, 1, elapsed / duration); 
             yield return null;
         }
-        LoadingImage.SetActive(false);
-        GameManager.Instance.GameStart();
+        SceneManager.LoadScene("InGame");
     }
 }

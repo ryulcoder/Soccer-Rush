@@ -72,6 +72,7 @@ public class GameManager : MonoBehaviour
         Player.speed = playerMoveSpeed;
         BallMove.speed = ballMoveSpeed;
         PlayerAnimator.speed = playerAniSpeed;
+        GameStart();
     }
 
     void Update()
@@ -135,7 +136,6 @@ public class GameManager : MonoBehaviour
     {
         Player.PlayerStart();
         Time.timeScale = gameSpeed;
-
         PlayTime.Start();
     }
 
