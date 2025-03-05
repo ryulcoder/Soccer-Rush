@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using GooglePlayGames.BasicApi;
 using GooglePlayGames;
 using UnityEngine.SceneManagement;
-using static UnityEngine.ParticleSystem;
 
 
 public class LoadingLogin : MonoBehaviour
@@ -21,35 +20,27 @@ public class LoadingLogin : MonoBehaviour
     int loginGoogle = 1;
     int guest = 2;
 
+    void Awake()
+    {
+        loadingSlider = slider.GetComponent<Slider>();
+
+    }
     void Start()
     {
-        if (PlayerPrefs.GetInt("Login") == 1)
-        {
-            PlayGamesPlatform.DebugLogEnabled = true;
-            PlayGamesPlatform.Activate();
-            loginButton.SetActive(false);
-            guestLoginButton.SetActive(false);
-            SliderOn(loginGoogle);
-        }
-        else if (PlayerPrefs.GetInt("FirstIn") == 0)
-        {
-
-        }
-        else
-        {
-            GuestLogin();
-        }
+        StartCoroutine(WaitLoadingfirst());
     }
 
-    // 구글 로그인 버튼
-    public void SignGoogle()
-    {
-        PlayGamesPlatform.DebugLogEnabled = true;
-        PlayGamesPlatform.Activate();
-        loginButton.SetActive(false);
-        guestLoginButton.SetActive(false);
-        SliderOn(0);
-    }
+
+    //자동로그인때문에 로그인버튼 함수 보류
+    //// 구글 로그인 버튼
+    //public void SignGoogle()
+    //{
+    //    PlayGamesPlatform.DebugLogEnabled = true;
+    //    PlayGamesPlatform.Activate();
+    //    loginButton.SetActive(false);
+    //    guestLoginButton.SetActive(false);
+    //    SliderOn(0);
+    //}
 
     public void SignIn(int first)
     {
@@ -107,8 +98,7 @@ public class LoadingLogin : MonoBehaviour
             string ImgUrl = PlayGamesPlatform.Instance.GetUserImageUrl();
 
             //logText.text = "Success \n" + name;
-            PlayerPrefs.SetInt("Login", 1);
-            PlayerPrefs.SetInt("FirstIn", 1);
+            PlayerPrefs.SetInt("first", 1);
             PlayerPrefs.Save();
             LoadHighScore();
             //클라우드 세이브 오류나서 일단 꺼둠
@@ -125,12 +115,12 @@ public class LoadingLogin : MonoBehaviour
         }
     }
 
-    // 로그인시 최고 기록 불러오기
+    // 첫 접속 하이스코어 찾아보기
     void LoadHighScore()
     {
         PlayGamesPlatform.Instance.LoadScores(
             GPGSIds.leaderboard_ranking,
-            LeaderboardStart.TopScores,
+            LeaderboardStart.PlayerCentered, // 내 점수를 기준으로 불러오기
             1,
             LeaderboardCollection.Public,
             LeaderboardTimeSpan.AllTime,
@@ -138,25 +128,24 @@ public class LoadingLogin : MonoBehaviour
             {
                 if (data.Valid)
                 {
-                    long highScore = data.PlayerScore.value;
+                    long highScore = data.PlayerScore.value; // 이제 내 점수가 올바르게 들어옴
                     if (highScore > PlayerPrefs.GetInt("BestScore"))
                     {
                         PlayerPrefs.SetInt("BestScore", (int)highScore);
                         PlayerPrefs.Save();
                     }
-                    Debug.Log($"하이스코어 불러오기 성공: {highScore}");
+                    Debug.Log($"내 하이스코어 불러오기 성공: {highScore}");
                     StartCoroutine(WaitLoadingSecond());
                 }
                 else
                 {
-                    Debug.Log("하이스코어 불러오기 실패");
+                    Debug.Log("내 하이스코어 불러오기 실패");
                 }
             });
-
     }
 
     // 로딩 슬라이더
-    IEnumerator WaitLoadingfirst(int first)
+    IEnumerator WaitLoadingfirst()
     {
         yield return new WaitForSeconds(1f);
         while (loadingSlider.value < 0.8f)
@@ -165,7 +154,16 @@ public class LoadingLogin : MonoBehaviour
             loadingSlider.value = Mathf.Lerp(0, 1, elapsed / duration);
             yield return null;
         }
-        SignIn(first);
+        if(PlayerPrefs.GetInt("first")== 0 )
+        {
+            SignIn(1);
+
+        }
+        else
+        {
+            SignIn(0);
+
+        }
     }
 
     // 로딩 두번째
@@ -181,30 +179,30 @@ public class LoadingLogin : MonoBehaviour
     }
 
 
-    // 슬라이더 키기
-    void SliderOn(int first)
-    {
-        slider.SetActive(true);
-        loadingSlider = slider.GetComponent<Slider>();
-        if(first == guest)  // 게스트일때
-        {
-            StartCoroutine(WaitLoadingSecond());
+    //// 슬라이더 키기
+    //void SliderOn(int first)
+    //{
+    //    slider.SetActive(true);
+    //    loadingSlider = slider.GetComponent<Slider>();
+    //    if(first == guest)  // 게스트일때
+    //    {
+    //        StartCoroutine(WaitLoadingSecond());
 
-        }
-        else
-        {
-            StartCoroutine(WaitLoadingfirst(first));
-        }
-    }
+    //    }
+    //    else
+    //    {
+    //        StartCoroutine(WaitLoadingfirst(first));
+    //    }
+    //}
 
-    public void GuestLogin()
-    {
-        loginButton.SetActive(false);
-        guestLoginButton.SetActive(false);
-        PlayerPrefs.SetInt("FirstIn", 1);
-        PlayerPrefs.Save();
-        SliderOn(guest);
-    }
+    //public void GuestLogin()
+    //{
+    //    loginButton.SetActive(false);
+    //    guestLoginButton.SetActive(false);
+    //    PlayerPrefs.SetInt("FirstIn", 1);
+    //    PlayerPrefs.Save();
+    //    SliderOn(guest);
+    //}
 
     //IEnumerator WaitForLogin()
     //{

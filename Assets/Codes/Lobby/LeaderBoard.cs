@@ -35,54 +35,32 @@ public class LeaderBoard : MonoBehaviour
     
     private bool isAuthenticated = false; // 인증 여부 저장
 
-    void Start()
-    {
-        if (!PlayGamesPlatform.Instance.localUser.authenticated)
-        {
-            Debug.Log("PlayGamesPlatform 다시 활성화");
-            PlayGamesPlatform.Activate();
-        }
 
-        AuthenticateUser();
-    }
-
-    void AuthenticateUser()
-    {
-        Social.localUser.Authenticate((bool success) =>
-        {
-            if (success)
-            {
-                Debug.Log(Social.localUser.id);
-                Debug.Log("연결됨");
-                isAuthenticated = true; // 인증 완료 플래그 설정
-                LoadMyScores();
-            }
-            else
-            {
-                Debug.Log("연결안됨");
-                setting.SetActive(true);
-                ShowLoginMessage();
-                gameObject.SetActive(false);
-            }
-        });
-    }
+    //void AuthenticateUser()
+    //{
+    //    Social.localUser.Authenticate((bool success) =>
+    //    {
+    //        if (success)
+    //        {
+    //            Debug.Log(Social.localUser.id);
+    //            Debug.Log("연결됨");
+    //            isAuthenticated = true; // 인증 완료 플래그 설정
+    //            LoadMyScores();
+    //        }
+    //        else
+    //        {
+    //            Debug.Log("연결안됨");
+    //            setting.SetActive(true);
+    //            ShowLoginMessage();
+    //            gameObject.SetActive(false);
+    //        }
+    //    });
+    //}
 
     void OnEnable()
     {
-        StartCoroutine(WaitForAuthentication());
-    }
-
-    // 인증이 끝날 때까지 대기하는 코루틴
-    IEnumerator WaitForAuthentication()
-    {
-        while (!isAuthenticated) // 인증이 완료될 때까지 대기
-        {
-            yield return null; // 다음 프레임까지 기다림
-        }
-
         LoadMyScores();
     }
-
 
     // 탑스코어로 부르기
     public void LoadTopScores()
