@@ -78,6 +78,7 @@ public class GoogleAd : MonoBehaviour
         {
             Debug.Log("Showing interstitial ad.");
             _interstitialAd.Show();
+            RegisterReloadHandler(_interstitialAd);
         }
         else
         {
@@ -150,7 +151,7 @@ public class GoogleAd : MonoBehaviour
         {
             rewardedAd.Show((Reward reward) =>
             {
-                // TODO: Reward the user.
+                GameManager.Instance.PlayerRevive();
             });
         }
     }

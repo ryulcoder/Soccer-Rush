@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     [Header("[ Game ]")]
     public int score = 0;
     //[SerializeField] int distance = 0;
+    int revive = 1;
+    public GameObject continueButton;
 
     [Header("[ Game Setting ]")]
     [SerializeField] float gameSpeed = 1;
@@ -112,8 +114,11 @@ public class GameManager : MonoBehaviour
 
         GameEndPanel.SetActive(true);
         GameEndBlurPanel.SetActive(true);
-
-        ScoreCal.SaveScore();
+        ScoreCal.SetResult();
+        if(revive > 0)
+        {
+            continueButton.SetActive(true);
+        }
         PlayerDeathAd();
 
         BallMove.gameObject.SetActive(false);
@@ -183,5 +188,7 @@ public class GameManager : MonoBehaviour
         Player.GetComponent<Animator>().SetTrigger("ReStart");
 
         PlayTime.Start();
+        revive--;
+        continueButton.SetActive(false);
     }
 }

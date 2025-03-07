@@ -3731,6 +3731,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   score: 0
+  continueButton: {fileID: 1578976865}
   gameSpeed: 1
   playerMoveSpeed: 1
   playerAniSpeed: 1.3
@@ -3854,6 +3855,12 @@ Transform:
   - {fileID: 836540507}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1578976865 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8714691605845103304, guid: 14d7f601f1cc6884e9ac07510cf751d6,
+    type: 3}
+  m_PrefabInstance: {fileID: 4546734026286600108}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1580704084
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6144,12 +6151,52 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1360049847}
+      objectReference: {fileID: 1286881136193113753}
+    - target: {fileID: 3234411150566555265, guid: 14d7f601f1cc6884e9ac07510cf751d6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SaveScoreAndQuit
+      objectReference: {fileID: 0}
+    - target: {fileID: 3234411150566555265, guid: 14d7f601f1cc6884e9ac07510cf751d6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ScoreCal, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3538201258530248291, guid: 14d7f601f1cc6884e9ac07510cf751d6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3707784903631999633, guid: 14d7f601f1cc6884e9ac07510cf751d6,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.972549
+      objectReference: {fileID: 0}
     - target: {fileID: 4073269188455607325, guid: 14d7f601f1cc6884e9ac07510cf751d6,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 835559946}
+    - target: {fileID: 4524863139100034825, guid: 14d7f601f1cc6884e9ac07510cf751d6,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 6.1399975
+      objectReference: {fileID: 0}
+    - target: {fileID: 4524863139100034825, guid: 14d7f601f1cc6884e9ac07510cf751d6,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 8.919444
+      objectReference: {fileID: 0}
+    - target: {fileID: 4524863139100034825, guid: 14d7f601f1cc6884e9ac07510cf751d6,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -1.3499756
+      objectReference: {fileID: 0}
+    - target: {fileID: 4524863139100034825, guid: 14d7f601f1cc6884e9ac07510cf751d6,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.4202881
+      objectReference: {fileID: 0}
     - target: {fileID: 4604793545543591402, guid: 14d7f601f1cc6884e9ac07510cf751d6,
         type: 3}
       propertyPath: m_Camera
@@ -6165,6 +6212,21 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1360049847}
+    - target: {fileID: 5644501887526717711, guid: 14d7f601f1cc6884e9ac07510cf751d6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1360049847}
+    - target: {fileID: 5644501887526717711, guid: 14d7f601f1cc6884e9ac07510cf751d6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ReviveAd
+      objectReference: {fileID: 0}
+    - target: {fileID: 6085554740275283794, guid: 14d7f601f1cc6884e9ac07510cf751d6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6465627895096271140, guid: 14d7f601f1cc6884e9ac07510cf751d6,
         type: 3}
       propertyPath: m_Pivot.x
@@ -6269,7 +6331,27 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1360049847}
+      objectReference: {fileID: 1286881136193113753}
+    - target: {fileID: 6710946155807743046, guid: 14d7f601f1cc6884e9ac07510cf751d6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SaveScoreAndRetry
+      objectReference: {fileID: 0}
+    - target: {fileID: 6710946155807743046, guid: 14d7f601f1cc6884e9ac07510cf751d6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ScoreCal, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8714691605845103304, guid: 14d7f601f1cc6884e9ac07510cf751d6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8906315280874219850, guid: 14d7f601f1cc6884e9ac07510cf751d6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

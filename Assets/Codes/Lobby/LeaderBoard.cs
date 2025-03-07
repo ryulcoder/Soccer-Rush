@@ -32,7 +32,7 @@ public class LeaderBoard : MonoBehaviour
 
     public void AddLeaderboard()//점수를 기록하는 함수
     => Social.ReportScore(int.Parse(score.text), GPGSIds.leaderboard_ranking, (bool success) => { });
-    
+
     private bool isAuthenticated = false; // 인증 여부 저장
 
 
@@ -56,6 +56,7 @@ public class LeaderBoard : MonoBehaviour
     //        }
     //    });
     //}
+
 
     void OnEnable()
     {
@@ -100,6 +101,7 @@ public class LeaderBoard : MonoBehaviour
                                     if (user.id == playerId)
                                     {
                                         playerName = user.userName;
+                                        Debug.Log(playerName);
                                         break;
                                     }
                                 }
@@ -151,6 +153,13 @@ public class LeaderBoard : MonoBehaviour
                     long myScore = myData.PlayerScore.value;
                     int myRank = myData.PlayerScore.rank; // 내 등수 가져오기
 
+                    Debug.Log(myRank);
+                    Debug.Log(myScore);
+                    Debug.Log(myName);
+                    if(myRank == -1)
+                    {
+                        ShowLeaderboardUI_Ranking();
+                    }
                     myPlayerIdText.text = myName;
                     myPlayerScore.text = myScore.ToString();
                     myPlayerRankText.text = myRank.ToString(); // 등수 UI에 표시
