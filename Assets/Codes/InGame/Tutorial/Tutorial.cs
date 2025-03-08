@@ -20,16 +20,20 @@ public class Tutorial : MonoBehaviour
     public GameObject ShootBtn;
     public GameObject[] Floors;
 
+    [Space]
+    public bool NoTuto;
+
     Player Player;
 
-    [Space][SerializeField] int tutoNum;
+    int tutoNum;
     bool isSet;
 
     void Start()
     {
         Player = Player.Instance;
 
-        //TutorialOn(PlayerPrefs.GetInt("Tutorial", 0) == 0);
+        if (!NoTuto)
+            TutorialOn(PlayerPrefs.GetInt("Tutorial", 0) == 0);
     }
 
     void Update()
