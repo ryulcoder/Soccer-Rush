@@ -29,6 +29,8 @@ public class ExtraScore : MonoBehaviour
     public float limitDis = 28;
     public float limitTime = 0.5f;
 
+    public bool tutorial;
+
     bool isLimit, scoreCoroutine, isCoroutine;
     string scoreType;
 
@@ -94,7 +96,8 @@ public class ExtraScore : MonoBehaviour
     {
         if (scoreType == "HitShoot")
         {
-            totalScore += extraScore[0];
+            if (!tutorial)
+                totalScore += extraScore[0];
             //Debug.LogWarning("추가점수 +" + extraScore[0]);
 
             yield break;
@@ -122,14 +125,16 @@ public class ExtraScore : MonoBehaviour
                 ExtraParticle.SetActive(true);
             }
 
-            totalScore += extraScore[1];
+            if (!tutorial)
+                totalScore += extraScore[1];
             //Debug.LogWarning("추가점수 +" + extraScore[1]);
         }
         else
         {
             if (extraScore[0] == 0) yield break;
 
-            totalScore += extraScore[0];
+            if (!tutorial)
+                totalScore += extraScore[0];
             //Debug.LogWarning("추가점수 +" + extraScore[0]);
         }
 

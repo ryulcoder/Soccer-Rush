@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Debug = UnityEngine.Debug;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class GameManager : MonoBehaviour
 {
@@ -20,15 +19,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] float gameSpeed = 1;
     [SerializeField] float playerMoveSpeed = 1;
     [SerializeField] float playerAniSpeed = 1.3f;
-    [SerializeField] float ballMoveSpeed = 60;
+    [SerializeField] float ballMoveSpeed = 59;
 
     [Header("[ Def Setting ]")]
-    [SerializeField] float minGap = 80;
-    [SerializeField] float maxGap = 100;
+    [SerializeField] float minGap = 100;
+    [SerializeField] float maxGap = 130;
     [SerializeField] float[] defPer = { 25, 25, 25, 15, 10};
 
 
     [Header("[ Code ]")]
+    public Tutorial Tutorial;
     public PoolManager PoolManager;
     public ScoreCal ScoreCal;
     Player Player;
@@ -67,6 +67,8 @@ public class GameManager : MonoBehaviour
     {
         Player = Player.Instance;
         BallMove = BallMove.instance;
+
+        Tutorial.gameSpeed = gameSpeed;
 
         Player.speed = playerMoveSpeed;
         BallMove.speed = ballMoveSpeed;
