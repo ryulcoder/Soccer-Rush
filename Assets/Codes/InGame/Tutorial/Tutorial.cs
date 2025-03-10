@@ -129,10 +129,6 @@ public class Tutorial : MonoBehaviour
                 tutoNum += 1;
 
                 Player.ShootingAni();
-                break;
-
-            case 6:
-                tutoNum += 1;
                 TutorialEnd();
                 break;
         }
