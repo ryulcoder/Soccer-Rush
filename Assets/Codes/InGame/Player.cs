@@ -189,7 +189,7 @@ public class Player : MonoBehaviour
     // 플레이어 좌우 이동 함수
     public void MoveLeftRight(int moveDirection)
     {
-        if ((moveDirection > 0 && PlayerTransform.position.x >= distance) || (moveDirection < 0 && PlayerTransform.position.x <= -distance)) { Debug.LogWarning("Block1"); return; }
+        if ((moveDirection > 0 && PlayerTransform.position.x >= distance) || (moveDirection < 0 && PlayerTransform.position.x <= -distance)) { Debug.LogWarning("Block"); return; }
 
         if (!start || dontMove || getTackled || isSpin || isJump || dribbleSlowStart || BallMove.isShooting) { Debug.LogWarning("Block"); return; }
 

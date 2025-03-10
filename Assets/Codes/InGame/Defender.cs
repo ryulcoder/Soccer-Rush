@@ -29,7 +29,7 @@ public class Defender : MonoBehaviour
     float totalSpeed;
     string anomalyStr;
 
-    AnimatorStateInfo stateInfo;
+    public AnimatorStateInfo stateInfo;
 
     void Awake()
     {
@@ -45,6 +45,8 @@ public class Defender : MonoBehaviour
 
     void FixedUpdate()
     {
+        stateInfo = DefenderAni.GetCurrentAnimatorStateInfo(0);
+
         SlidingTackleFront_Update();
 
         if (isTackle && GameManager.Instance.aroundDefenderClear)
@@ -58,8 +60,6 @@ public class Defender : MonoBehaviour
     {
         if (isTackle && currentState.ToString() == "Sliding_Tackle_Front" && !isHit)
         {
-            stateInfo = DefenderAni.GetCurrentAnimatorStateInfo(0);
-
             if (!stateInfo.IsName("Wait") && !stateInfo.IsName("Tackle_Front"))
             {
                 // 러닝 태클 시 천천히 속도 올리기
