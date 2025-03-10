@@ -3121,6 +3121,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7e3a6967dba622c41a216b756c901193, type: 3}
+--- !u!1 &697958335 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5649123125597098544, guid: 7e3a6967dba622c41a216b756c901193,
+    type: 3}
+  m_PrefabInstance: {fileID: 697958334}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -4210,7 +4216,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_Enabled: 0
+  m_Enabled: 1
 --- !u!20 &963194227
 Camera:
   m_ObjectHideFlags: 0
@@ -6802,6 +6808,11 @@ PrefabInstance:
       propertyPath: distanceText
       value: 
       objectReference: {fileID: 6187079708550555703}
+    - target: {fileID: 2932427346380560155, guid: b2d9fc04abee9b545a7e92789950a5e0,
+        type: 3}
+      propertyPath: BestScoreFire
+      value: 
+      objectReference: {fileID: 697958335}
     - target: {fileID: 2932427346380560155, guid: b2d9fc04abee9b545a7e92789950a5e0,
         type: 3}
       propertyPath: lastBestScore

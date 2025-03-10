@@ -19,6 +19,7 @@ public class ScoreCal : MonoBehaviour
     public Text distanceResult;
     public Text scoreResult;
     public GameObject BestScoreStamp;
+    public GameObject BestScoreFire;
     public GameObject lastBestScore;
     public GameObject settingButton;
 
@@ -73,6 +74,7 @@ public class ScoreCal : MonoBehaviour
             PlayerPrefs.SetInt("BestScore", (int)score);
             PlayerPrefs.Save();
             BestScoreStamp.SetActive(true);
+            BestScoreFire.SetActive(true);
         }
         else
         {
