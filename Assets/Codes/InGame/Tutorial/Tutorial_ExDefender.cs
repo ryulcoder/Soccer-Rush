@@ -26,7 +26,7 @@ public class Tutorial_ExDefender : MonoBehaviour
                     if (Defender.isTackle && transform.position.z - Player.Instance.transform.position.z <= 25)
                     {
                         isSetTuto = true;
-                        Tutorial.TutoralSet((int)TutoSequence.Tuto_1 + 1);
+                        Tutorial.TutoralSet((int)TutoSequence.Tuto_1);
                     }
                     break;
 
@@ -34,7 +34,7 @@ public class Tutorial_ExDefender : MonoBehaviour
                     if (Defender.isTackle && Defender.stateInfo.IsName("Tackle_Front"))
                     {
                         isSetTuto = true;
-                        Tutorial.TutoralSet((int)TutoSequence.Tuto_2 + 1);
+                        Tutorial.TutoralSet((int)TutoSequence.Tuto_2);
                     }
                     break;
                     
@@ -42,7 +42,7 @@ public class Tutorial_ExDefender : MonoBehaviour
                     if (Defender.isTackle && Defender.stateInfo.IsName("Tackle_Right"))
                     {
                         isSetTuto = true;
-                        Tutorial.TutoralSet((int)TutoSequence.Tuto_3 + 1);
+                        Tutorial.TutoralSet((int)TutoSequence.Tuto_3);
                     }
                     break;
 
@@ -50,7 +50,7 @@ public class Tutorial_ExDefender : MonoBehaviour
                     if (Defender.isTackle && transform.position.z - Player.Instance.transform.position.z <= 25)
                     {
                         isSetTuto = true;
-                        Tutorial.TutoralSet((int)TutoSequence.Tuto_5 + 1);
+                        Tutorial.TutoralSet((int)TutoSequence.Tuto_5);
                     }
                     break;
 
@@ -58,7 +58,7 @@ public class Tutorial_ExDefender : MonoBehaviour
                     if (Defender.isTackle)
                     {
                         isSetTuto = true;
-                        Tutorial.TutoralSet((int)TutoSequence.Tuto_6 + 1);
+                        Tutorial.TutoralSet((int)TutoSequence.Tuto_6);
                     }
                     break;
             }

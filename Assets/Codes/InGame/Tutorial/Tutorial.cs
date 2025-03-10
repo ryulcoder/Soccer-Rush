@@ -38,13 +38,7 @@ public class Tutorial : MonoBehaviour
 
     void Update()
     {
-        if (!isSet && tutoNum >= 7 && Player.transform.position.z >= 650)
-        {
-            isSet = true;
-
-            TutoralSet(tutoNum);
-        }
-        else if (!isSet && tutoNum == 6 && Player.transform.position.z >= 540)
+        if (!isSet && tutoNum == 5 && Player.transform.position.z >= 540)
         {
             isSet = true;
 
@@ -52,7 +46,7 @@ public class Tutorial : MonoBehaviour
 
             TutoralSet(tutoNum);
         }
-        else if (!isSet && tutoNum == 4 && Player.transform.position.z >= 390)
+        else if (!isSet && tutoNum == 3 && Player.transform.position.z >= 390)
         {
             isSet = true;
             TutoralSet(tutoNum);
@@ -62,6 +56,8 @@ public class Tutorial : MonoBehaviour
     void TutorialOn(bool isActive)
     {
         TutorialFloor.SetActive(isActive);
+
+        TutoUIs[TutoUIs.Length - 1].GetComponent<RectTransform>().anchoredPosition = ShootBtn.GetComponent<RectTransform>().anchoredPosition + Vector2.up * 300;
 
         if (isActive)
             for (int i = 0; i < Floors.Length; i++)
@@ -75,8 +71,6 @@ public class Tutorial : MonoBehaviour
         ShootBtn.SetActive(!isActive);
 
         gameObject.SetActive(isActive);
-
-        TutoralSet(tutoNum);
     }
 
 
@@ -106,41 +100,38 @@ public class Tutorial : MonoBehaviour
         switch (num)
         {
             case 0:
-                break;
-
-            case 1:
                 Player.MoveLeftRight(-1);
                 break;
 
-            case 2:
+            case 1:
                 Player.Jump(); 
                 break;
 
-            case 3:
+            case 2:
                 tutoNum += 1;
 
                 Player.Jump();
                 break;
 
-            case 4:
+            case 3:
                 Player.MoveLeftRight(1);
                 break;
 
-            case 5:
+            case 4:
                 isSet = false;
                 tutoNum += 1;
 
                 Player.Spin();
                 break;
 
-            case 6:
+            case 5:
                 isSet = false;
                 tutoNum += 1;
 
                 Player.ShootingAni();
                 break;
 
-            case 7:
+            case 6:
                 tutoNum += 1;
                 TutorialEnd();
                 break;
@@ -158,8 +149,8 @@ public class Tutorial : MonoBehaviour
 
         Time.timeScale = gameSpeed;
 
-        /*PlayerPrefs.SetInt("Tutorial", 1);
-        PlayerPrefs.Save();*/
+        PlayerPrefs.SetInt("Tutorial", 1);
+        PlayerPrefs.Save();
 
         TutorialBlur.SetActive(false);
 
