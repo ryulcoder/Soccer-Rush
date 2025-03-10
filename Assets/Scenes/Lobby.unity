@@ -4087,9 +4087,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 714817683}
-        m_TargetAssemblyTypeName: LobbyAudioManager, Assembly-CSharp
-        m_MethodName: SetBgmVolume
+      - m_Target: {fileID: 1228119415}
+        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+        m_MethodName: SetSfxVolume
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4099,9 +4099,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 714817683}
-        m_TargetAssemblyTypeName: LobbyAudioManager, Assembly-CSharp
-        m_MethodName: SetSfxVolume
+      - m_Target: {fileID: 1228119415}
+        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+        m_MethodName: SetBgmVolume
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8731,14 +8731,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bgmClip: {fileID: 8300000, guid: 4332bea515032854689239750196fd40, type: 3}
+  ingameClip: {fileID: 8300000, guid: 07f391589664f4e85904fa28802b4aa8, type: 3}
   bgmVolume: 1
-  bgmSlider: {fileID: 721820968}
   sfxClips:
   - {fileID: 8300000, guid: dbde9f7b19c4944b298da7a0bdf1b292, type: 3}
+  - {fileID: 8300000, guid: a5bae3733216f53438a366da9456604b, type: 3}
+  - {fileID: 8300000, guid: bce27a84a16687c4eb98361ee8d1a851, type: 3}
+  - {fileID: 8300000, guid: 509c09ba0c4e7b545bc0a949f7a49bf3, type: 3}
+  - {fileID: 8300000, guid: e0df81813b66a8a43a98c0c149255877, type: 3}
+  - {fileID: 8300000, guid: fbd6577ed863a6340b31ddb1f59c347f, type: 3}
+  - {fileID: 8300000, guid: 2c5292ba5cf254919a6b9e2b18e04f49, type: 3}
+  - {fileID: 8300000, guid: 482cbecf61cbe2644a87d64b7ea5f856, type: 3}
+  - {fileID: 8300000, guid: 40554ebf1b6a63f45bd5192898fbbae5, type: 3}
   sfxVolume: 0.5
   channels: 15
   sfxObject: {fileID: 0}
-  sfxSlider: {fileID: 594504309}
 --- !u!4 &714817684
 Transform:
   m_ObjectHideFlags: 0
@@ -9188,7 +9195,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0.7071068, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.027, y: 0.04, z: 0.04}
+  m_LocalScale: {x: 0.0265, y: 0.04, z: 0.04}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1309368768}
@@ -14073,6 +14080,52 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1 &1228119414
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1228119416}
+  - component: {fileID: 1228119415}
+  m_Layer: 0
+  m_Name: LobbyAudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1228119415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1228119414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10992d4a0641af143a900cfa6775c904, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bgmSlider: {fileID: 721820968}
+  sfxSlider: {fileID: 594504309}
+--- !u!4 &1228119416
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1228119414}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 90.312454, y: 143.73096, z: -326.40927}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1234918354
 GameObject:
   m_ObjectHideFlags: 0
@@ -14635,7 +14688,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6,
     type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.9372549}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.5764706}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -17357,6 +17410,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 714817683}
+        m_TargetAssemblyTypeName: LobbyAudioManager, Assembly-CSharp
+        m_MethodName: StopBGM
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -20642,6 +20707,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 714817683}
+        m_TargetAssemblyTypeName: LobbyAudioManager, Assembly-CSharp
+        m_MethodName: PlaySfxButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &2058355179
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21747,3 +21824,4 @@ SceneRoots:
   - {fileID: 605868306}
   - {fileID: 962432088}
   - {fileID: 944156670}
+  - {fileID: 1228119416}

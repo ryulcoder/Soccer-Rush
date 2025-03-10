@@ -16,6 +16,8 @@
     "com.unity.postprocessing": "3.4.0",
     "com.unity.probuilder": "5.2.3",
     "com.unity.recorder": "4.0.3",
+    "com.unity.services.deployment": "1.4.1",
+    "com.unity.services.leaderboards": "2.2.1",
     "com.unity.test-framework": "1.1.33",
     "com.unity.textmeshpro": "3.0.6",
     "com.unity.timeline": "1.7.6",

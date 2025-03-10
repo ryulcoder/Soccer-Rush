@@ -146,7 +146,7 @@ public class Player : MonoBehaviour
                 isAct = false;
 
                 PlayerTransform.position = new(next_x, position.y, position.z);
-
+                Debug.Log(PlayerTransform.position);
                 PlayerAni.SetTrigger("ReDribble");
 
                 prev_x = next_x;
@@ -192,6 +192,13 @@ public class Player : MonoBehaviour
         if ((moveDirection > 0 && PlayerTransform.position.x >= distance) || (moveDirection < 0 && PlayerTransform.position.x <= -distance)) { Debug.LogWarning("Block1"); return; }
 
         if (!start || dontMove || getTackled || isSpin || isJump || dribbleSlowStart || BallMove.isShooting) { Debug.LogWarning("Block"); return; }
+
+        if (LobbyAudioManager.instance != null)
+        {
+            LobbyAudioManager.instance.PlaySfx(LobbyAudioManager.Sfx.kick);
+        }
+
+
 
         direction = new(moveDirection, 0, 0);
         next_x += moveDirection * distance;
@@ -281,7 +288,12 @@ public class Player : MonoBehaviour
 
         if (tackleName == "GetStandTackled_Front_Anomaly")
             tackleName = "GetStandTackled_Front";
+        if (LobbyAudioManager.instance != null)
+        {
 
+            LobbyAudioManager.instance.PlaySfx(LobbyAudioManager.Sfx.death);
+            LobbyAudioManager.instance.PlaySfx(LobbyAudioManager.Sfx.deathPunch);
+        }
 
         PlayerAni.SetTrigger(tackleName);
 
@@ -292,7 +304,6 @@ public class Player : MonoBehaviour
     public void ShootingAni()
     {
         if (dontMove || getTackled || isSpin || isJump || dribbleSlowStart || BallMove.isShooting) { Debug.LogWarning("Block"); return; }
-
         PlayerAni.SetTrigger("Shooting");
         shootButton.interactable = false;
     }
@@ -320,6 +331,29 @@ public class Player : MonoBehaviour
             player_x = -distance;
 
         gameObject.transform.position = new(player_x, gameObject.transform.position.y, gameObject.transform.position.z);
+    }
+
+    public void Spinballtouch()
+    {
+        if (LobbyAudioManager.instance == null)
+            return;
+
+        LobbyAudioManager.instance.PlaySfx(LobbyAudioManager.Sfx.kick);
+    }
+
+    //public void StartWhistle()
+    //{
+    //    if (LobbyAudioManager.instance == null)
+    //        return;
+
+    //    LobbyAudioManager.instance.PlaySfx(LobbyAudioManager.Sfx.startWhistle);
+    //}
+
+    public void StartKick()
+    {
+        if (LobbyAudioManager.instance == null)
+            return;
+        LobbyAudioManager.instance.PlaySfx(LobbyAudioManager.Sfx.kick);
     }
 
 }

@@ -252,6 +252,11 @@ public class BallMove : MonoBehaviour
     {
         if (flick) return;
 
+        if (LobbyAudioManager.instance != null)
+        {
+            LobbyAudioManager.instance.PlaySfx(LobbyAudioManager.Sfx.kick);
+        }
+
         flick = true;
         kickDelay = true;
         ballMaxY = 0;
@@ -349,7 +354,6 @@ public class BallMove : MonoBehaviour
         // 플레이어 발 트리거로 인한 볼 이동 혹은 회전
         if (!spin && !flick && !kickDelay && !isTackled && collider.gameObject.name == "PlayerFoot" )
         {
-            Debug.Log("볼 참");
             BallRigibody.velocity = Vector3.zero;
             deceleration = true;
 
@@ -439,6 +443,10 @@ public class BallMove : MonoBehaviour
     {
         if (isShooting) return; // 이미 슛 중이면 무시
 
+        if (LobbyAudioManager.instance != null)
+        {
+            LobbyAudioManager.instance.PlaySfx(LobbyAudioManager.Sfx.shoot);
+        }
         isShooting = true;
         kickDelay = true;
         Player.Instance.isShooting = true;

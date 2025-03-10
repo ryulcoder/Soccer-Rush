@@ -6,6 +6,8 @@ using System.Net.Mime;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Newtonsoft.Json;
+using Unity.Services.Leaderboards;
 
 public class ScoreCal : MonoBehaviour
 {
@@ -19,7 +21,10 @@ public class ScoreCal : MonoBehaviour
     public GameObject BestScoreStamp;
     public GameObject lastBestScore;
     public GameObject settingButton;
-    
+
+    string unityLeaderboard = "SoccerRushRanking";
+
+
     public int Distance { get { return (int)distance; } }
     public int Score { get { return (int)score; } }
 
@@ -83,20 +88,22 @@ public class ScoreCal : MonoBehaviour
     // 스코어 저장
     public void SaveScoreAndQuit()
     {
-        // 서버에 점수 제출
-        PlayGamesPlatform.Instance.ReportScore(Score, GPGSIds.leaderboard_ranking, success =>
-        {
-            if (success)
-            {
-                Debug.Log($"점수 {Score} 서버 전송 성공!");
-                SceneManager.LoadScene("Lobby");
-            }
-            else
-            {
-                Debug.Log("점수 서버 전송 실패");
-                SceneManager.LoadScene("Lobby");
-            }
-        });
+        AddScore(unityLeaderboard, Score);
+        SceneManager.LoadScene("Lobby");
+        //// 서버에 점수 제출
+        //PlayGamesPlatform.Instance.ReportScore(Score, GPGSIds.leaderboard_ranking, success =>
+        //{
+        //    if (success)
+        //    {
+        //        Debug.Log($"점수 {Score} 서버 전송 성공!");
+        //        SceneManager.LoadScene("Lobby");
+        //    }
+        //    else
+        //    {
+        //        Debug.Log("점수 서버 전송 실패");
+        //        SceneManager.LoadScene("Lobby");
+        //    }
+        //});
     }
 
     public void SaveScoreAndRetry()
@@ -117,4 +124,11 @@ public class ScoreCal : MonoBehaviour
         });
     }
 
+    // 유니티 점수 전달
+    public async void AddScore(string leaderboardId, int score)
+    {
+        var playerEntry = await LeaderboardsService.Instance
+            .AddPlayerScoreAsync(leaderboardId, score);
+        Debug.Log(JsonConvert.SerializeObject(playerEntry));
+    }
 }

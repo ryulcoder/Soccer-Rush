@@ -4,17 +4,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using static LobbyAudioManager;
 
+//인겜과 로비를 오가는 오디오 매니저
 public class LobbyAudioManager : MonoBehaviour
 {
     public static LobbyAudioManager instance;
 
     [Header("#BGM")]
     public AudioClip bgmClip;
+    public AudioClip ingameClip;
     public float bgmVolume;
     AudioSource bgmPlayer;
     AudioHighPassFilter bgmEffect;
     bool needPlayBgm = true;
-    public Slider bgmSlider;
 
     [Header("#SFX")]
     public AudioClip[] sfxClips;
@@ -25,14 +26,21 @@ public class LobbyAudioManager : MonoBehaviour
     float lowSfxVolume = 0.05f;
     public GameObject sfxObject;
     bool needPlaySfx;
-    public Slider sfxSlider;
 
 
-    public enum Sfx {button}
+    public enum Sfx {button, kick, shoot, shootHit, fallDown, death, bonusPoint, deathPunch, startWhistle}
 
     void Awake()
     {
-        instance = this;
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
         BgmInit();
         SfxInit();
     }
@@ -42,8 +50,6 @@ public class LobbyAudioManager : MonoBehaviour
         GetSfxVolume();
         bgmPlayer.Play();
         // Slider 값이 변경될 때 호출될 메서드 연결
-        bgmSlider.onValueChanged.AddListener(UpdateBgmVolume);
-        sfxSlider.onValueChanged.AddListener(UpdateSfxVolume);
     }
 
     public void BgmInit()
@@ -155,16 +161,16 @@ public class LobbyAudioManager : MonoBehaviour
     }
 
     // Slider 값 변경 시 AudioSource 볼륨 업데이트
-    void UpdateBgmVolume(float value)
+    public void UpdateBgmVolume(float value)
     {
         if (bgmPlayer != null)
         {
             bgmPlayer.volume = value;
         }
-    } 
-    
+    }
+
     // sfx 값 조정
-    void UpdateSfxVolume(float value)
+    public void UpdateSfxVolume(float value)
     {
         sfxVolume = value;
     }
@@ -176,14 +182,6 @@ public class LobbyAudioManager : MonoBehaviour
             bgmVolume = PlayerPrefs.GetFloat("BgmVolume");
     }
     
-    // 브금 수치 조정하기
-    public void SetBgmVolume()
-    {
-        bgmVolume = bgmSlider.value;
-        PlayerPrefs.SetFloat("BgmVolume", bgmVolume);
-        PlayerPrefs.SetInt("isEditBgmVolume", 1 );
-        PlayerPrefs.Save();
-    }
 
     void GetSfxVolume()
     {
@@ -191,18 +189,32 @@ public class LobbyAudioManager : MonoBehaviour
             sfxVolume = PlayerPrefs.GetFloat("SfxVolume");
     }
 
-    public void SetSfxVolume()
-    {
-        sfxVolume = sfxSlider.value;
-        PlayerPrefs.SetFloat("SfxVolume", sfxVolume);
-        PlayerPrefs.SetInt("isEditSfxVolume", 1);
-        PlayerPrefs.Save();
-    }
 
+    public void StopBGM()
+    {
+        if (bgmPlayer != null)
+        {
+            bgmPlayer.Stop();
+        }
+    }
 
     // 버튼음 출력
     public void PlaySfxButton()
     {
         PlaySfx(Sfx.button);
+    }
+
+    // 인겜 브금 틀어주기
+    public void PlayBGMIngame()
+    {
+        bgmPlayer.clip = ingameClip;
+        bgmPlayer.Play();
+    }
+
+    // 로비 브금 틀어주기
+    public void PlayBGMLobby()
+    {
+        bgmPlayer.clip = bgmClip;
+        bgmPlayer.Play();
     }
 }

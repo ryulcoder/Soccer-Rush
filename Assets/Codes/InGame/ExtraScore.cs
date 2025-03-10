@@ -123,6 +123,7 @@ public class ExtraScore : MonoBehaviour
             }
 
             totalScore += extraScore[1];
+            LobbyAudioManager.instance.PlaySfx(LobbyAudioManager.Sfx.bonusPoint);
             //Debug.LogWarning("추가점수 +" + extraScore[1]);
         }
         else

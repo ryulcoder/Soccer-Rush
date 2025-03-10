@@ -8,6 +8,12 @@ using UnityEngine;
 using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 using DG.Tweening;
+using Newtonsoft.Json;
+using Unity.Services.Leaderboards;
+using System.Xml.Linq;
+using UnityEngine.SocialPlatforms.Impl;
+using System;
+using Unity.Services.Leaderboards.Models;
 
 
 public class LeaderBoard : MonoBehaviour
@@ -22,6 +28,12 @@ public class LeaderBoard : MonoBehaviour
     public TextMeshProUGUI messageText; // 로그인 필요 메시지
     public GameObject LoadingPanel;
 
+    string rankingId = "SoccerRushRanking";
+
+    [Header("[MyScore]")]
+    string myNickname;
+    int myScore;
+    int myRank;
 
     public void ShowLeaderboardUI_Ranking()
     => ((PlayGamesPlatform)Social.Active).ShowLeaderboardUI(GPGSIds.leaderboard_ranking);
@@ -60,61 +72,62 @@ public class LeaderBoard : MonoBehaviour
 
     void OnEnable()
     {
-        LoadMyScores();
+        GetPlayerScore(rankingId);
+        GetTopPlayers(rankingId);
     }
 
-    // 탑스코어로 부르기
-    public void LoadTopScores()
-    {
-        PlayGamesPlatform.Instance.LoadScores(
-            GPGSIds.leaderboard_ranking, // 리더보드 ID
-            LeaderboardStart.TopScores, // 상위 점수부터 시작
-            12, // 불러올 점수의 개수
-            LeaderboardCollection.Public, // 공개 리더보드
-            LeaderboardTimeSpan.AllTime, // 전체 기간
-            (LeaderboardScoreData data) =>
-            {
-                if (data.Valid)
-                {
-                    Debug.Log("점수를 성공적으로 불러왔습니다.");
-                    int numScores = data.Scores.Length;
-                    string[] userIds = new string[numScores];
+    //// 탑스코어로 부르기
+    //public void LoadTopScores()
+    //{
+    //    PlayGamesPlatform.Instance.LoadScores(
+    //        GPGSIds.leaderboard_ranking, // 리더보드 ID
+    //        LeaderboardStart.TopScores, // 상위 점수부터 시작
+    //        12, // 불러올 점수의 개수
+    //        LeaderboardCollection.Public, // 공개 리더보드
+    //        LeaderboardTimeSpan.AllTime, // 전체 기간
+    //        (LeaderboardScoreData data) =>
+    //        {
+    //            if (data.Valid)
+    //            {
+    //                Debug.Log("점수를 성공적으로 불러왔습니다.");
+    //                int numScores = data.Scores.Length;
+    //                string[] userIds = new string[numScores];
 
-                    for (int i = 0; i < numScores; i++)
-                    {
-                        string playerId = data.Scores[i].userID;
-                        userIds[i] = playerId;
-                    }
+    //                for (int i = 0; i < numScores; i++)
+    //                {
+    //                    string playerId = data.Scores[i].userID;
+    //                    userIds[i] = playerId;
+    //                }
 
-                    PlayGamesPlatform.Instance.LoadUsers(userIds, (IUserProfile[] users) =>
-                    {
-                        if (users.Length > 0)
-                        {
-                            for (int i = 0; i < numScores; i++)
-                            {
-                                string playerId = data.Scores[i].userID;
-                                long playerScore = data.Scores[i].value;
-                                string playerName = "";
+    //                PlayGamesPlatform.Instance.LoadUsers(userIds, (IUserProfile[] users) =>
+    //                {
+    //                    if (users.Length > 0)
+    //                    {
+    //                        for (int i = 0; i < numScores; i++)
+    //                        {
+    //                            string playerId = data.Scores[i].userID;
+    //                            long playerScore = data.Scores[i].value;
+    //                            string playerName = "";
 
-                                foreach (var user in users)
-                                {
-                                    if (user.id == playerId)
-                                    {
-                                        playerName = user.userName;
-                                        Debug.Log(playerName);
-                                        break;
-                                    }
-                                }
-                                // 데이터를 처리하는 부분!
-                                playerIdText[i].text = playerName;
-                                playerScoreText[i].text = playerScore.ToString();
-                            }
-                        }
-                        LoadingPanel.SetActive(false);
-                    });
-                }
-            });
-    }
+    //                            foreach (var user in users)
+    //                            {
+    //                                if (user.id == playerId)
+    //                                {
+    //                                    playerName = user.userName;
+    //                                    Debug.Log(playerName);
+    //                                    break;
+    //                                }
+    //                            }
+    //                            // 데이터를 처리하는 부분!
+    //                            playerIdText[i].text = playerName;
+    //                            playerScoreText[i].text = playerScore.ToString();
+    //                        }
+    //                    }
+    //                    LoadingPanel.SetActive(false);
+    //                });
+    //            }
+    //        });
+    //}
 
     // 로그인을 안했을시 로그인을 하라는 메시지
     public void ShowLoginMessage()
@@ -137,42 +150,91 @@ public class LeaderBoard : MonoBehaviour
     }
 
     // 내점수 부르기
-    public void LoadMyScores()
-    {
-        PlayGamesPlatform.Instance.LoadScores(
-            GPGSIds.leaderboard_ranking,
-            LeaderboardStart.PlayerCentered, // 내 점수가 어디 있든 불러오기
-            1, // 내 점수만 불러오기
-            LeaderboardCollection.Public,
-            LeaderboardTimeSpan.AllTime,
-            (LeaderboardScoreData myData) =>
-            {
-                if (myData.Valid && myData.PlayerScore != null)
-                {
-                    string myName = Social.localUser.userName;
-                    long myScore = myData.PlayerScore.value;
-                    int myRank = myData.PlayerScore.rank; // 내 등수 가져오기
+    //public void LoadMyScores()
+    //{
+    //    PlayGamesPlatform.Instance.LoadScores(
+    //        GPGSIds.leaderboard_ranking,
+    //        LeaderboardStart.PlayerCentered, // 내 점수가 어디 있든 불러오기
+    //        1, // 내 점수만 불러오기
+    //        LeaderboardCollection.Public,
+    //        LeaderboardTimeSpan.AllTime,
+    //        (LeaderboardScoreData myData) =>
+    //        {
+    //            if (myData.Valid && myData.PlayerScore != null)
+    //            {
+    //                string myName = Social.localUser.userName;
+    //                long myScore = myData.PlayerScore.value;
+    //                int myRank = myData.PlayerScore.rank; // 내 등수 가져오기
 
-                    Debug.Log(myRank);
-                    Debug.Log(myScore);
-                    Debug.Log(myName);
-                    if(myRank == -1)
-                    {
-                        ShowLeaderboardUI_Ranking();
-                    }
-                    myPlayerIdText.text = myName;
-                    myPlayerScore.text = myScore.ToString();
-                    myPlayerRankText.text = myRank.ToString(); // 등수 UI에 표시
-                }
-                else
-                {
-                    myPlayerIdText.text = "No data";
-                    myPlayerScore.text = "0";
-                    myPlayerRankText.text = "-";
-                }
-                LoadTopScores();
-            });
+    //                Debug.Log(myRank);
+    //                Debug.Log(myScore);
+    //                Debug.Log(myName);
+    //                if(myRank == -1)
+    //                {
+    //                    ShowLeaderboardUI_Ranking();
+    //                }
+    //                myPlayerIdText.text = myName;
+    //                myPlayerScore.text = myScore.ToString();
+    //                myPlayerRankText.text = myRank.ToString(); // 등수 UI에 표시
+    //            }
+    //            else
+    //            {
+    //                myPlayerIdText.text = "No data";
+    //                myPlayerScore.text = "0";
+    //                myPlayerRankText.text = "-";
+    //            }
+    //            LoadTopScores();
+    //        });
+    //}
+
+    // 유니티 나의 랭크 가져오기
+    public async void GetPlayerScore(string leaderboardId)
+    {
+        var scoreResponse = await LeaderboardsService.Instance
+            .GetPlayerScoreAsync(leaderboardId);
+        Debug.Log(JsonConvert.SerializeObject(scoreResponse));
+        myScore = (int)scoreResponse.Score;
+        myNickname = scoreResponse.PlayerName;
+        myRank = scoreResponse.Rank;
+        Debug.Log(myScore.ToString());
+        Debug.Log(myNickname);
+
+        myPlayerIdText.text = myNickname;
+        myPlayerScore.text = myScore.ToString();
+        myPlayerRankText.text = (myRank + 1).ToString(); // 등수 UI에 표시
     }
 
+    public async void GetTopPlayers(string leaderboardId)
+    {
+        try
+        {
+            var scoresResponse = await LeaderboardsService.Instance.GetScoresAsync(leaderboardId, new GetScoresOptions { Limit = 12 });
+
+            if (scoresResponse == null || scoresResponse.Results == null)
+            {
+                Debug.LogError("Failed to fetch leaderboard scores.");
+                return;
+            }
+
+            int index = 0;
+
+            foreach (var playerScore in scoresResponse.Results)
+            {
+                playerIdText[index].text = playerScore.PlayerName;
+                playerScoreText[index].text = playerScore.Score.ToString();
+                index++;
+            }
+            LoadingPanel.SetActive(false);
+
+            foreach (var playerScore in scoresResponse.Results)
+            {
+                Debug.Log($"Rank {playerScore.Rank}: {playerScore.PlayerName} - {playerScore.Score}");
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error fetching leaderboard scores: {e.Message}");
+        }
+    }
 }
 //GPGSIds 스크립트는 static이어서 따로 참조할 필요가없다

@@ -12,6 +12,7 @@ public class LoadingLogin : MonoBehaviour
     public GameObject loginButton;
     public GameObject guestLoginButton;
     public GameObject slider;
+    public GameObject unityLogin;
 
     Slider loadingSlider;
     float duration = 3f; // 3초 동안 채우기
@@ -169,6 +170,7 @@ public class LoadingLogin : MonoBehaviour
     // 로딩 두번째
     IEnumerator WaitLoadingSecond()
     {
+        unityLogin.SetActive(true);
         while (loadingSlider.value < 1)
         {
             elapsed += Time.deltaTime;

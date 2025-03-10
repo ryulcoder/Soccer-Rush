@@ -30,6 +30,10 @@ public class ShootingHit : MonoBehaviour
         if (other.CompareTag("Ball") && !Defender.isHit && ballMove.isShooting)
         {
             Defender.isHit = true;
+            if (LobbyAudioManager.instance != null)
+            {
+                LobbyAudioManager.instance.PlaySfx(LobbyAudioManager.Sfx.shootHit);
+            }
             animator.SetTrigger("ShootingDeath");
             ExtraScore.instance.CheckStart("HitShoot");
         }

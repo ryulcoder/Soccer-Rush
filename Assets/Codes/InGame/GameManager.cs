@@ -73,6 +73,12 @@ public class GameManager : MonoBehaviour
         BallMove.speed = ballMoveSpeed;
         PlayerAnimator.speed = playerAniSpeed;
         GameStart();
+
+        if (LobbyAudioManager.instance != null)
+        {
+            LobbyAudioManager.instance.PlaySfx(LobbyAudioManager.Sfx.startWhistle);
+        }
+
     }
 
     void Update()
@@ -165,7 +171,7 @@ public class GameManager : MonoBehaviour
     public void GoLobby()
     {
         SceneManager.LoadScene("Lobby");
-
+        Time.timeScale = 1;
     }
 
     // ÇÃ·¹ÀÌ¾î Á×À¸¸é ±¤°í ¶ç¿ì±â
