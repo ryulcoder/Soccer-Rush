@@ -84,6 +84,8 @@ public class Tutorial : MonoBehaviour
 
     public void TutoralSet(int num)
     {
+        Time.timeScale = 0;
+
         TutorialBtn.onClick.RemoveAllListeners();
 
         TutorialBtn.onClick.AddListener(() => TutoListener(num));
@@ -91,8 +93,6 @@ public class Tutorial : MonoBehaviour
         TutorialBlur.SetActive(true);
 
         TutoUIs[num].SetActive(true);
-
-        Time.timeScale = 0;
     }
 
     void TutoListener(int num)
