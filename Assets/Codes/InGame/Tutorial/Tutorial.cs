@@ -32,13 +32,21 @@ public class Tutorial : MonoBehaviour
     {
         Player = Player.Instance;
 
+        //PlayerPrefs.DeleteKey("Tutorial");
+
         if (!NoTuto)
             TutorialOn(PlayerPrefs.GetInt("Tutorial", 0) == 0);
     }
 
     void Update()
     {
-        if (!isSet && tutoNum == 5 && Player.transform.position.z >= 540)
+        if (!isSet && tutoNum == 5 && Player.transform.position.z >= 650)
+        {
+            isSet = true;
+
+            TutorialEnd();
+        }
+        else if (!isSet && tutoNum == 5 && Player.transform.position.z >= 540)
         {
             isSet = true;
 
@@ -129,21 +137,19 @@ public class Tutorial : MonoBehaviour
                 tutoNum += 1;
 
                 Player.ShootingAni();
-                TutorialEnd();
+
+                SwipInput.SetActive(true);
+
                 break;
         }
     }
 
     void TutorialEnd()
     {
-        SwipInput.SetActive(true);
-
         ExDefenders.SetActive(false);
         TutorialFloor.SetActive(false);
 
         ExtraScore.tutorial = false;
-
-        Time.timeScale = gameSpeed;
 
         PlayerPrefs.SetInt("Tutorial", 1);
         PlayerPrefs.Save();
