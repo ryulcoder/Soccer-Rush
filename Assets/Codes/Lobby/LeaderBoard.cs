@@ -76,6 +76,11 @@ public class LeaderBoard : MonoBehaviour
         GetTopPlayers(rankingId);
     }
 
+    private void OnDisable()
+    {
+        LoadingPanel.SetActive(true);
+    }
+
     //// 탑스코어로 부르기
     //public void LoadTopScores()
     //{
@@ -198,6 +203,7 @@ public class LeaderBoard : MonoBehaviour
         myRank = scoreResponse.Rank;
         Debug.Log(myScore.ToString());
         Debug.Log(myNickname);
+        myNickname = myNickname.Split('#')[0];
 
         myPlayerIdText.text = myNickname;
         myPlayerScore.text = myScore.ToString();
@@ -220,7 +226,8 @@ public class LeaderBoard : MonoBehaviour
 
             foreach (var playerScore in scoresResponse.Results)
             {
-                playerIdText[index].text = playerScore.PlayerName;
+                string playername = playerScore.PlayerName.Split('#')[0];
+                playerIdText[index].text = playername;
                 playerScoreText[index].text = playerScore.Score.ToString();
                 index++;
             }

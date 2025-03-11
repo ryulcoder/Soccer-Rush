@@ -123,7 +123,11 @@ public class ExtraScore : MonoBehaviour
                     ExtraParticle.SetActive(false);
 
                 ExtraParticle.SetActive(true);
-                //LobbyAudioManager.instance.PlaySfx(LobbyAudioManager.Sfx.bonusPoint);
+                if (LobbyAudioManager.instance != null) 
+                { 
+                    LobbyAudioManager.instance.PlaySfx(LobbyAudioManager.Sfx.bonusPoint);
+                }
+
             }
 
             if (!tutorial)
