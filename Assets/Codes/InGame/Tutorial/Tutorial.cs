@@ -40,7 +40,7 @@ public class Tutorial : MonoBehaviour
 
     void Update()
     {
-        if (!isSet && tutoNum == 5 && Player.transform.position.z >= 650)
+        if (!isSet && tutoNum == 6 && Player.transform.position.z >= 650)
         {
             isSet = true;
 
@@ -150,10 +150,10 @@ public class Tutorial : MonoBehaviour
         TutorialFloor.SetActive(false);
 
         ExtraScore.tutorial = false;
-
+#if !UNITY_EDITOR
         PlayerPrefs.SetInt("Tutorial", 1);
         PlayerPrefs.Save();
-
+#endif
         TutorialBlur.SetActive(false);
 
         gameObject.SetActive(false);
