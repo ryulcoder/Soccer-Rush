@@ -31,7 +31,7 @@ public class Tutorial_ExDefender : MonoBehaviour
                     break;
 
                 case TutoSequence.Tuto_2:
-                    if (Defender.isTackle && Defender.stateInfo.IsName("Tackle_Front"))
+                    if (Defender.isTackle && Defender.stateInfo.IsName("Run") && transform.position.z - Player.Instance.transform.position.z <= 27)
                     {
                         isSetTuto = true;
                         Tutorial.TutoralSet((int)TutoSequence.Tuto_2);
