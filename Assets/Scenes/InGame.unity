@@ -3932,7 +3932,7 @@ MonoBehaviour:
   - {fileID: 319297155}
   - {fileID: 562881213}
   - {fileID: 1203308573}
-  NoTuto: 1
+  NoTuto: 0
 --- !u!4 &1563810579
 Transform:
   m_ObjectHideFlags: 0
