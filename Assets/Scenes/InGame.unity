@@ -376,7 +376,7 @@ MonoBehaviour:
   kick: 0
   isTackled: 0
   spin: 0
-  HitParticle: {fileID: 8680598818964007281, guid: 37acaca2e4bcbba488ac6bac44c68db9,
+  HitParticle: {fileID: 5112403345868107898, guid: 4b38c51cc4252504dba0a8bb7414f259,
     type: 3}
   shootSpeed: 10
   shootDistance: 500
@@ -2781,7 +2781,6 @@ MonoBehaviour:
   dribbleSlowStart: 0
   getTackled: 0
   isAct: 0
-  isShooting: 0
   shootButton: {fileID: 1699923679827358446}
 --- !u!136 &835559948
 CapsuleCollider:
@@ -4079,7 +4078,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1764922138
 Transform:
   m_ObjectHideFlags: 0

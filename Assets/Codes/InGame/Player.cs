@@ -31,7 +31,6 @@ public class Player : MonoBehaviour
     AnimatorStateInfo stateInfo;
 
     [Header("Shooting")]
-    public bool isShooting;
     public Button shootButton;
 
     public void PlayerStart()
