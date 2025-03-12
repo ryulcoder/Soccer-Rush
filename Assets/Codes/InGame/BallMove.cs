@@ -127,8 +127,8 @@ public class BallMove : MonoBehaviour
 
             BallRigibody.velocity = Vector3.zero;
             BallRigibody.angularVelocity = Vector3.zero;  // 회전 속도도 초기화
-            /*BallRigibody.AddForce(movement * speed, ForceMode.VelocityChange);
-            BallRigibody.AddTorque(Vector3.right * speed, ForceMode.VelocityChange);*/
+            BallRigibody.AddForce(movement * speed, ForceMode.VelocityChange);
+            BallRigibody.AddTorque(Vector3.right * speed, ForceMode.VelocityChange);
             StartCoroutine(ResetCooltime());
         }
     }
@@ -216,7 +216,10 @@ public class BallMove : MonoBehaviour
         kickDelay = false;
         deceleration = false;
         isTackled = false;
-        
+
+        shootBlurImage.fillAmount = 0;
+        shootButton.interactable = true;
+
         BallTrans.GetComponent<Collider>().isTrigger = false;
         BallRigibody.constraints |= RigidbodyConstraints.FreezePositionX;
 
@@ -393,7 +396,6 @@ public class BallMove : MonoBehaviour
             BallRigibody.angularVelocity = Vector3.zero;  // 회전 속도도 초기화
             BallRigibody.AddForce(movement * speed, ForceMode.VelocityChange);
             BallRigibody.AddTorque(Vector3.right * speed, ForceMode.VelocityChange);
-
             isShooting = false;
             kickDelay = false;
 

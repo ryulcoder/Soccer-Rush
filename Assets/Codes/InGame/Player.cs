@@ -147,7 +147,9 @@ public class Player : MonoBehaviour
 
                 PlayerTransform.position = new(next_x, position.y, position.z);
                 Debug.Log(PlayerTransform.position);
-                PlayerAni.SetTrigger("ReDribble");
+
+                if (stateInfo.IsName("Move_Left") || stateInfo.IsName("Move_Right"))
+                    PlayerAni.SetTrigger("ReDribble");
 
                 prev_x = next_x;
             }
