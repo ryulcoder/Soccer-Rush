@@ -146,7 +146,7 @@ public class BallMove : MonoBehaviour
                     moveTorqueDir = new Vector3(1, -1, 0);
                 else
                     moveTorqueDir = Vector3.right;
-
+                Debug.Log("좌우칠때");
                 BallRigibody.AddTorque(moveTorqueDir * 90, ForceMode.VelocityChange);
 
                 moveKick = true;
@@ -167,6 +167,7 @@ public class BallMove : MonoBehaviour
             BallTrans.position += Vector3.forward * 0.9f; // 플레이어 이동 속도와 같이
             BallRigibody.AddForce(Vector3.down * 100, ForceMode.Acceleration); // 볼 떨어지는 가중력
             BallRigibody.AddTorque(Vector3.right, ForceMode.Acceleration);
+            Debug.Log("점프칠때");
 
             // 최고 높이 확인
             if (BallTrans.position.y > ballMaxY)
@@ -202,6 +203,8 @@ public class BallMove : MonoBehaviour
             BallTrans.position = new Vector3(PlayerTrans.position.x, BallTrans.position.y, PlayerTrans.position.z + 4.5f);
 
             BallRigibody.velocity = Vector3.zero;
+            BallRigibody.angularVelocity= Vector3.zero;
+
             BallRigibody.AddForce(1.2f * speed * movement, ForceMode.VelocityChange);
             BallRigibody.AddTorque(Vector3.right * 90, ForceMode.VelocityChange);
         }
@@ -263,6 +266,8 @@ public class BallMove : MonoBehaviour
         
 
         BallRigibody.velocity = Vector3.zero;
+        BallRigibody.angularVelocity = Vector3.zero;
+
         BallTrans.position = new Vector3(PlayerTrans.position.x, 1.926f, PlayerTrans.position.z + 4.5f);
 
         BallRigibody.AddForce(new(0, 55, 9), ForceMode.VelocityChange);
@@ -355,8 +360,10 @@ public class BallMove : MonoBehaviour
         if (!spin && !flick && !kickDelay && !isTackled && collider.gameObject.name == "PlayerFoot" )
         {
             BallRigibody.velocity = Vector3.zero;
-            deceleration = true;
+            BallRigibody.angularVelocity = Vector3.zero;
 
+            deceleration = true;
+            Debug.Log("평소 발참");
             // 볼 리지바디 이동, 회전 힘 작용
             BallRigibody.AddForce(movement * speed, ForceMode.VelocityChange);
             BallRigibody.AddTorque(Vector3.right * 90, ForceMode.VelocityChange);
@@ -406,7 +413,7 @@ public class BallMove : MonoBehaviour
                 Player.JumpEnd();
 
                 BallRigibody.velocity = new(BallRigibody.velocity.x, 0, BallRigibody.velocity.z);
-
+                Debug.Log("평소떨줄때");
                 BallRigibody.AddForce(movement * speed / 2, ForceMode.VelocityChange);
                 BallRigibody.AddTorque(Vector3.right * 10, ForceMode.VelocityChange);
 

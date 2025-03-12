@@ -43,16 +43,9 @@ public class LoadingLogin : MonoBehaviour
     //    SliderOn(0);
     //}
 
-    public void SignIn(int first)
+    public void SignIn()
     {
-        if (first == 0)
-        {
-            PlayGamesPlatform.Instance.Authenticate(ProcessAuthentication);
-        }
-        else
-        {
-            PlayGamesPlatform.Instance.Authenticate(ProcessAuthenticationFirstTime);
-        }
+        PlayGamesPlatform.Instance.Authenticate(ProcessAuthentication);
     }
 
 
@@ -86,64 +79,64 @@ public class LoadingLogin : MonoBehaviour
         }
     }
 
-    // 첫 로그인시 과정
-    internal void ProcessAuthenticationFirstTime(SignInStatus status)
-    {
-        if (status == SignInStatus.Success)
-        {
-            // Continue with Play Games Services
-            // Perfectly login success
+    //// 첫 로그인시 과정
+    //internal void ProcessAuthenticationFirstTime(SignInStatus status)
+    //{
+    //    if (status == SignInStatus.Success)
+    //    {
+    //        // Continue with Play Games Services
+    //        // Perfectly login success
 
-            string name = PlayGamesPlatform.Instance.GetUserDisplayName();
-            string id = PlayGamesPlatform.Instance.GetUserId();
-            string ImgUrl = PlayGamesPlatform.Instance.GetUserImageUrl();
+    //        string name = PlayGamesPlatform.Instance.GetUserDisplayName();
+    //        string id = PlayGamesPlatform.Instance.GetUserId();
+    //        string ImgUrl = PlayGamesPlatform.Instance.GetUserImageUrl();
 
-            //logText.text = "Success \n" + name;
-            PlayerPrefs.SetInt("first", 1);
-            PlayerPrefs.Save();
-            LoadHighScore();
-            //클라우드 세이브 오류나서 일단 꺼둠
-            //DataConnectGP dataConnectGP = GetComponent<DataConnectGP>();
-            //dataConnectGP.LoadData();
-        }
-        else
-        {
-            //logText.text = "Sign in Failed!";
-            // Disable your integration with Play Games Services or show a login button
-            // to ask users to sign-in. Clicking it should call
-            PlayGamesPlatform.Instance.ManuallyAuthenticate(ProcessAuthenticationFirstTime);
-            // Login failed
-        }
-    }
+    //        //logText.text = "Success \n" + name;
+    //        PlayerPrefs.SetInt("first", 1);
+    //        PlayerPrefs.Save();
+    //        //LoadHighScore();
+    //        //클라우드 세이브 오류나서 일단 꺼둠
+    //        //DataConnectGP dataConnectGP = GetComponent<DataConnectGP>();
+    //        //dataConnectGP.LoadData();
+    //    }
+    //    else
+    //    {
+    //        //logText.text = "Sign in Failed!";
+    //        // Disable your integration with Play Games Services or show a login button
+    //        // to ask users to sign-in. Clicking it should call
+    //        PlayGamesPlatform.Instance.ManuallyAuthenticate(ProcessAuthenticationFirstTime);
+    //        // Login failed
+    //    }
+    //}
 
-    // 첫 접속 하이스코어 찾아보기
-    void LoadHighScore()
-    {
-        PlayGamesPlatform.Instance.LoadScores(
-            GPGSIds.leaderboard_ranking,
-            LeaderboardStart.PlayerCentered, // 내 점수를 기준으로 불러오기
-            1,
-            LeaderboardCollection.Public,
-            LeaderboardTimeSpan.AllTime,
-            (LeaderboardScoreData data) =>
-            {
-                if (data.Valid)
-                {
-                    long highScore = data.PlayerScore.value; // 이제 내 점수가 올바르게 들어옴
-                    if (highScore > PlayerPrefs.GetInt("BestScore"))
-                    {
-                        PlayerPrefs.SetInt("BestScore", (int)highScore);
-                        PlayerPrefs.Save();
-                    }
-                    Debug.Log($"내 하이스코어 불러오기 성공: {highScore}");
-                    StartCoroutine(WaitLoadingSecond());
-                }
-                else
-                {
-                    Debug.Log("내 하이스코어 불러오기 실패");
-                }
-            });
-    }
+    //// 첫 접속 하이스코어 찾아보기
+    //void LoadHighScore()
+    //{
+    //    PlayGamesPlatform.Instance.LoadScores(
+    //        GPGSIds.leaderboard_ranking,
+    //        LeaderboardStart.PlayerCentered, // 내 점수를 기준으로 불러오기
+    //        1,
+    //        LeaderboardCollection.Public,
+    //        LeaderboardTimeSpan.AllTime,
+    //        (LeaderboardScoreData data) =>
+    //        {
+    //            if (data.Valid)
+    //            {
+    //                long highScore = data.PlayerScore.value; // 이제 내 점수가 올바르게 들어옴
+    //                if (highScore > PlayerPrefs.GetInt("BestScore"))
+    //                {
+    //                    PlayerPrefs.SetInt("BestScore", (int)highScore);
+    //                    PlayerPrefs.Save();
+    //                }
+    //                Debug.Log($"내 하이스코어 불러오기 성공: {highScore}");
+    //                StartCoroutine(WaitLoadingSecond());
+    //            }
+    //            else
+    //            {
+    //                Debug.Log("내 하이스코어 불러오기 실패");
+    //            }
+    //        });
+    //}
 
     // 로딩 슬라이더
     IEnumerator WaitLoadingfirst()
@@ -155,16 +148,8 @@ public class LoadingLogin : MonoBehaviour
             loadingSlider.value = Mathf.Lerp(0, 1, elapsed / duration);
             yield return null;
         }
-        if(PlayerPrefs.GetInt("first")== 0 )
-        {
-            SignIn(1);
 
-        }
-        else
-        {
-            SignIn(0);
-
-        }
+        SignIn();
     }
 
     // 로딩 두번째

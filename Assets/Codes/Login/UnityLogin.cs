@@ -8,12 +8,15 @@ using Unity.Services.Leaderboards;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.SocialPlatforms;
 
 
 public class UnityLogin : MonoBehaviour
 {
     string Token;
     public string Error;
+    string rankingId = "SoccerRushRanking";
+
 
     async void Awake()
     {
@@ -21,6 +24,13 @@ public class UnityLogin : MonoBehaviour
         InitializeGooglePlayGames(); // Google Play Games 활성화
     }
 
+    private void Start()
+    {
+        if (PlayerPrefs.GetInt("first") == 0)
+        {
+            GetPlayerScore(rankingId);
+        }
+    }
     async Task InitializeUnityServices()
     {
         if (UnityServices.State == ServicesInitializationState.Initialized)
@@ -115,6 +125,18 @@ public class UnityLogin : MonoBehaviour
             return PlayGamesPlatform.Instance.GetUserDisplayName();
         }
         return "UnknownPlayer"; // 로그인 실패 시 기본 닉네임
+    }
+
+
+    public async void GetPlayerScore(string leaderboardId)
+    {
+        var scoreResponse = await LeaderboardsService.Instance
+            .GetPlayerScoreAsync(leaderboardId);
+        Debug.Log(JsonConvert.SerializeObject(scoreResponse));
+        int myScore = (int)scoreResponse.Score;
+        PlayerPrefs.SetInt("BestScore", myScore);
+        PlayerPrefs.SetInt("first", 1);
+        PlayerPrefs.Save();
     }
 
     //public async void LoadPlayerScore(string leaderboardId)
