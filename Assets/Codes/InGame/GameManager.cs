@@ -200,6 +200,5 @@ public class GameManager : MonoBehaviour
         PlayTime.Start();
         revive--;
         continueButton.SetActive(false);
-        ScoreCal.BestScoreFire.SetActive(false);
     }
 }
