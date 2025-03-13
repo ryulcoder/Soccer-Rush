@@ -13,8 +13,8 @@ public class Follow : MonoBehaviour
     public Vector3 defaultVec;
     public Vector3 targetVec;
 
-    public float left = 0;
-    public float right = 0.4f;
+    float left = -0.1f;
+    float right = 0.35f;
 
     public float followSpeed = 50f; // 속도 조절 변수
 
