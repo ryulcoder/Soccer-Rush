@@ -42,13 +42,12 @@ public class SwipInput : MonoBehaviour
             if (delta.x > swipeThreshold)
             {
                 Player.MoveLeftRight(1);
-                Debug.Log("왼쪽 슬라이드");
+                Debug.Log("오른쪽 슬라이드");
             }
             else if (delta.x < -swipeThreshold)
             {
                 Player.MoveLeftRight(-1);
-                Debug.Log("오른쪽 슬라이드");
-
+                Debug.Log("왼쪽 슬라이드");
             }
         }
         else // 상하 스와이프
@@ -56,12 +55,14 @@ public class SwipInput : MonoBehaviour
             if (delta.y > swipeThreshold)
             {
                 Player.Jump();
+                Debug.Log("위쪽 슬라이드");
             }
             else if (delta.y < -swipeThreshold)
             {
                 Player.Spin();
+                Debug.Log("아래쪽 슬라이드");
             }
-               
+
         }
     }
 

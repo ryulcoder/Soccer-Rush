@@ -51,13 +51,11 @@ public class GameManager : MonoBehaviour
     public (float minGap, float maxGap) DefGap => (minGap, maxGap);
     public float[] DefPer { get { return defPer; } }
 
-    int count = 0;
-    string nextTime;
-    bool coroutine;
+    int count, reviveCount, revivePosition;
+    bool coroutine, reviveSpeedUp;
 
     public bool aroundDefenderClear;
 
-    Stopwatch PlayTime = new();
 
     void Awake()
     {
@@ -101,23 +99,35 @@ public class GameManager : MonoBehaviour
             coroutine = false;
             aroundDefenderClear = false;
         }
+
+        if (reviveSpeedUp && (ScoreCal.Distance - revivePosition) / 2 - reviveCount >= 1)
+        {
+            reviveCount++;
+
+            Time.timeScale += (gameSpeed - 1) * 0.1f;
+
+            if (Time.timeScale >= gameSpeed)
+            {
+                Time.timeScale = gameSpeed;
+                reviveSpeedUp = false;
+            }
+                
+        }
     }
 
     void LateUpdate()
     {
-        if ((int)PlayTime.Elapsed.TotalSeconds / 10 - count >= 1)
+        if (!reviveSpeedUp && ScoreCal.Distance / 50 - count >= 1)
         {
             count += 1;
 
-            //GameSpeedUp();
+            GameSpeedUp();
         }
     }
 
 
     IEnumerator GameOver()
     {
-        PlayTime.Stop();
-
         yield return new WaitForSecondsRealtime(1.7f);
 
         aroundDefenderClear = true;
@@ -132,7 +142,7 @@ public class GameManager : MonoBehaviour
         PlayerDeathAd();
 
         BallMove.gameObject.SetActive(false);
-        Player.Instance.PlayerReset();
+        Player.PlayerReset();
     }
 
 
@@ -143,7 +153,7 @@ public class GameManager : MonoBehaviour
 
     public void GameSpeedUp()
     {
-        Time.timeScale *= 1.05f;
+        Time.timeScale = gameSpeed += 0.05f;
 
         Debug.Log("¼Óµµ¾÷!!!");
     }
@@ -153,17 +163,14 @@ public class GameManager : MonoBehaviour
     {
         Player.PlayerStart();
         Time.timeScale = gameSpeed;
-        PlayTime.Start();
     }
 
     public void GamePause()
     {
-        PlayTime.Stop();
         Time.timeScale = 0;
     }
     public void GameResume()
     {
-        PlayTime.Start();
         Time.timeScale = gameSpeed;
     }
 
@@ -197,8 +204,10 @@ public class GameManager : MonoBehaviour
 
         Player.GetComponent<Animator>().SetTrigger("ReStart");
 
-        PlayTime.Start();
         revive--;
         continueButton.SetActive(false);
+
+        revivePosition = ScoreCal.Distance;
+        reviveSpeedUp = true;
     }
 }

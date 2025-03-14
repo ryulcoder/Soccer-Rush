@@ -63,8 +63,6 @@ public class Floor : MonoBehaviour
     {
         coroutine = true;
 
-        PoolManager.PoolObjects(GetComponentsInChildren<Transform>());
-
         yield return new WaitForSeconds(3);
 
         if (onPlayer || Player.getTackled) 
@@ -74,6 +72,8 @@ public class Floor : MonoBehaviour
         }
 
         transform.position += new Vector3(0, 0, transform.localScale.z * GameManager.Tiles.Length);
+
+        PoolManager.PoolObjects(GetComponentsInChildren<Transform>());
 
         inPlayer = false;
 
@@ -89,6 +89,9 @@ public class Floor : MonoBehaviour
     // 수비 세팅
     void SetDefenders()
     {
+        (minGap, maxGap) = GameManager.DefGap;
+        defPer = GameManager.DefPer;
+
         List<GameObject> targetObj = new();
         float[] ranXs;
 
@@ -174,9 +177,10 @@ public class Floor : MonoBehaviour
 
             Vector3 settingVec;
 
-            // 오브젝트pop 혹시 프리팹인경우 복제 생성 후 정해진 위치 이동
+            // 오브젝트pop 만약 프리팹인경우 복제 생성 후 정해진 위치 이동
             for (int i= 0;i < targetObj.Count; i++)
             {
+                // 2라인 수비 조정
                 if (prevLineIs2 && targetObj.Count == 2 && i == 1 && ranXs[0] != prevX && ranXs[1] != prevX)
                 {
                     prevX = ranXs[1];

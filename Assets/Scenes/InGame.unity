@@ -375,6 +375,7 @@ MonoBehaviour:
   deceleration: 0
   kick: 0
   isTackled: 0
+  resetKick: 0
   spin: 0
   HitParticle: {fileID: 8680598818964007281, guid: 37acaca2e4bcbba488ac6bac44c68db9,
     type: 3}
@@ -3470,18 +3471,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   score: 0
   continueButton: {fileID: 4546734026286600109}
-  gameSpeed: 1
+  gameSpeed: 2
   playerMoveSpeed: 1
   playerAniSpeed: 1.3
   ballMoveSpeed: 59
   minGap: 100
-  maxGap: 130
+  maxGap: 100
   defPer:
   - 25
   - 25
   - 25
-  - 15
-  - 10
+  - 25
+  - 25
   Tutorial: {fileID: 1563810578}
   PoolManager: {fileID: 1452395630}
   ScoreCal: {fileID: 1286881136193113753}
@@ -3711,7 +3712,7 @@ MonoBehaviour:
   - {fileID: 319297155}
   - {fileID: 562881213}
   - {fileID: 1203308573}
-  NoTuto: 0
+  NoTuto: 1
 --- !u!4 &1563810579
 Transform:
   m_ObjectHideFlags: 0

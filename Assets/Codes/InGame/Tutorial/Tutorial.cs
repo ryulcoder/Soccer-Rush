@@ -34,8 +34,8 @@ public class Tutorial : MonoBehaviour
 
         //PlayerPrefs.DeleteKey("Tutorial");
 
-        if (!NoTuto)
-            TutorialOn(PlayerPrefs.GetInt("Tutorial", 0) == 0);
+        TutorialOn(PlayerPrefs.GetInt("Tutorial", 0) == 0 && !NoTuto);
+
     }
 
     void Update()

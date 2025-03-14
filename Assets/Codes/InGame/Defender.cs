@@ -115,7 +115,8 @@ public class Defender : MonoBehaviour
         DefenderAni.speed = 1;
 
         if (currentState.ToString() == "Sliding_Tackle_Anomaly")
-            DefenderAni.SetBool(anomalyStr, false);
+            if (anomalyStr != null && anomalyStr != "")
+                DefenderAni.SetBool(anomalyStr, false);
         else
             DefenderAni.SetBool(currentState.ToString(), false);
 
