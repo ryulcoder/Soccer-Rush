@@ -377,7 +377,7 @@ MonoBehaviour:
   isTackled: 0
   resetKick: 0
   spin: 0
-  HitParticle: {fileID: 8680598818964007281, guid: 37acaca2e4bcbba488ac6bac44c68db9,
+  HitParticle: {fileID: 8223277700252251927, guid: 94cf806b3bc318649af23fe370b8d925,
     type: 3}
   shootSpeed: 10
   shootDistance: 500
@@ -938,6 +938,7 @@ MonoBehaviour:
   - SlidingTackle_Anomaly
   - Two_Defenders
   - Three_Defenders
+  - Three_Defenders_Anomaly
   minGap: 0
   maxGap: 0
   onPlayer: 0
@@ -2172,6 +2173,7 @@ MonoBehaviour:
   - SlidingTackle_Anomaly
   - Two_Defenders
   - Three_Defenders
+  - Three_Defenders_Anomaly
   minGap: 0
   maxGap: 0
   onPlayer: 0
@@ -3229,6 +3231,7 @@ MonoBehaviour:
   - SlidingTackle_Anomaly
   - Two_Defenders
   - Three_Defenders
+  - Three_Defenders_Anomaly
   minGap: 0
   maxGap: 0
   onPlayer: 0
@@ -3469,24 +3472,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efaa244d2b1d129408eb5b4d8a993fa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: 0
   continueButton: {fileID: 4546734026286600109}
-  gameSpeed: 2
+  gameSpeed: 1
+  speedUp: 0.1
   playerMoveSpeed: 1
   playerAniSpeed: 1.3
   ballMoveSpeed: 59
-  minGap: 100
-  maxGap: 100
+  minGap: 130
+  maxGap: 160
   defPer:
-  - 25
-  - 25
-  - 25
-  - 25
-  - 25
+  - 70
+  - 30
+  - 0
+  - 0
+  - 0
+  - 0
+  googleAd: {fileID: 204312665}
   Tutorial: {fileID: 1563810578}
   PoolManager: {fileID: 1452395630}
   ScoreCal: {fileID: 1286881136193113753}
-  googleAd: {fileID: 204312665}
   GameEndBlurPanel: {fileID: 3264233072026655871}
   PausePanel: {fileID: 7741803060987649147}
   GameEndPanel: {fileID: 7572055561854012410}

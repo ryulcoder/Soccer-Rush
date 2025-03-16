@@ -22,7 +22,7 @@ public class Floor : MonoBehaviour
     Vector3 floorScale;
     float[] defXs;
     [SerializeField] float[] defPer;
-    [SerializeField] string[] defNames = { "StandTackle_Front", "SlidingTackle_Front", "SlidingTackle_Anomaly", "Two_Defenders" , "Three_Defenders" };
+    [SerializeField] string[] defNames = { "StandTackle_Front", "SlidingTackle_Front", "SlidingTackle_Anomaly", "Two_Defenders" , "Three_Defenders", "Three_Defenders_Anomaly" };
 
     [SerializeField] float minGap, maxGap;
     [SerializeField] bool onPlayer, inPlayer, coroutine, firstSet;
@@ -133,10 +133,19 @@ public class Floor : MonoBehaviour
         for (int posIdx=0; posIdx < posList.Count; posIdx++)
         {
             ranXs = defXs.OrderBy(_ => Random.value).ToArray();
+
             string defStr = defNames[RanDef()];
 
+            // 3라인 수비 무지개 패턴
+            if (defStr == "Three_Defenders_Anomaly")
+            {
+                string[] orderDefNames = defNames[..3].OrderBy(_ => Random.value).ToArray();
+
+                for (int i = 0; i < orderDefNames.Length; i++)
+                    targetObj.Add(PoolManager.PopObject(orderDefNames[i]));
+            }
             // 3라인 수비 패턴
-            if (defStr == "Three_Defenders")
+            else if (defStr == "Three_Defenders")
             {
                 int ran = Random.Range(0, 2);
 
@@ -188,6 +197,7 @@ public class Floor : MonoBehaviour
                     ranXs[2] = prevX;
                 }
 
+                // 1라인
                 if (i == 0 && targetObj.Count == 1)
                 {
                     if (!prevLineIs2 && prevX == ranXs[0])
@@ -249,7 +259,6 @@ public class Floor : MonoBehaviour
         }
 
         return defPer.Length - 1;
-
     }
 
     // 시작시 첫 floor 제외 순차적 수비 세팅함수

@@ -12,30 +12,26 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     [Header("[ Game ]")]
-    public int score = 0;
-    //[SerializeField] int distance = 0;
-    int revive = 1;
     public GameObject continueButton;
-
+    
     [Header("[ Game Setting ]")]
     [SerializeField] float gameSpeed = 1;
+    [SerializeField] float speedUp = 0.1f;
     [SerializeField] float playerMoveSpeed = 1;
     [SerializeField] float playerAniSpeed = 1.3f;
     [SerializeField] float ballMoveSpeed = 59;
 
     [Header("[ Def Setting ]")]
-    [SerializeField] float minGap = 100;
-    [SerializeField] float maxGap = 130;
-    [SerializeField] float[] defPer = { 25, 25, 25, 15, 10};
-
+    [SerializeField] float minGap = 130;
+    [SerializeField] float maxGap = 160;
+    [SerializeField] float[] defPer = { 70, 30, 0, 0, 0, 0};
 
     [Header("[ Code ]")]
+    public GoogleAd googleAd;
     public Tutorial Tutorial;
     public PoolManager PoolManager;
     public ScoreCal ScoreCal;
-    Player Player;
-    BallMove BallMove;
-    public GoogleAd googleAd;
+    
 
     [Header("[ UI ]")]
     public GameObject GameEndBlurPanel;
@@ -50,6 +46,11 @@ public class GameManager : MonoBehaviour
 
     public (float minGap, float maxGap) DefGap => (minGap, maxGap);
     public float[] DefPer { get { return defPer; } }
+
+    Player Player;
+    BallMove BallMove;
+
+    int revive = 1;
 
     int count, reviveCount, revivePosition;
     bool coroutine, reviveSpeedUp;
@@ -122,6 +123,7 @@ public class GameManager : MonoBehaviour
             count += 1;
 
             GameSpeedUp();
+            IncreaseDifficulty();
         }
     }
 
@@ -153,7 +155,7 @@ public class GameManager : MonoBehaviour
 
     public void GameSpeedUp()
     {
-        Time.timeScale = gameSpeed += 0.05f;
+        Time.timeScale = gameSpeed += speedUp;
 
         Debug.Log("속도업!!!");
     }
@@ -210,4 +212,85 @@ public class GameManager : MonoBehaviour
         revivePosition = ScoreCal.Distance;
         reviveSpeedUp = true;
     }
+
+
+    void IncreaseDifficulty()
+    {
+
+        // Def [ stand, sliding, anomaly, 2_def, 3_def, 3_def_anomaly]
+        switch (count)
+        {
+            case 0: // 첫 설정값
+                minGap = 130;
+                maxGap = 160;
+
+                defPer = new float[] { 70, 30, 0, 0, 0, 0 };
+                break;
+
+            case 1:
+                minGap = 120;
+                defPer = new float[] { 42.5f, 42.5f, 15, 0, 0, 0 };
+
+                break;
+
+            case 2:
+                minGap = 110;
+                defPer = new float[] { 25, 25, 25, 25, 0, 0 };
+
+                break;
+
+            case 3:
+                minGap = 100;
+                defPer = new float[] { 20, 20, 30, 30, 0, 0 };
+
+                break;
+
+            case 4:
+                maxGap = 150;
+                defPer = new float[] { 10, 20, 25, 45, 0, 0 };
+
+                break;
+
+            case 5:
+                defPer = new float[] { 6, 17, 17, 30, 30, 0 };
+
+                break;
+
+            case 6:
+                maxGap = 140;
+                defPer = new float[] { 0, 15, 15, 40, 25, 5 };
+
+                break;
+
+            case 7:
+                maxGap = 130;
+                defPer = new float[] { 0, 15, 15, 50, 20, 10 };
+
+                break;
+
+            case 8:
+                maxGap = 120;
+                defPer = new float[] { 0, 15, 15, 40, 10, 20 };
+
+                break;
+
+            case 9:
+                maxGap = 110;
+                defPer = new float[] { 0, 15, 15, 40, 5, 25 };
+
+                break;
+
+            case 10:
+                maxGap = 100;
+                defPer = new float[] { 0, 15, 15, 35, 5, 30 };
+
+                break;
+
+            default:
+                return;
+
+        }
+    }
+
+
 }

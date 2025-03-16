@@ -5,6 +5,7 @@ using UnityEngine;
 public class ShootingHit : MonoBehaviour
 {
     public Defender Defender;
+    public GameObject DropToFloorParticle;
 
     CapsuleCollider capsuleCollider;
     Animator animator;
@@ -18,6 +19,8 @@ public class ShootingHit : MonoBehaviour
         animator = GetComponentInParent<Animator>();
         ball = GameObject.FindWithTag("Ball");
         ballMove = ball.GetComponent<BallMove>();
+
+        DropToFloorParticle.SetActive(false);
     }
 
     void OnEnable()
@@ -36,6 +39,18 @@ public class ShootingHit : MonoBehaviour
             }
             animator.SetTrigger("ShootingDeath");
             ExtraScore.instance.CheckStart("HitShoot");
+
+            StartCoroutine(DropToFloorParticleDelay());
         }
+    }
+
+    IEnumerator DropToFloorParticleDelay()
+    {
+        yield return new WaitForSeconds(0.75f);
+
+        if (DropToFloorParticle.activeSelf)
+            DropToFloorParticle.SetActive(false);
+
+        DropToFloorParticle.SetActive(true);
     }
 }
