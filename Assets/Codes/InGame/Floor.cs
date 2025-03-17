@@ -17,7 +17,8 @@ public class Floor : MonoBehaviour
 
     static float leftGap = 0;
     static float prevX = -2;
-    static bool useLeftGap, prevLineIs2;
+    static float fpDistance = 0;
+    static bool useLeftGap, prevLineIs2, fixedPattern, fpCoolTimeOn;
 
     Vector3 floorScale;
     float[] defXs;
@@ -55,6 +56,12 @@ public class Floor : MonoBehaviour
         {
             if (!Player.getTackled && !coroutine)
                 StartCoroutine(DelayAndMoveTile());
+        }
+
+        if (fixedPattern && !fpCoolTimeOn)
+        {
+            fpCoolTimeOn = true;
+            StartCoroutine(FixedPatternCoolTime());
         }
     }
 
@@ -99,6 +106,9 @@ public class Floor : MonoBehaviour
         float MaxPos = targetPos + floorScale.z;
 
         float ranNum;
+
+        if (!fixedPattern)
+            FixedPatternSetDefends();
 
         // 새로운 수비 리스트 좌표 세팅
         while (true)
@@ -243,6 +253,18 @@ public class Floor : MonoBehaviour
 
     }
 
+    void FixedPatternSetDefends()
+    {
+
+    }
+
+    IEnumerator FixedPatternCoolTime()
+    {
+        yield return new WaitUntil(() => fpDistance + 20 < GameManager.ScoreCal.Distance);
+
+        fpCoolTimeOn = false;
+        fixedPattern = false;
+    }
 
     // 랜덤 수비 인덱스 
     int RanDef()
