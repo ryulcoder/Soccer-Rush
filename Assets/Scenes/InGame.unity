@@ -4681,6 +4681,11 @@ PrefabInstance:
       objectReference: {fileID: 5903297864780688752}
     - target: {fileID: 2932427346380560155, guid: b2d9fc04abee9b545a7e92789950a5e0,
         type: 3}
+      propertyPath: checkText
+      value: 
+      objectReference: {fileID: 4546734026286600110}
+    - target: {fileID: 2932427346380560155, guid: b2d9fc04abee9b545a7e92789950a5e0,
+        type: 3}
       propertyPath: scoreText
       value: 
       objectReference: {fileID: 3278389774851108391}
@@ -4975,21 +4980,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1286881136193113753}
-    - target: {fileID: 3234411150566555265, guid: 14d7f601f1cc6884e9ac07510cf751d6,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SaveScoreAndQuit
-      objectReference: {fileID: 0}
-    - target: {fileID: 3234411150566555265, guid: 14d7f601f1cc6884e9ac07510cf751d6,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ScoreCal, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 3538201258530248291, guid: 14d7f601f1cc6884e9ac07510cf751d6,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4073269188455607325, guid: 14d7f601f1cc6884e9ac07510cf751d6,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -5002,14 +4992,19 @@ PrefabInstance:
       objectReference: {fileID: 963194227}
     - target: {fileID: 4604793545543591402, guid: 14d7f601f1cc6884e9ac07510cf751d6,
         type: 3}
-      propertyPath: m_RenderMode
-      value: 0
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 4920036285817644274, guid: 14d7f601f1cc6884e9ac07510cf751d6,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1360049847}
+    - target: {fileID: 5237032335339201309, guid: 14d7f601f1cc6884e9ac07510cf751d6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5243684348331087459, guid: 14d7f601f1cc6884e9ac07510cf751d6,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
@@ -5020,11 +5015,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 204312665}
-    - target: {fileID: 6085554740275283794, guid: 14d7f601f1cc6884e9ac07510cf751d6,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6465627895096271140, guid: 14d7f601f1cc6884e9ac07510cf751d6,
         type: 3}
       propertyPath: m_Pivot.x
@@ -5130,16 +5120,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1286881136193113753}
-    - target: {fileID: 6710946155807743046, guid: 14d7f601f1cc6884e9ac07510cf751d6,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SaveScoreAndRetry
-      objectReference: {fileID: 0}
-    - target: {fileID: 6710946155807743046, guid: 14d7f601f1cc6884e9ac07510cf751d6,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ScoreCal, Assembly-CSharp
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5151,6 +5131,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 4546734026286600108}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4546734026286600110 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1019854980754585835, guid: 14d7f601f1cc6884e9ac07510cf751d6,
+    type: 3}
+  m_PrefabInstance: {fileID: 4546734026286600108}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4893715215819574301 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4977401634337965882, guid: 1251ab55b90f33e4f9ace4908260cd11,

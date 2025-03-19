@@ -19,11 +19,11 @@ using Unity.Services.Leaderboards.Models;
 public class LeaderBoard : MonoBehaviour
 {
     public Text score;
-    public Text[] playerIdText;
-    public Text[] playerScoreText;
-    public Text myPlayerIdText;
-    public Text myPlayerScore;
-    public Text myPlayerRankText;
+    public TextMeshProUGUI[] playerIdText;
+    public TextMeshProUGUI[] playerScoreText;
+    public TextMeshProUGUI myPlayerIdText;
+    public TextMeshProUGUI myPlayerScore;
+    public TextMeshProUGUI myPlayerRankText;
     public GameObject setting;
     public TextMeshProUGUI messageText; // 로그인 필요 메시지
     public GameObject LoadingPanel;
