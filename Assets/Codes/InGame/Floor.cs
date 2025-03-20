@@ -15,7 +15,7 @@ public class Floor : MonoBehaviour
 
     public List<Vector3> posList;
 
-    static int fpRanInt = 1;
+    static int fpRanInt = 0;
     static int fpRangeInt = 1;
     static float leftGap = 0;
     static float prevX = -2;
@@ -294,7 +294,7 @@ public class Floor : MonoBehaviour
         fpCoolTimeOn = true;
         fixedPattern = true;
 
-        if (Random.Range(0, fpRanInt) == 0)
+        if (fpRanInt != 1 && Random.Range(0, fpRanInt) == 0)
         {
             fixedPattern = false;
             fpCoolTimeOn = false;
@@ -477,7 +477,7 @@ public class Floor : MonoBehaviour
     {
         yield return StartCoroutine(SetDefenders());
 
-        fpRanInt = 2;
+        fpRanInt = 1;
 
         otherFloor.FirstSetting();
     }
