@@ -11,6 +11,6 @@ public class PlayerInfo : MonoBehaviour
     private void Start()
     {
         nickname.text = PlayerPrefs.GetString("nickname");
-        score.text = PlayerPrefs.GetString("BestScore");
+        score.text = PlayerPrefs.GetInt("BestScore").ToString();
     }
 }

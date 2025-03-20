@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.SocialPlatforms;
+using TMPro;
 
 
 public class UnityLogin : MonoBehaviour
@@ -16,12 +17,14 @@ public class UnityLogin : MonoBehaviour
     string Token;
     public string Error;
     string rankingId = "SoccerRushRanking";
-
+    public TextMeshProUGUI checkText;
+    public LoadingLogin loadingLogin;
 
     async void Awake()
     {
-        await InitializeUnityServices(); // Unity Services 초기화
-        InitializeGooglePlayGames(); // Google Play Games 활성화
+        await TryInitializeUnityServices();
+        //await InitializeUnityServices(); // Unity Services 초기화
+        //InitializeGooglePlayGames(); // Google Play Games 활성화
     }
 
     private void Start()
@@ -31,6 +34,27 @@ public class UnityLogin : MonoBehaviour
             GetPlayerScore(rankingId);
         }
     }
+
+    // 인터넷 체크 후 통과 
+    async Task TryInitializeUnityServices()
+    {
+        while (InternetConnect()) // 인터넷이 연결될 때까지 대기
+        {
+            ShowInternetMessage();
+            await Task.Delay(2000); // 3초 후 다시 체크
+        }
+        checkText.gameObject.SetActive(false);
+
+        await InitializeUnityServices();
+        InitializeGooglePlayGames(); // Google Play Games 활성화
+
+        if (PlayerPrefs.GetInt("first") == 0)
+        {
+            GetPlayerScore(rankingId);
+        }
+        StartCoroutine(loadingLogin.WaitLoadingSecond());
+    }
+
     async Task InitializeUnityServices()
     {
         if (UnityServices.State == ServicesInitializationState.Initialized)
@@ -140,6 +164,20 @@ public class UnityLogin : MonoBehaviour
         PlayerPrefs.SetInt("first", 1);
         PlayerPrefs.Save();
     }
+
+    // 인터넷 연결 확인하기
+    void ShowInternetMessage()
+    {
+        checkText.gameObject.SetActive(true);
+        checkText.color = new Color(checkText.color.r, checkText.color.g, checkText.color.b, 1); // 알파값 초기화
+    }
+
+    bool InternetConnect()
+    {
+        return Application.internetReachability == NetworkReachability.NotReachable;
+    }
+
+
 
     //public async void LoadPlayerScore(string leaderboardId)
     //{

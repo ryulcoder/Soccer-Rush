@@ -13,18 +13,6 @@ public class CheckInternet : MonoBehaviour
     public GameObject RankingPanel;
     public GameObject LoadingImage;
 
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
 
     // 인터넷 확인 함수
     void Check(int num)

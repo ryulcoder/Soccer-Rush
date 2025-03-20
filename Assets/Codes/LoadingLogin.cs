@@ -63,8 +63,7 @@ public class LoadingLogin : MonoBehaviour
             string ImgUrl = PlayGamesPlatform.Instance.GetUserImageUrl();
 
             //logText.text = "Success \n" + name;
-            StartCoroutine(WaitLoadingSecond());
-
+            UnityConnect();
             //클라우드 세이브 오류나서 일단 꺼둠
             //DataConnectGP dataConnectGP = GetComponent<DataConnectGP>();
             //dataConnectGP.LoadData();
@@ -152,10 +151,14 @@ public class LoadingLogin : MonoBehaviour
         SignIn();
     }
 
-    // 로딩 두번째
-    IEnumerator WaitLoadingSecond()
+    void UnityConnect()
     {
         unityLogin.SetActive(true);
+    }
+
+    // 로딩 두번째
+    public IEnumerator WaitLoadingSecond()
+    {
         while (loadingSlider.value < 1)
         {
             elapsed += Time.deltaTime;
