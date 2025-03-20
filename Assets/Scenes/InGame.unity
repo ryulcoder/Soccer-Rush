@@ -944,7 +944,7 @@ MonoBehaviour:
   onPlayer: 0
   inPlayer: 0
   coroutine: 0
-  firstSet: 0
+  fpCoolTimeOn: 0
 --- !u!4 &319297160
 Transform:
   m_ObjectHideFlags: 0
@@ -2179,7 +2179,7 @@ MonoBehaviour:
   onPlayer: 0
   inPlayer: 0
   coroutine: 0
-  firstSet: 0
+  fpCoolTimeOn: 0
 --- !u!4 &562881218
 Transform:
   m_ObjectHideFlags: 0
@@ -3237,7 +3237,7 @@ MonoBehaviour:
   onPlayer: 0
   inPlayer: 0
   coroutine: 0
-  firstSet: 0
+  fpCoolTimeOn: 0
 --- !u!1 &1254949159
 GameObject:
   m_ObjectHideFlags: 0
