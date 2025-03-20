@@ -3542,7 +3542,7 @@ MonoBehaviour:
   JumpExtraParticle: {fileID: 1449242180911369208}
   limitDis: 28
   limitTime: 0.5
-  tutorial: 0
+  tutorial: 1
 --- !u!1 &1452395629
 GameObject:
   m_ObjectHideFlags: 0
@@ -3716,7 +3716,7 @@ MonoBehaviour:
   - {fileID: 319297155}
   - {fileID: 562881213}
   - {fileID: 1203308573}
-  NoTuto: 1
+  NoTuto: 0
 --- !u!4 &1563810579
 Transform:
   m_ObjectHideFlags: 0
