@@ -90,6 +90,8 @@ public class UnityLogin : MonoBehaviour
 
             // 구글 플레이 닉네임 가져오기
             string googleNickname = GetGooglePlayNickname();
+            PlayerPrefs.SetString("nickname", googleNickname);
+            PlayerPrefs.Save();
             Debug.Log($"Google Play Nickname: {googleNickname}");
 
             // Unity Authentication에 닉네임 업데이트
