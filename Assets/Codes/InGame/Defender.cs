@@ -24,18 +24,15 @@ public class Defender : MonoBehaviour
     public DefenderFootTrigger[] FootTriggers;
 
     Animator DefenderAni;
-    CapsuleCollider capsuleCollider;    // 슛팅 히트박스
-    float fadeDuration = 2f; // 페이드 지속 시간
     float totalSpeed;
     string anomalyStr;
 
     public AnimatorStateInfo stateInfo;
 
-    void Awake()
+    void Start()
     {
         totalSpeed = 0;
         DefenderAni = gameObject.GetComponent<Animator>();
-        capsuleCollider = gameObject.GetComponent<CapsuleCollider>();
     }
 
     void OnEnable()
@@ -111,6 +108,7 @@ public class Defender : MonoBehaviour
     public void Reset()
     {
         isTackle = false;
+        isHit = false;
         totalSpeed = 0; 
         DefenderAni.speed = 1;
 

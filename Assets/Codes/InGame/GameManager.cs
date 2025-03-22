@@ -130,6 +130,8 @@ public class GameManager : MonoBehaviour
 
     IEnumerator GameOver()
     {
+        Time.timeScale = 1;
+
         yield return new WaitForSecondsRealtime(1.7f);
 
         aroundDefenderClear = true;
