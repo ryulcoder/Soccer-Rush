@@ -331,7 +331,7 @@ public class Floor : MonoBehaviour
         int ranDir = Random.Range(1, 3);
         if (ranDir == 1) ranDir = 0;
 
-        const int totalDef = 90;
+        const int totalDef = 85;
 
         List<GameObject> fpDefList = new();
 
@@ -507,7 +507,7 @@ public class Floor : MonoBehaviour
         }
 
         posList.Clear();
-        prevX = 0;
+        leftGap = 0;
 
         if (fpRanInt == 1) fpRanInt = 2;
 
