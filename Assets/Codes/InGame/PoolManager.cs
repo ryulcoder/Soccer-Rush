@@ -10,9 +10,13 @@ public class PoolManager : MonoBehaviour
 
     public bool popEnd, poolEnd;
 
+    int poolChildCount;
+
     void Awake()
     {
-        for (int i = 0; i < transform.childCount; i++)
+        poolChildCount = transform.childCount;
+
+        for (int i = 0; i < poolChildCount; i++)
         {
             GameObject def;
 
@@ -25,18 +29,22 @@ public class PoolManager : MonoBehaviour
 
     }
 
-
     public void PoolObjects(Transform FloorTransform)
     {
         poolEnd = false;
 
+        StartCoroutine(PoolCoroutine(FloorTransform));
+    }
+
+    IEnumerator PoolCoroutine(Transform FloorTransform)
+    {
         while (FloorTransform.childCount > 1)
         {
             Transform def = FloorTransform.GetChild(FloorTransform.childCount - 1);
 
             if (def.CompareTag("Untagged") || def.CompareTag("Floor")) break;
 
-            for (int j = 0; j < transform.childCount; j++)
+            for (int j = 0; j < poolChildCount; j++)
             {
                 if (def.CompareTag(transform.GetChild(j).name))
                 {
@@ -49,45 +57,27 @@ public class PoolManager : MonoBehaviour
                     // 선택적으로 위치와 회전을 초기화
                     //def.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
 
-                    break;
-                }
-            }
-        }
-
-
-        for (int i = 0; i < FloorTransform.childCount; i++)
-        {
-            if (FloorTransform.GetChild(i).CompareTag("Untagged") || FloorTransform.GetChild(i).CompareTag("Floor")) continue;
-
-            Transform def = FloorTransform.GetChild(i);
-
-            for (int j = 0; j < transform.childCount; j++)
-            {
-                if (def.CompareTag(transform.GetChild(j).name))
-                {
-                    Debug.LogWarning(transform.GetChild(j).name);
-
-                    // 오브젝트 비활성화
-                    def.GetComponent<Defender>().Reset();
-
-                    // 자식 설정
-                    def.SetParent(transform.GetChild(j));
-
-                    // 선택적으로 위치와 회전을 초기화
-                    //def.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-
+                    
+                    yield return null;
                     break;
                 }
             }
         }
 
         poolEnd = true;
+        yield break;
     }
+
+    
 
     public void SetPopObject(string tag)
     {
         popEnd = false;
 
+        StartCoroutine (PopCoroutine(tag));
+    }
+    IEnumerator PopCoroutine(string tag) 
+    {
         PopObjcet = null;
         Transform PopTransform = null;
 
@@ -107,16 +97,18 @@ public class PoolManager : MonoBehaviour
                 if (DefenderPrefabs[i].CompareTag(tag))
                 {
                     PopObjcet = Instantiate(DefenderPrefabs[i], PopTransform);
+                    yield return null;
                 }
 
             }
         }
-         
+
         PopObjcet = PopTransform.GetChild(0).gameObject;
         PopObjcet.transform.SetParent(transform);
 
         popEnd = true;
     }
+
 
     public bool WaitNextFrame()
     {

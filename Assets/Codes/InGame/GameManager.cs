@@ -1,11 +1,6 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using Debug = UnityEngine.Debug;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,7 +11,7 @@ public class GameManager : MonoBehaviour
     
     [Header("[ Game Setting ]")]
     [SerializeField] float gameSpeed = 1;
-    [SerializeField] float speedUp = 0.1f;
+    [SerializeField] float speedUp = 0.05f;
     [SerializeField] float playerMoveSpeed = 1;
     [SerializeField] float playerAniSpeed = 1.3f;
     [SerializeField] float ballMoveSpeed = 59;
@@ -35,6 +30,7 @@ public class GameManager : MonoBehaviour
 
     [Header("[ UI ]")]
     public GameObject GameEndBlurPanel;
+    public GameObject GamePauseBlurPanel;
     public GameObject PausePanel;
     public GameObject GameEndPanel;
 
@@ -62,6 +58,8 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
         Time.timeScale = 0;
+
+        Shader.WarmupAllShaders();
     }
 
     private void Start()
@@ -114,6 +112,7 @@ public class GameManager : MonoBehaviour
             }
                 
         }
+
     }
 
     void LateUpdate()
@@ -126,7 +125,13 @@ public class GameManager : MonoBehaviour
             IncreaseDifficulty();
         }
     }
-
+    void OnApplicationFocus(bool hasFocus)
+    {
+        if (!hasFocus && !Player.getTackled)
+        {
+            GamePause();
+        }
+    }
 
     IEnumerator GameOver()
     {
@@ -171,6 +176,9 @@ public class GameManager : MonoBehaviour
 
     public void GamePause()
     {
+        GamePauseBlurPanel.SetActive(true);
+        PausePanel.SetActive(true);
+
         Time.timeScale = 0;
     }
     public void GameResume()

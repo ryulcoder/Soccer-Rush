@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Floor : MonoBehaviour
@@ -30,11 +29,25 @@ public class Floor : MonoBehaviour
     [SerializeField] string[] defNames = { "StandTackle_Front", "SlidingTackle_Front", "SlidingTackle_Anomaly", "Two_Defenders" , "Three_Defenders", "Three_Defenders_Anomaly" };
 
     [SerializeField] float minGap, maxGap;
-    bool onPlayer, inPlayer, coroutine, fpCoolTimeOn;
+    bool onPlayer, inPlayer, coroutine, fpCoolTimeOn, setVar;
 
 
-    void Awake()
+    void Start()
     {
+        if (!setVar)
+        {
+            setVar = true;
+
+            fpRanInt = 0;
+            fpRangeInt = 1;
+            leftGap = 0;
+            prevX = -2;
+            fpDistance = 0;
+            useLeftGap = false;
+            prevLineIs2 = false;
+            fixedPattern = false;
+        }
+
         (minGap, maxGap) = GameManager.DefGap;
         defPer = GameManager.DefPer;
 
@@ -42,10 +55,7 @@ public class Floor : MonoBehaviour
         posList = new List<Vector3>();
 
         defXs = new float[] { -floorScale.x / 3, 0, floorScale.x / 3 };
-    }
 
-    void Start()
-    {
         // 시작시 첫 floor 제외 순차적 수비 세팅
         if (otherFloor)
         {
@@ -321,7 +331,7 @@ public class Floor : MonoBehaviour
         int ranDir = Random.Range(1, 3);
         if (ranDir == 1) ranDir = 0;
 
-        const int totalDef = 45;
+        const int totalDef = 90;
 
         List<GameObject> fpDefList = new();
 
@@ -356,14 +366,14 @@ public class Floor : MonoBehaviour
 
                 for (int i = 0; i < totalDef; i++)
                 {
-                    if (i == 0 || i % 5 == 0)
+                    if (i == 0 || i % 11 == 0)
                     {
                         PoolManager.SetPopObject("SlidingTackle_Anomaly");
 
                         yield return new WaitUntil(() => PoolManager.popEnd);
 
                         fpDefList.Add(PoolManager.PopObjcet);
-                        posList.Add(new(defXs[fpXIdx], 0.5f, targetPos + 10 * i));
+                        posList.Add(new(defXs[fpXIdx], 0.5f, targetPos + 5 * i));
                         
 
                         if (fpXIdx == 1)
@@ -375,14 +385,14 @@ public class Floor : MonoBehaviour
                         
                     }
 
-                    if (i == 0 || i % 3 == 0)
+                    if (i == 0 || i % 8 == 0)
                     {
                         PoolManager.SetPopObject("StandTackle_Front");
 
                         yield return new WaitUntil(() => PoolManager.popEnd);
 
                         fpDefList.Add(PoolManager.PopObjcet);
-                        posList.Add(new(defXs[ranDir], 0.5f, targetPos + 10 * i));
+                        posList.Add(new(defXs[ranDir], 0.5f, targetPos + 5 * i));
                         
                         
                     }
@@ -406,7 +416,7 @@ public class Floor : MonoBehaviour
 
                 for (int i = 0; i < totalDef; i++)
                 {
-                    if (i == 0 || i % 6 == 0)
+                    if (i == 0 || i % 14 == 0)
                     {
                         defRanIdx = Random.Range(0, 3);
 
@@ -418,7 +428,16 @@ public class Floor : MonoBehaviour
                             yield return new WaitUntil(() => PoolManager.popEnd);
 
                             fpDefList.Add(PoolManager.PopObjcet);
-                            posList.Add(new(defXs[fpXIdx], 0.5f, targetPos + 10 * i));
+                            posList.Add(new(defXs[fpXIdx], 0.5f, targetPos + 5 * i));
+
+                            PoolManager.SetPopObject("StandTackle_Front");
+
+                            yield return new WaitUntil(() => PoolManager.popEnd);
+
+                            fpDefList.Add(PoolManager.PopObjcet);
+                            posList.Add(new(defXs[otherXIdx], 0.5f, targetPos + 5 * i));
+
+                            (otherXIdx, fpXIdx) = (fpXIdx, otherXIdx);
                         }
                         // 슬
                         else if (defRanIdx == 1)
@@ -428,7 +447,7 @@ public class Floor : MonoBehaviour
                             yield return new WaitUntil(() => PoolManager.popEnd);
 
                             fpDefList.Add(PoolManager.PopObjcet);
-                            posList.Add(new(defXs[1], 0.5f, targetPos + 10 * i + 40));
+                            posList.Add(new(defXs[1], 0.5f, targetPos + 5 * i + 40));
                         }
                         // 스
                         else
@@ -438,26 +457,17 @@ public class Floor : MonoBehaviour
                             yield return new WaitUntil(() => PoolManager.popEnd);
 
                             fpDefList.Add(PoolManager.PopObjcet);
-                            posList.Add(new(defXs[1], 0.5f, targetPos + 10 * i));
+                            posList.Add(new(defXs[1], 0.5f, targetPos + 5 * i));
                         }
                         
                     }
 
                     // 양 사이드 라인 블락
-                    if (i == 0 || i % 2 == 0)
+                    if (i == 0 || i % 7 == 0)
                     {
                         if (defRanIdx == 2)
                         {
                             defRanIdx = 0;
-
-                            PoolManager.SetPopObject("StandTackle_Front");
-
-                            yield return new WaitUntil(() => PoolManager.popEnd);
-
-                            fpDefList.Add(PoolManager.PopObjcet);
-                            posList.Add(new(defXs[otherXIdx], 0.5f, targetPos + 10 * i));
-
-                            (otherXIdx, fpXIdx) = (fpXIdx, otherXIdx);
                         }
                         else
                         {
@@ -466,7 +476,7 @@ public class Floor : MonoBehaviour
                             yield return new WaitUntil(() => PoolManager.popEnd);
 
                             fpDefList.Add(PoolManager.PopObjcet);
-                            posList.Add(new(defXs[0], 0.5f, targetPos + 10 * i));
+                            posList.Add(new(defXs[0], 0.5f, targetPos + 5 * i));
 
                             
                             PoolManager.SetPopObject("StandTackle_Front");
@@ -474,7 +484,7 @@ public class Floor : MonoBehaviour
                             yield return new WaitUntil(() => PoolManager.popEnd);
 
                             fpDefList.Add(PoolManager.PopObjcet);
-                            posList.Add(new(defXs[2], 0.5f, targetPos + 10 * i));
+                            posList.Add(new(defXs[2], 0.5f, targetPos + 5 * i));
                         }
                     }
                 }
@@ -509,8 +519,6 @@ public class Floor : MonoBehaviour
     {
         if (fpDistance + 100 < GameManager.ScoreCal.Distance)
         {
-            Debug.LogWarning("in");
-
             if (fpRangeInt == 1) fpRangeInt = 2;
 
             fixedPattern = false;
