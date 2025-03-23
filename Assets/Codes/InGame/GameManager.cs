@@ -52,7 +52,7 @@ public class GameManager : MonoBehaviour
     bool coroutine, reviveSpeedUp;
 
     public bool aroundDefenderClear;
-
+    bool GameEnd;
 
     void Awake()
     {
@@ -130,7 +130,7 @@ public class GameManager : MonoBehaviour
     IEnumerator GameOver()
     {
         Time.timeScale = 1;
-
+        GameEnd = true;
         yield return new WaitForSecondsRealtime(1.7f);
 
         aroundDefenderClear = true;
@@ -208,7 +208,7 @@ public class GameManager : MonoBehaviour
     // 다시 게임으로 복귀할 때 호출
     private void OnApplicationFocus(bool hasFocus)
     {
-        if (!hasFocus)
+        if (!hasFocus && !GameEnd)
         {
             GamePause();
         }
