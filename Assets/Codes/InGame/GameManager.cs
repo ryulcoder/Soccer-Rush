@@ -58,8 +58,9 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
         Time.timeScale = 0;
-
+#if (!UNITY_EDITOR)
         Shader.WarmupAllShaders();
+#endif
     }
 
     private void Start()
@@ -169,11 +170,16 @@ public class GameManager : MonoBehaviour
 
     public void GamePause()
     {
+        PausePanel.SetActive(true);
+        PauseBlurPanel.SetActive(true);
+
         Time.timeScale = 0;
     }
     public void GameResume()
     {
-        Time.timeScale = gameSpeed;
+        Time.timeScale = gameSpeed; 
+        PausePanel.SetActive(false);
+        PauseBlurPanel.SetActive(false);
     }
 
     public void GameReStart()
@@ -205,8 +211,6 @@ public class GameManager : MonoBehaviour
         if (!hasFocus)
         {
             GamePause();
-            PausePanel.SetActive(true);
-            PauseBlurPanel.SetActive(true);
         }
     }
 

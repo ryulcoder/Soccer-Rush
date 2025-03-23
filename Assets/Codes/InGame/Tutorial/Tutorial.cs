@@ -28,14 +28,15 @@ public class Tutorial : MonoBehaviour
     int tutoNum;
     bool isSet;
 
+    void Awake()
+    {
+        //PlayerPrefs.DeleteKey("Tutorial");
+        TutorialOn(PlayerPrefs.GetInt("Tutorial", 0) == 0 && !NoTuto);
+    }
+
     void Start()
     {
         Player = Player.Instance;
-
-        //PlayerPrefs.DeleteKey("Tutorial");
-
-        TutorialOn(PlayerPrefs.GetInt("Tutorial", 0) == 0 && !NoTuto);
-
     }
 
     void Update()

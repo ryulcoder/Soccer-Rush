@@ -105,16 +105,10 @@ public class PoolManager : MonoBehaviour
 
         PopObjcet = PopTransform.GetChild(0).gameObject;
         PopObjcet.transform.SetParent(transform);
+        yield return null;
 
         popEnd = true;
     }
-
-
-    public bool WaitNextFrame()
-    {
-        return PopObjcet != null;
-    }
-
 
     public void LeftObjectDestroy()
     {

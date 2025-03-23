@@ -30,6 +30,7 @@ public class Floor : MonoBehaviour
 
     [SerializeField] float minGap, maxGap;
     bool onPlayer, inPlayer, coroutine, fpCoolTimeOn, setVar;
+    int fpCount;
 
 
     void Start()
@@ -347,8 +348,16 @@ public class Floor : MonoBehaviour
 
         targetPos += ranNum;
 
+
+        int fpRanNum;
+
+        if (fpCount > 2 && fpRangeInt == 2)
+            fpRanNum = Random.Range(1, fpRangeInt);
+        else
+            fpRanNum = Random.Range(0, fpRangeInt);
+
         // 45
-        switch (Random.Range(0, fpRangeInt))
+        switch (fpRanNum)
         {
             // 1라인 블락 좌우 회피 전용 고정 패턴
             case 0:
@@ -513,6 +522,7 @@ public class Floor : MonoBehaviour
 
         fpDistance = GameManager.ScoreCal.Distance;
         fpCoolTimeOn = true;
+        fpCount++;
     }
 
     void FixedPatternCoolTimeCheck()
