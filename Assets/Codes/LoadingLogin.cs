@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using GooglePlayGames.BasicApi;
 using GooglePlayGames;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 
 public class LoadingLogin : MonoBehaviour
@@ -13,6 +14,8 @@ public class LoadingLogin : MonoBehaviour
     public GameObject guestLoginButton;
     public GameObject slider;
     public GameObject unityLogin;
+    public GameObject nicknamePanel;
+    public TextMeshProUGUI nickName;
 
     Slider loadingSlider;
     float duration = 3f; // 3초 동안 채우기
@@ -28,9 +31,21 @@ public class LoadingLogin : MonoBehaviour
     }
     void Start()
     {
-        StartCoroutine(WaitLoadingfirst());
+        CheckNickName();
     }
 
+    // 닉네임이 있는지 확인
+    void CheckNickName()
+    {
+        if (PlayerPrefs.HasKey("nickname"))
+        {
+            StartCoroutine(WaitLoadingfirst());
+        }
+        else
+        {
+            nicknamePanel.SetActive(true);
+        }
+    }
 
     //자동로그인때문에 로그인버튼 함수 보류
     //// 구글 로그인 버튼
@@ -136,6 +151,14 @@ public class LoadingLogin : MonoBehaviour
     //            }
     //        });
     //}
+
+    public void StartSlider()
+    {
+        StartCoroutine(WaitLoadingfirst());
+        PlayerPrefs.SetString("nickname", nickName.text);
+        PlayerPrefs.Save();
+        Debug.Log(nickName.text);
+    }
 
     // 로딩 슬라이더
     IEnumerator WaitLoadingfirst()

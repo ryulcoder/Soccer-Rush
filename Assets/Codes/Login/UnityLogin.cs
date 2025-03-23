@@ -27,14 +27,6 @@ public class UnityLogin : MonoBehaviour
         //InitializeGooglePlayGames(); // Google Play Games 활성화
     }
 
-    private void Start()
-    {
-        if (PlayerPrefs.GetInt("first") == 0)
-        {
-            GetPlayerScore(rankingId);
-        }
-    }
-
     // 인터넷 체크 후 통과 
     async Task TryInitializeUnityServices()
     {
@@ -47,12 +39,6 @@ public class UnityLogin : MonoBehaviour
 
         await InitializeUnityServices();
         InitializeGooglePlayGames(); // Google Play Games 활성화
-
-        if (PlayerPrefs.GetInt("first") == 0)
-        {
-            GetPlayerScore(rankingId);
-        }
-        StartCoroutine(loadingLogin.WaitLoadingSecond());
     }
 
     async Task InitializeUnityServices()
@@ -95,6 +81,7 @@ public class UnityLogin : MonoBehaviour
 
                     // 비동기 실행을 위해 Task 사용
                     await SignInWithGooglePlayGamesAsync(Token);
+                    StartCoroutine(loadingLogin.WaitLoadingSecond());
                 });
             }
             else
@@ -113,13 +100,18 @@ public class UnityLogin : MonoBehaviour
             Debug.Log("Sign-in is successful.");
 
             // 구글 플레이 닉네임 가져오기
-            string googleNickname = GetGooglePlayNickname();
-            PlayerPrefs.SetString("nickname", googleNickname);
-            PlayerPrefs.Save();
-            Debug.Log($"Google Play Nickname: {googleNickname}");
+            //string googleNickname = GetGooglePlayNickname();
+            string SetNickname = PlayerPrefs.GetString("nickname");
+            Debug.Log($"Google Play Nickname: {SetNickname}");
 
             // Unity Authentication에 닉네임 업데이트
-            await UpdatePlayerDisplayName(googleNickname);
+            await UpdatePlayerDisplayName(SetNickname);
+            // 처음 들어갔을때 스코어 있는지 확인
+            if (PlayerPrefs.GetInt("first") == 0)
+            {
+                GetPlayerScore(rankingId);
+            }
+
         }
         catch (AuthenticationException ex)
         {

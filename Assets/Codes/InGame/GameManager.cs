@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
     [Header("[ UI ]")]
     public GameObject GameEndBlurPanel;
     public GameObject PausePanel;
+    public GameObject PauseBlurPanel;
     public GameObject GameEndPanel;
 
     [Header("[ Tile ]")]
@@ -197,6 +198,17 @@ public class GameManager : MonoBehaviour
     public void ReviveAd()
     {
         googleAd.ShowRewardedAd();
+    }
+
+    // 다시 게임으로 복귀할 때 호출
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        if (!hasFocus)
+        {
+            GamePause();
+            PausePanel.SetActive(true);
+            PauseBlurPanel.SetActive(true);
+        }
     }
 
     public void PlayerRevive()

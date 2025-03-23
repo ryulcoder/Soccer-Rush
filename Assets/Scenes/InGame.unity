@@ -3493,6 +3493,7 @@ MonoBehaviour:
   ScoreCal: {fileID: 1286881136193113753}
   GameEndBlurPanel: {fileID: 3264233072026655871}
   PausePanel: {fileID: 7741803060987649147}
+  PauseBlurPanel: {fileID: 1868127796}
   GameEndPanel: {fileID: 7572055561854012410}
   Tiles:
   - {fileID: 319297160}
@@ -3930,6 +3931,12 @@ BoxCollider:
 --- !u!1 &1825567357 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8947572463591295861, guid: 14d7f601f1cc6884e9ac07510cf751d6,
+    type: 3}
+  m_PrefabInstance: {fileID: 4546734026286600108}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1868127796 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5472657299888121341, guid: 14d7f601f1cc6884e9ac07510cf751d6,
     type: 3}
   m_PrefabInstance: {fileID: 4546734026286600108}
   m_PrefabAsset: {fileID: 0}
@@ -4990,21 +4997,6 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 963194227}
-    - target: {fileID: 4604793545543591402, guid: 14d7f601f1cc6884e9ac07510cf751d6,
-        type: 3}
-      propertyPath: m_AdditionalShaderChannelsFlag
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 4920036285817644274, guid: 14d7f601f1cc6884e9ac07510cf751d6,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 1360049847}
-    - target: {fileID: 5237032335339201309, guid: 14d7f601f1cc6884e9ac07510cf751d6,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5243684348331087459, guid: 14d7f601f1cc6884e9ac07510cf751d6,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
