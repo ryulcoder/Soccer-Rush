@@ -154,6 +154,10 @@ public class GoogleAd : MonoBehaviour
                 GameManager.Instance.PlayerRevive();
             });
         }
+        else
+        {
+            GameManager.Instance.PlayerRevive();
+        }
     }
 
     private void RegisterReloadHandler(RewardedAd ad)
