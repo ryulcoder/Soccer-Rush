@@ -21,8 +21,8 @@ public class GoogleAd : MonoBehaviour
 
     // These ad units are configured to always serve test ads.
 #if UNITY_ANDROID
-    private string interAdUnitId = "ca-app-pub-3940256099942544/1033173712";
-    private string rewardAdUnitId = "ca-app-pub-3940256099942544/5224354917";
+    private string interAdUnitId = "ca-app-pub-1025011428285645/7898861265";
+    private string rewardAdUnitId = "ca-app-pub-1025011428285645/2787055259";
 #elif UNITY_IPHONE
   private string _adUnitId = "ca-app-pub-3940256099942544/4411468910";
 #else
