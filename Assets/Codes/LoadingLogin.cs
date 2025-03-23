@@ -31,11 +31,11 @@ public class LoadingLogin : MonoBehaviour
     }
     void Start()
     {
-        CheckNickName();
+        //CheckNickName();
     }
 
     // 닉네임이 있는지 확인
-    void CheckNickName()
+    public void CheckNickName()
     {
         if (PlayerPrefs.HasKey("nickname"))
         {
