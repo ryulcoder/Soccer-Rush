@@ -30,7 +30,6 @@ public class GameManager : MonoBehaviour
 
     [Header("[ UI ]")]
     public GameObject GameEndBlurPanel;
-    public GameObject GamePauseBlurPanel;
     public GameObject PausePanel;
     public GameObject GameEndPanel;
 
@@ -125,13 +124,6 @@ public class GameManager : MonoBehaviour
             IncreaseDifficulty();
         }
     }
-    void OnApplicationFocus(bool hasFocus)
-    {
-        if (!hasFocus && !Player.getTackled)
-        {
-            GamePause();
-        }
-    }
 
     IEnumerator GameOver()
     {
@@ -176,9 +168,6 @@ public class GameManager : MonoBehaviour
 
     public void GamePause()
     {
-        GamePauseBlurPanel.SetActive(true);
-        PausePanel.SetActive(true);
-
         Time.timeScale = 0;
     }
     public void GameResume()
