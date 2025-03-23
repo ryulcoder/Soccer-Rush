@@ -941,10 +941,6 @@ MonoBehaviour:
   - Three_Defenders_Anomaly
   minGap: 0
   maxGap: 0
-  onPlayer: 0
-  inPlayer: 0
-  coroutine: 0
-  fpCoolTimeOn: 0
 --- !u!4 &319297160
 Transform:
   m_ObjectHideFlags: 0
@@ -2176,10 +2172,6 @@ MonoBehaviour:
   - Three_Defenders_Anomaly
   minGap: 0
   maxGap: 0
-  onPlayer: 0
-  inPlayer: 0
-  coroutine: 0
-  fpCoolTimeOn: 0
 --- !u!4 &562881218
 Transform:
   m_ObjectHideFlags: 0
@@ -3234,10 +3226,6 @@ MonoBehaviour:
   - Three_Defenders_Anomaly
   minGap: 0
   maxGap: 0
-  onPlayer: 0
-  inPlayer: 0
-  coroutine: 0
-  fpCoolTimeOn: 0
 --- !u!1 &1254949159
 GameObject:
   m_ObjectHideFlags: 0
@@ -3474,7 +3462,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   continueButton: {fileID: 4546734026286600109}
   gameSpeed: 1
-  speedUp: 0.1
+  speedUp: 0.05
   playerMoveSpeed: 1
   playerAniSpeed: 1.3
   ballMoveSpeed: 59
@@ -3492,8 +3480,8 @@ MonoBehaviour:
   PoolManager: {fileID: 1452395630}
   ScoreCal: {fileID: 1286881136193113753}
   GameEndBlurPanel: {fileID: 3264233072026655871}
+  GamePauseBlurPanel: {fileID: 1403676321}
   PausePanel: {fileID: 7741803060987649147}
-  PauseBlurPanel: {fileID: 1868127796}
   GameEndPanel: {fileID: 7572055561854012410}
   Tiles:
   - {fileID: 319297160}
@@ -3543,7 +3531,13 @@ MonoBehaviour:
   JumpExtraParticle: {fileID: 1449242180911369208}
   limitDis: 28
   limitTime: 0.5
-  tutorial: 1
+  tutorial: 0
+--- !u!1 &1403676321 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5472657299888121341, guid: 14d7f601f1cc6884e9ac07510cf751d6,
+    type: 3}
+  m_PrefabInstance: {fileID: 4546734026286600108}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1452395629
 GameObject:
   m_ObjectHideFlags: 0
@@ -3577,6 +3571,9 @@ MonoBehaviour:
   - {fileID: 7684908701320933760, guid: 0cb1a98507f4eab4c8027f67943420fa, type: 3}
   - {fileID: 2103849666011266416, guid: 06443fd813dc7d945b8a9a78648ff649, type: 3}
   - {fileID: 1036814376695655695, guid: 20f501a31dfb7f7459979b4f2b6a22fb, type: 3}
+  PopObjcet: {fileID: 0}
+  popEnd: 0
+  poolEnd: 0
 --- !u!4 &1452395631
 Transform:
   m_ObjectHideFlags: 0
@@ -3586,7 +3583,7 @@ Transform:
   m_GameObject: {fileID: 1452395629}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 100, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3717,7 +3714,7 @@ MonoBehaviour:
   - {fileID: 319297155}
   - {fileID: 562881213}
   - {fileID: 1203308573}
-  NoTuto: 0
+  NoTuto: 1
 --- !u!4 &1563810579
 Transform:
   m_ObjectHideFlags: 0
@@ -3931,12 +3928,6 @@ BoxCollider:
 --- !u!1 &1825567357 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8947572463591295861, guid: 14d7f601f1cc6884e9ac07510cf751d6,
-    type: 3}
-  m_PrefabInstance: {fileID: 4546734026286600108}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1868127796 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5472657299888121341, guid: 14d7f601f1cc6884e9ac07510cf751d6,
     type: 3}
   m_PrefabInstance: {fileID: 4546734026286600108}
   m_PrefabAsset: {fileID: 0}
@@ -4997,11 +4988,51 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 963194227}
+    - target: {fileID: 4604793545543591402, guid: 14d7f601f1cc6884e9ac07510cf751d6,
+        type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4920036285817644274, guid: 14d7f601f1cc6884e9ac07510cf751d6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1360049847}
+    - target: {fileID: 5237032335339201309, guid: 14d7f601f1cc6884e9ac07510cf751d6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5243684348331087459, guid: 14d7f601f1cc6884e9ac07510cf751d6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5243684348331087459, guid: 14d7f601f1cc6884e9ac07510cf751d6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5243684348331087459, guid: 14d7f601f1cc6884e9ac07510cf751d6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1360049847}
     - target: {fileID: 5243684348331087459, guid: 14d7f601f1cc6884e9ac07510cf751d6,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 1360049847}
+    - target: {fileID: 5243684348331087459, guid: 14d7f601f1cc6884e9ac07510cf751d6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: GamePause
+      objectReference: {fileID: 0}
+    - target: {fileID: 5243684348331087459, guid: 14d7f601f1cc6884e9ac07510cf751d6,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GameManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 5644501887526717711, guid: 14d7f601f1cc6884e9ac07510cf751d6,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target

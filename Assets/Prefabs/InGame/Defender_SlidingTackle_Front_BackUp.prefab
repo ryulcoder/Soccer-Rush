@@ -204,6 +204,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Defender: {fileID: 0}
+  DropToFloorParticle: {fileID: 0}
 --- !u!54 &7932330139631422994
 Rigidbody:
   m_ObjectHideFlags: 0

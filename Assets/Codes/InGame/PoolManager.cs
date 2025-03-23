@@ -6,73 +6,115 @@ public class PoolManager : MonoBehaviour
 {
     public GameObject[] DefenderPrefabs;
 
-    public void PoolObjects(Transform[] sendObject)
+    public GameObject PopObjcet;
+
+    public bool popEnd, poolEnd;
+
+    int poolChildCount;
+
+    void Awake()
     {
-        Transform Parent;
+        poolChildCount = transform.childCount;
 
-        foreach (Transform obj in sendObject)
+        for (int i = 0; i < poolChildCount; i++)
         {
-            if (obj.CompareTag("Untagged") || obj.CompareTag("Floor")) continue;
+            GameObject def;
 
-            foreach (Transform child in transform)
+            for (int j = 0; j < 10; j++)
             {
-
-                if (obj.CompareTag(child.name))
-                {
-                    Parent = child.gameObject.transform;
-
-                    // 오브젝트 비활성화
-                    obj.GetComponent<Defender>().Reset();
-                    obj.gameObject.SetActive(false);
-
-                    // 자식 설정
-                    obj.SetParent(Parent);
-
-                    // 선택적으로 위치와 회전을 초기화
-                    obj.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-
-                    break;
-                }
-
+                def = Instantiate(DefenderPrefabs[i], transform.GetChild(i));
+                def.SetActive(false);
             }
         }
 
-        
     }
 
-    public GameObject PopObject(string tag)
+    public void PoolObjects(Transform FloorTransform)
     {
-        Transform targetParent = null;
-        GameObject targetObj = null;
+        poolEnd = false;
 
-        foreach (Transform obj in transform)
+        StartCoroutine(PoolCoroutine(FloorTransform));
+    }
+
+    IEnumerator PoolCoroutine(Transform FloorTransform)
+    {
+        while (FloorTransform.childCount > 1)
         {
-            if (obj.CompareTag(tag))
+            Transform def = FloorTransform.GetChild(FloorTransform.childCount - 1);
+
+            if (def.CompareTag("Untagged") || def.CompareTag("Floor")) break;
+
+            for (int j = 0; j < poolChildCount; j++)
             {
-                targetParent = obj;
+                if (def.CompareTag(transform.GetChild(j).name))
+                {
+                    // 오브젝트 비활성화
+                    def.GetComponent<Defender>().Reset();
+
+                    // 자식 설정
+                    def.SetParent(transform.GetChild(j));
+
+                    // 선택적으로 위치와 회전을 초기화
+                    //def.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+
+                    
+                    yield return null;
+                    break;
+                }
+            }
+        }
+
+        poolEnd = true;
+        yield break;
+    }
+
+    
+
+    public void SetPopObject(string tag)
+    {
+        popEnd = false;
+
+        StartCoroutine (PopCoroutine(tag));
+    }
+    IEnumerator PopCoroutine(string tag) 
+    {
+        PopObjcet = null;
+        Transform PopTransform = null;
+
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            if (transform.GetChild(i).name == tag)
+            {
+                PopTransform = transform.GetChild(i);
                 break;
             }
         }
 
-        if (targetParent)
+        if (PopTransform && PopTransform.childCount == 0)
         {
-            targetObj = targetParent.GetChild(0).gameObject;
-        }
-        else
-        {
-            foreach (GameObject obj in DefenderPrefabs)
+            for (int i = 0; i < DefenderPrefabs.Length; i++)
             {
-                if (obj.CompareTag(tag))
+                if (DefenderPrefabs[i].CompareTag(tag))
                 {
-                    targetObj = Instantiate(obj);
-                    targetObj.SetActive(false);
+                    PopObjcet = Instantiate(DefenderPrefabs[i], PopTransform);
+                    yield return null;
                 }
+
             }
         }
-        
 
-        return targetObj;
+        PopObjcet = PopTransform.GetChild(0).gameObject;
+        PopObjcet.transform.SetParent(transform);
+
+        popEnd = true;
     }
+
+
+    public bool WaitNextFrame()
+    {
+        return PopObjcet != null;
+    }
+
 
     public void LeftObjectDestroy()
     {
