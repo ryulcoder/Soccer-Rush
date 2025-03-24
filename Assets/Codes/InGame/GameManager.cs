@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,6 +9,7 @@ public class GameManager : MonoBehaviour
 
     [Header("[ Game ]")]
     public GameObject continueButton;
+    public GameObject ADBack;
     
     [Header("[ Game Setting ]")]
     [SerializeField] float gameSpeed = 1;
@@ -196,12 +198,14 @@ public class GameManager : MonoBehaviour
     // ÇÃ·¹ÀÌ¾î Á×À¸¸é ±¤°í ¶ç¿ì±â
     public void PlayerDeathAd()
     {
+        ADBackOn();
         googleAd.ShowInterstitialAd();
     }
 
     // ºÎÈ° ±¤°í ¶ç¿ì±â
     public void ReviveAd()
     {
+        ADBackOn();
         googleAd.ShowRewardedAd();
     }
 
@@ -226,6 +230,21 @@ public class GameManager : MonoBehaviour
 
         revivePosition = ScoreCal.Distance;
         reviveSpeedUp = true;
+    }
+
+    void ADBackOn()
+    {
+        ADBack.SetActive(true);
+        StartCoroutine(ADBackOffCoroutine());
+    }
+
+    IEnumerator ADBackOffCoroutine()
+    { 
+        yield return new WaitForSeconds(0.1f);
+
+        ADBack.SetActive(false);
+
+        yield break;
     }
 
 
