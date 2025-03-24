@@ -5,6 +5,7 @@ using GoogleMobileAds.Api;
 
 public class GoogleAd : MonoBehaviour
 {
+
     // Start is called before the first frame update
     void Start()
     {
@@ -78,6 +79,7 @@ public class GoogleAd : MonoBehaviour
         {
             Debug.Log("Showing interstitial ad.");
             _interstitialAd.Show();
+
             RegisterReloadHandler(_interstitialAd);
         }
         else
@@ -153,11 +155,14 @@ public class GoogleAd : MonoBehaviour
             {
                 GameManager.Instance.PlayerRevive();
             });
+
         }
         else
         {
             GameManager.Instance.PlayerRevive();
         }
+
+
     }
 
     private void RegisterReloadHandler(RewardedAd ad)
@@ -180,4 +185,5 @@ public class GoogleAd : MonoBehaviour
             LoadRewardedAd();
         };
     }
+
 }
