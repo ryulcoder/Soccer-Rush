@@ -2,11 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GoogleMobileAds.Api;
-using UnityEngine.UI;
 
 public class GoogleAd : MonoBehaviour
 {
-    public CheckObject CheckObject;
 
     // Start is called before the first frame update
     void Start()
@@ -83,9 +81,6 @@ public class GoogleAd : MonoBehaviour
             _interstitialAd.Show();
 
             RegisterReloadHandler(_interstitialAd);
-
-            //ADSafeArea();
-            CheckObject.CheckStart();
         }
         else
         {
@@ -161,7 +156,6 @@ public class GoogleAd : MonoBehaviour
                 GameManager.Instance.PlayerRevive();
             });
 
-            ADSafeArea();
         }
         else
         {
@@ -191,38 +185,5 @@ public class GoogleAd : MonoBehaviour
             LoadRewardedAd();
         };
     }
-
-
-    void ADSafeArea()
-    {
-        Button[] allButtons = FindObjectsOfType<Button>();
-
-        Transform ADPar = null;
-
-        for (int i = 0; i < allButtons.Length; i++)
-        {
-            if (allButtons[i].name.ToLower().Contains("ad"))
-            {
-                ADPar = allButtons[i].transform.parent;
-                break;
-            }
-        }
-
-        if (ADPar)
-        {
-            for (int i = 0; i < ADPar.childCount; i++)
-            {
-                RectTransform rectTransform = ADPar.GetChild(i).GetComponent<RectTransform>();
-
-                if (rectTransform != null)
-                {
-                    rectTransform.anchorMin = new Vector2(0, 0);
-                    rectTransform.anchorMax = new Vector2(1, 1);
-                }
-            }
-        }
-
-    }
-
 
 }
