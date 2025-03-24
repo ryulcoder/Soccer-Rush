@@ -22,7 +22,7 @@ public class SafeArea : MonoBehaviour
     private void Start()
     {
         deviceModel = SystemInfo.deviceModel;
-        //ApplySafeArea();
+        ApplySafeArea();
     }
 
     void ApplySafeArea()
