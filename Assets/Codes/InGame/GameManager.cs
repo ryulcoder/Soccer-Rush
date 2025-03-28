@@ -1,7 +1,7 @@
 using System.Collections;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,7 +10,10 @@ public class GameManager : MonoBehaviour
     [Header("[ Game ]")]
     public GameObject continueButton;
     public GameObject ADBack;
-    
+
+    [Header("[ Ball Skins ]")]
+    public GameObject[] ballSkins;
+
     [Header("[ Game Setting ]")]
     [SerializeField] float gameSpeed = 1;
     [SerializeField] float speedUp = 0.05f;
@@ -22,6 +25,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] float minGap = 130;
     [SerializeField] float maxGap = 160;
     [SerializeField] float[] defPer = { 70, 30, 0, 0, 0, 0};
+
+    [Header("[ Stamina ]")]
+    public float totalStamina = 100;
+    public float reGenRate = 0.05f;
+    public Slider StaminaSlider;
 
     [Header("[ Code ]")]
     public GoogleAd googleAd;
@@ -56,6 +64,8 @@ public class GameManager : MonoBehaviour
     public bool aroundDefenderClear;
     bool GameEnd;
 
+    static int ballSkinIdx;
+
     void Awake()
     {
         Instance = this;
@@ -63,12 +73,18 @@ public class GameManager : MonoBehaviour
 #if (!UNITY_EDITOR)
         Shader.WarmupAllShaders();
 #endif
+
+        if (ballSkinIdx != PlayerPrefs.GetInt("BallSkin", 0))
+            ballSkinIdx = PlayerPrefs.GetInt("BallSkin", 0);
+
     }
 
     private void Start()
     {
         Player = Player.Instance;
         BallMove = BallMove.instance;
+
+        SetBallSkin();
 
         Tutorial.gameSpeed = gameSpeed;
 
@@ -245,6 +261,15 @@ public class GameManager : MonoBehaviour
         ADBack.SetActive(false);
 
         yield break;
+    }
+
+
+    void SetBallSkin()
+    {
+        if (ballSkinIdx == 0) return;
+
+        BallMove.GetComponent<MeshFilter>().sharedMesh = ballSkins[ballSkinIdx].GetComponent<MeshFilter>().sharedMesh;
+        BallMove.GetComponent<MeshRenderer>().sharedMaterials = ballSkins[ballSkinIdx].GetComponent<MeshRenderer>().sharedMaterials;
     }
 
 
