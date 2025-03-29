@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     public static Player Instance;
 
     BallMove BallMove;
+    Stamina Stamina;
 
     Transform PlayerTransform;
     Rigidbody PlayerRigibody;
@@ -28,7 +29,7 @@ public class Player : MonoBehaviour
 
     Vector3 direction;
 
-    AnimatorStateInfo stateInfo;
+    public AnimatorStateInfo stateInfo;
 
     [Header("Shooting")]
     public bool isShooting;
@@ -59,6 +60,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         BallMove = BallMove.instance;
+        Stamina = Stamina.instance;
 
         PlayerTransform = transform;
         PlayerRigibody = GetComponent<Rigidbody>();
@@ -200,8 +202,6 @@ public class Player : MonoBehaviour
             LobbyAudioManager.instance.PlaySfx(LobbyAudioManager.Sfx.kick);
         }
 
-
-
         direction = new(moveDirection, 0, 0);
         next_x += moveDirection * distance;
 
@@ -224,6 +224,8 @@ public class Player : MonoBehaviour
     {
         if (dontMove || getTackled || isSpin || isJump || dribbleSlowStart || BallMove.isShooting) { Debug.LogWarning("Block"); return; }
 
+        if (!Stamina.UseStamina(20)) { Debug.LogWarning("스태미너 부족"); return; }
+
         isSpin = true;
         isAct = true;
 
@@ -244,6 +246,8 @@ public class Player : MonoBehaviour
     public void Jump()
     {
         if (dontMove || getTackled || isSpin || isJump || dribbleSlowStart || BallMove.isShooting) { Debug.LogWarning("Block"); return; }
+
+        if (!Stamina.UseStamina(20)) { Debug.LogWarning("스태미너 부족"); return; }
 
         isJump = true;
         isAct = true;
@@ -306,6 +310,9 @@ public class Player : MonoBehaviour
     public void ShootingAni()
     {
         if (dontMove || getTackled || isSpin || isJump || dribbleSlowStart || BallMove.isShooting) { Debug.LogWarning("Block"); return; }
+
+        if (!Stamina.UseStamina(20)) { Debug.LogWarning("스태미너 부족"); return; }
+
         PlayerAni.SetTrigger("Shooting");
         shootButton.interactable = false;
     }

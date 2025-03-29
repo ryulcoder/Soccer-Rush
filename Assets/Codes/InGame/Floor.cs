@@ -351,7 +351,7 @@ public class Floor : MonoBehaviour
 
         int fpRanNum;
 
-        if (fpCount > 2 && fpRangeInt == 2)
+        if (fpCount < 2 && fpRangeInt == 2)
             fpRanNum = Random.Range(1, fpRangeInt);
         else
             fpRanNum = Random.Range(0, fpRangeInt);

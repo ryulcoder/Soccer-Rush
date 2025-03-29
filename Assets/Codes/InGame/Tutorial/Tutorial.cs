@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,12 +22,13 @@ public class Tutorial : MonoBehaviour
     public GameObject[] Floors;
 
     [Space]
-    public bool NoTuto;
+    public bool NoTuto, isTuto;
 
     Player Player;
 
     int tutoNum;
     bool isSet;
+        
 
     void Awake()
     {
@@ -64,6 +66,8 @@ public class Tutorial : MonoBehaviour
 
     void TutorialOn(bool isActive)
     {
+        isTuto = isActive;
+
         TutorialFloor.SetActive(isActive);
 
         TutoUIs[TutoUIs.Length - 1].GetComponent<RectTransform>().anchoredPosition = ShootBtn.GetComponent<RectTransform>().anchoredPosition + Vector2.up * 300;
@@ -158,6 +162,8 @@ public class Tutorial : MonoBehaviour
         TutorialBlur.SetActive(false);
 
         gameObject.SetActive(false);
+
+        isTuto = false;
     }
 
 }

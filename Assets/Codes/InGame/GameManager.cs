@@ -26,10 +26,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] float maxGap = 160;
     [SerializeField] float[] defPer = { 70, 30, 0, 0, 0, 0};
 
-    [Header("[ Stamina ]")]
+    [Header("[ Player Stamina ]")]
     public float totalStamina = 100;
     public float reGenRate = 0.05f;
-    public Slider StaminaSlider;
 
     [Header("[ Code ]")]
     public GoogleAd googleAd;
@@ -311,13 +310,13 @@ public class GameManager : MonoBehaviour
                 break;
 
             case 5:
-                defPer = new float[] { 6, 17, 17, 30, 30, 0 };
+                defPer = new float[] { 6, 17, 17, 40, 20, 0 };
 
                 break;
 
             case 6:
                 maxGap = 140;
-                defPer = new float[] { 0, 15, 15, 40, 25, 5 };
+                defPer = new float[] { 0, 15, 15, 40, 20, 10 };
 
                 break;
 
@@ -335,7 +334,7 @@ public class GameManager : MonoBehaviour
 
             case 9:
                 maxGap = 110;
-                defPer = new float[] { 0, 15, 15, 40, 5, 25 };
+                defPer = new float[] { 0, 15, 15, 45, 5, 20 };
 
                 break;
 
