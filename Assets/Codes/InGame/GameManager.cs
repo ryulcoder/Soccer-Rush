@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -27,8 +26,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] float[] defPer = { 70, 30, 0, 0, 0, 0};
 
     [Header("[ Player Stamina ]")]
-    public float totalStamina = 100;
-    public float reGenRate = 0.05f;
+    public float totalStamina;
+    public float regenTime;
 
     [Header("[ Code ]")]
     public GoogleAd googleAd;
@@ -75,6 +74,9 @@ public class GameManager : MonoBehaviour
 
         if (ballSkinIdx != PlayerPrefs.GetInt("BallSkin", 0))
             ballSkinIdx = PlayerPrefs.GetInt("BallSkin", 0);
+
+        totalStamina = PlayerPrefs.GetFloat("TotalStamina", 100);
+        regenTime = PlayerPrefs.GetFloat("RegenTime", 2);
 
     }
 

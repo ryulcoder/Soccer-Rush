@@ -9,7 +9,7 @@ public class Stamina : MonoBehaviour
 
     [SerializeField] float totalStamina;
     [SerializeField] float stamina;
-    [SerializeField] float regenRate;
+    [SerializeField] float regenTime;
 
     GameManager GameManager;
     Player Player;
@@ -28,7 +28,7 @@ public class Stamina : MonoBehaviour
         Player = Player.Instance;
 
         totalStamina = GameManager.totalStamina;
-        regenRate = GameManager.reGenRate;
+        regenTime = GameManager.regenTime;
 
         stamina = totalStamina;
 
@@ -36,7 +36,7 @@ public class Stamina : MonoBehaviour
         StaminaSlider.maxValue = totalStamina; // 최대값 설정
         StaminaSlider.value = stamina;
 
-        InvokeRepeating(nameof(ReGenStamina), 2, 2);
+        InvokeRepeating(nameof(ReGenStamina), 2, regenTime);
     }
 
     
@@ -56,10 +56,10 @@ public class Stamina : MonoBehaviour
             return;
         }
 
-        if (stamina + regenRate * totalStamina > totalStamina)
+        if (stamina + 0.05f * totalStamina > totalStamina)
             stamina = totalStamina;
         else
-            stamina += regenRate * totalStamina;
+            stamina += 0.05f * totalStamina;
     }
 
     public bool UseStamina(float sta)
