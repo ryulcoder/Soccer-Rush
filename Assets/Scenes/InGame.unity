@@ -2340,6 +2340,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: GoalPost
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b50d1411dce9f4e44b79e796c78411da,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4839,9 +4844,9 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6478536213147159724, guid: 1fba2235bef00ab4b817d5cf2dd91b86, type: 3}
-  - {fileID: -3846018093981099296, guid: 1fba2235bef00ab4b817d5cf2dd91b86, type: 3}
-  - {fileID: 4874126678125670354, guid: 1fba2235bef00ab4b817d5cf2dd91b86, type: 3}
+  - {fileID: 2100000, guid: 16517882d6aea6148934319096ed41cd, type: 2}
+  - {fileID: 2100000, guid: e2bfb601ca6ac0749baae2a5c7b75221, type: 2}
+  - {fileID: 2100000, guid: c1fd9cd41594c3b4f80bd56cb112e983, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
