@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627a7a483b1199946a987538a36d4fb9, type: 3}
+  m_Name: OrangeBall
+  m_EditorClassIdentifier: 
+  ballType: 1
+  goalType: 0
+  basic: 0
+  ballAblity: "\uD0B9\uC655\uC9F1"
+  amount: 1000
