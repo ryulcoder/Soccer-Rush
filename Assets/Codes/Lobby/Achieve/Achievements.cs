@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static AchData;
 using static BallData;
 
 public class Achievements : MonoBehaviour
@@ -13,12 +14,17 @@ public class Achievements : MonoBehaviour
 
     public int amount;
 
+    public Image image;
+
     Slider slider;
     TextMeshProUGUI sliderText;
     public TextMeshProUGUI effectText;
 
     public GameObject GetButton;
     Button GetButtonUi;
+
+    public GameObject completePanel;
+    public GameObject completeSign;
 
     private void Awake()
     {
@@ -32,19 +38,17 @@ public class Achievements : MonoBehaviour
         SetPlayerPrefs();
     }
 
-    private void OnEnable()
+    void Start()
     {
         effectText.text = achData.effect;
+        
+    }
 
-        if (get)
-        {
-            GetState();
-        }
-        else
-        {
-            SetSlider();
-        }
-
+    private void OnEnable()
+    {
+        Complete();
+        GetDown();
+        SetSlider();
     }
 
     private void Update()
@@ -61,24 +65,30 @@ public class Achievements : MonoBehaviour
 
         float amount;
 
-        if (ballData.goalType == GoalType.totaldistance)
+        switch (achData.achType)
         {
-            amount = PlayerPrefs.GetInt("TotalDistance");
-            Debug.Log(amount);
-            sliderText.text = "TotalDistance" + amount.ToString() + "<#b3bedb>/" + ballData.amount.ToString();
+            case AchType.bestScore:
+                amount = PlayerPrefs.GetInt("BestScore");
+                sliderText.text = amount.ToString() + "<#b3bedb>/" + achData.amount.ToString();
+                break;
+            case AchType.totalDistance:
+                amount = PlayerPrefs.GetInt("TotalDistance");
+                sliderText.text = amount.ToString() + "<#b3bedb>/" + achData.amount.ToString();
+                break;
+            case AchType.killDefenders:
+                amount = PlayerPrefs.GetInt("KillDefenders");
+                sliderText.text = amount.ToString() + "<#b3bedb>/" + achData.amount.ToString();
+                break;
+            case AchType.topStage:
+                amount = PlayerPrefs.GetInt("TopStage");
+                sliderText.text = amount.ToString() + "<#b3bedb>/" + achData.amount.ToString();
+                break;
+            default:
+                amount = 0;
+                break;
+        }
 
-        }
-        else if (ballData.goalType == GoalType.bestDistance)
-        {
-            amount = PlayerPrefs.GetInt("bestDistance");
-            sliderText.text = "bestDistance" + amount.ToString() + "<#b3bedb>/" + ballData.amount.ToString();
-        }
-        else
-        {
-            amount = 0;
-        }
-
-        float goalRate = amount / ballData.amount;
+        float goalRate = amount / achData.amount;
         slider.value = goalRate;
         Debug.Log(goalRate);
 
@@ -92,17 +102,10 @@ public class Achievements : MonoBehaviour
     // 달성했지만 겟은 누르지 않았을때
     void NoGetState()
     {
-        slider.gameObject.SetActive(false);
-        GetButton.SetActive(true);
-    }
-
-    // 이미 받은 상태일때
-    void GetState()
-    {
-        slider.gameObject.SetActive(false);
-        if ((int)ballData.ballType == PlayerPrefs.GetInt("BallNum"))
+        if (!get)
         {
-            //Equipped.SetActive(true);
+            slider.gameObject.SetActive(false);
+            GetButton.SetActive(true);
         }
     }
 
@@ -110,26 +113,43 @@ public class Achievements : MonoBehaviour
     {
         GetButton.SetActive(false);
         get = true;
+        PlayerPrefs.SetFloat(achData.achName, achData.effectAmount);
+        GetDown();
     }
 
-    void ClickEquip()
-    {
-        PlayerPrefs.SetInt("BallNum", (int)ballData.ballType);
-        PlayerPrefs.Save();
-    }
-
+    // 실험용
     void SetPlayerPrefs()
     {
-        PlayerPrefs.SetInt("TotalDistance", 100);
+        PlayerPrefs.SetInt("BestScore", 1500);
         PlayerPrefs.Save();
 
     }
 
-    // 완료했을시 밑에 내리기
-    void CompleteDown()
+    // 완료했을시
+    void Complete()
     {
-
+        if (!get)
+        { 
+            if (PlayerPrefs.HasKey(achData.achName))
+            {
+                get = true;
+            }
+        }
     }
+
+    // 밑으로 내리는 함수
+    void GetDown()
+    {
+        if (get)
+        {
+            GetButton.SetActive(false);
+            slider.gameObject.SetActive(false);
+            completePanel.SetActive(true);
+            completeSign.SetActive(true);
+            gameObject.transform.SetAsLastSibling();
+        }
+    }
+
     //// 슬라이더 수치 정해주기
     //void SetSliderText()
     //{
