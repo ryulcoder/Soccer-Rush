@@ -26,12 +26,12 @@ public class ExtraScore : MonoBehaviour
     public GameObject JumpExtraParticle;
 
     [Header("[ Limit ]")]
-    public float limitDis = 28;
+    public float limitDis = 35;
     public float limitTime = 0.5f;
 
     public bool tutorial;
 
-    bool isLimit, scoreCoroutine, isCoroutine;
+    bool isLimit, scoreCoroutine;
     string scoreType;
 
     private void Awake()
@@ -111,11 +111,14 @@ public class ExtraScore : MonoBehaviour
             {
                 yield return new WaitForSeconds(0.2f);
 
-                if (BallMove.instance.isTackled || Player.Instance.getTackled || nowDefender.LineCheck())
+                if (BallMove.isTackled || Player.getTackled || nowDefender.LineCheck())
                 {
                     yield break;
                 }
+
             }
+
+            Stamina.instance.GetLimitStamina(scoreType);
 
             if (ExtraParticle)
             {

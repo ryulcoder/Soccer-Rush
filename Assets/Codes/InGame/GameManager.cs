@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,7 +9,10 @@ public class GameManager : MonoBehaviour
     [Header("[ Game ]")]
     public GameObject continueButton;
     public GameObject ADBack;
-    
+
+    [Header("[ Ball Skins ]")]
+    public GameObject[] ballSkins;
+
     [Header("[ Game Setting ]")]
     [SerializeField] float gameSpeed = 1;
     [SerializeField] float speedUp = 0.05f;
@@ -22,6 +24,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] float minGap = 130;
     [SerializeField] float maxGap = 160;
     [SerializeField] float[] defPer = { 70, 30, 0, 0, 0, 0};
+
+    [Header("[ Player Stamina ]")]
+    public float totalStamina;
+    public float regenTime;
 
     [Header("[ Code ]")]
     public GoogleAd googleAd;
@@ -56,6 +62,8 @@ public class GameManager : MonoBehaviour
     public bool aroundDefenderClear;
     bool GameEnd;
 
+    static int ballSkinIdx;
+
     void Awake()
     {
         Instance = this;
@@ -63,12 +71,21 @@ public class GameManager : MonoBehaviour
 #if (!UNITY_EDITOR)
         Shader.WarmupAllShaders();
 #endif
+
+        if (ballSkinIdx != PlayerPrefs.GetInt("BallSkin", 0))
+            ballSkinIdx = PlayerPrefs.GetInt("BallSkin", 0);
+
+        totalStamina = PlayerPrefs.GetFloat("TotalStamina", 100);
+        regenTime = PlayerPrefs.GetFloat("RegenTime", 2);
+
     }
 
     private void Start()
     {
         Player = Player.Instance;
         BallMove = BallMove.instance;
+
+        SetBallSkin();
 
         Tutorial.gameSpeed = gameSpeed;
 
@@ -248,6 +265,15 @@ public class GameManager : MonoBehaviour
     }
 
 
+    void SetBallSkin()
+    {
+        if (ballSkinIdx == 0) return;
+
+        BallMove.GetComponent<MeshFilter>().sharedMesh = ballSkins[ballSkinIdx].GetComponent<MeshFilter>().sharedMesh;
+        BallMove.GetComponent<MeshRenderer>().sharedMaterials = ballSkins[ballSkinIdx].GetComponent<MeshRenderer>().sharedMaterials;
+    }
+
+
     void IncreaseDifficulty()
     {
 
@@ -286,13 +312,13 @@ public class GameManager : MonoBehaviour
                 break;
 
             case 5:
-                defPer = new float[] { 6, 17, 17, 30, 30, 0 };
+                defPer = new float[] { 6, 17, 17, 40, 20, 0 };
 
                 break;
 
             case 6:
                 maxGap = 140;
-                defPer = new float[] { 0, 15, 15, 40, 25, 5 };
+                defPer = new float[] { 0, 15, 15, 40, 20, 10 };
 
                 break;
 
@@ -310,7 +336,7 @@ public class GameManager : MonoBehaviour
 
             case 9:
                 maxGap = 110;
-                defPer = new float[] { 0, 15, 15, 40, 5, 25 };
+                defPer = new float[] { 0, 15, 15, 45, 5, 20 };
 
                 break;
 
