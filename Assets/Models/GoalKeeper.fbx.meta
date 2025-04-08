@@ -243,13 +243,6 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.53960395
-        functionName: Fallen
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
       - time: 0.93564355
         functionName: DivingEnd
         data: 
@@ -302,13 +295,6 @@ ModelImporter:
         messageOptions: 0
       - time: 0.28712872
         functionName: DivingFall
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.4213931
-        functionName: Fallen
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

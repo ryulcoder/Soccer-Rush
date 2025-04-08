@@ -49,41 +49,37 @@ public class Goalkeeper : MonoBehaviour
     {
         if (jump)
         {
-            if (!nextY && GoalKeeperTrans.localPosition.y >= GoalPoint.localPosition.y)
+            if (GoalKeeperTrans.localPosition.y >= GoalPoint.localPosition.y)
+            {
+                jump =false;
+                fall = true;
+
+                return;
+            }
+
+            GoalKeeperTrans.localPosition += divingSpeed * Time.deltaTime * divingDir;
+            divingSpeed += Time.deltaTime * 7;
+
+        }
+
+        if (fall) 
+        {
+            if (GoalKeeperTrans.localPosition.y <= 0)
+            {
+                fall = false;
+
+                GoalKeeperTrans.localPosition = new(GoalKeeperTrans.localPosition.x, 0, GoalKeeperTrans.localPosition.z);
+                return;
+            }
+            else if (!nextY && GoalKeeperTrans.localPosition.y <= 1)
+            {
                 nextY = true;
-            
-            if (nextY && GoalKeeperTrans.localPosition.y >= 1)
-            {
-                jump = false;
+                divingSpeed = 1;
             }
-            else if (nextY)
-            {
-                GoalKeeperTrans.localPosition += divingSpeed * Time.deltaTime * Vector3.down;
-                divingSpeed += Time.deltaTime * 5;
-            }
-            else
-            {
-                GoalKeeperTrans.localPosition += divingSpeed * Time.deltaTime * divingDir;
-                divingSpeed += Time.deltaTime * 5;
-            }
-                
+
+            GoalKeeperTrans.localPosition += divingSpeed * Time.deltaTime * divingDir;
+            divingSpeed += Time.deltaTime * 15;
         }
-
-
-
-        if (fall && GoalKeeperTrans.localPosition.y <= 0)
-        {
-            fall = false;
-
-            GoalKeeperTrans.localPosition = new(GoalKeeperTrans.localPosition.x, 0,GoalKeeperTrans.localPosition.z);
-        }
-        else if (fall)
-        {
-            GoalKeeperTrans.localPosition += divingSpeed * Time.deltaTime * Vector3.down;
-            divingSpeed += Time.deltaTime * 4;
-        }
-
-
     }
 
     public void Reset()
@@ -92,6 +88,7 @@ public class Goalkeeper : MonoBehaviour
         jump = false; 
         fall = false;
         isGoal = false;
+        nextY = false;
 
         GoalkeeperAni.Play("Idle", -1, 0f);
     }
@@ -115,22 +112,18 @@ public class Goalkeeper : MonoBehaviour
     public void DivingJump()
     {
         jump = true;
-        nextY = false;
     }
     public void DivingFall()
     {
-        divingSpeed = 20;
-        nextY = true;
+        divingSpeed = 8;
 
-        Debug.LogWarning("Fall");
-    }
-
-    public void Fallen()
-    {
         jump = false;
         fall = true;
 
-        Debug.LogWarning("Fallen");
+        if (right)
+            divingDir = Vector3.down + Vector3.right * 0.5f;
+        else
+            divingDir = Vector3.down + Vector3.left * 0.5f;
     }
 
     public void DivingEnd()
