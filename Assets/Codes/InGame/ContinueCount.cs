@@ -10,7 +10,7 @@ public class ContinueCount : MonoBehaviour
 
     void OnEnable()
     {
-        count = 10;
+        count = 5;
         StartCoroutine(CountReduce());
     }
 
