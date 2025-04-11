@@ -28,9 +28,11 @@ public class ImpactGame : MonoBehaviour
 
     private void OnEnable()
     {
+        slider.value = 5f;
         count = 5;
-        StartCoroutine(StartImpact());
-
+        button.interactable = false;
+        canEnemy = false;
+        StartCoroutine(ReadyImpact());
     }
 
     void Update()
@@ -45,15 +47,6 @@ public class ImpactGame : MonoBehaviour
         EnemyImpact();
     }
 
-    IEnumerator StartImpact()
-    {
-        yield return new WaitForSeconds(1f);
-        TapButton.SetActive(true);
-        yield return new WaitForSeconds(1f);
-        canEnemy = true;
-        StartCoroutine(ReduceCount());
-    }
-
     public void OnButtonClick()
     {
         // 제한 초과 시 작동하지 않음
@@ -64,9 +57,20 @@ public class ImpactGame : MonoBehaviour
         accumulatedIncrease += increaseAmount;
     }
 
+    IEnumerator ReadyImpact()
+    {
+        countText.text = "Ready";
+        countText.color = Color.white;
+        yield return new WaitForSeconds(1f);
+        countText.text = "Start";
+        yield return new WaitForSeconds(1f);
+        canEnemy = true;
+        StartCoroutine(ReduceCount());
+    }
+
+
     IEnumerator ReduceCount()
     {
-        countText.gameObject.SetActive(true);
         button.interactable = true;
         while(count > 0)
         {
@@ -116,14 +120,5 @@ public class ImpactGame : MonoBehaviour
         }
 
         Debug.Log(playerWin);
-    }
-
-    private void OnDisable()
-    {
-        countText.gameObject.SetActive(false);
-        slider.value = 5f;
-        count = 5;
-        button.interactable = false;
-
     }
 }

@@ -203,7 +203,6 @@ public class LeaderBoard : MonoBehaviour
         myRank = scoreResponse.Rank;
         Debug.Log(myScore.ToString());
         Debug.Log(myNickname);
-        myNickname = myNickname.Split('#')[0];
 
         myPlayerIdText.text = myNickname;
         myPlayerScore.text = myScore.ToString();
@@ -226,7 +225,7 @@ public class LeaderBoard : MonoBehaviour
 
             foreach (var playerScore in scoresResponse.Results)
             {
-                string playername = playerScore.PlayerName.Split('#')[0];
+                string playername = playerScore.PlayerName;
                 playerIdText[index].text = playername;
                 playerScoreText[index].text = playerScore.Score.ToString();
                 index++;

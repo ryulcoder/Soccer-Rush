@@ -15,7 +15,7 @@ public class Stamina : MonoBehaviour
     Player Player;
 
     public Slider StaminaSlider;
-    public Text StaminaText;
+    //public Text StaminaText;
 
     private void Awake()
     {
@@ -45,7 +45,7 @@ public class Stamina : MonoBehaviour
         if (StaminaSlider.value != stamina)
         {
             StaminaSlider.value = Mathf.Lerp(StaminaSlider.value, stamina, Time.deltaTime * 5);
-            StaminaText.text = stamina + " / " + totalStamina;
+            //StaminaText.text = stamina + " / " + totalStamina;
         }
     }
 
