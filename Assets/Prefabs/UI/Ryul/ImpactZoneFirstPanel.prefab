@@ -690,14 +690,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6703337204448150171}
-  - component: {fileID: 2070382437458360023}
   m_Layer: 5
   m_Name: ImpactGame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6703337204448150171
 RectTransform:
   m_ObjectHideFlags: 0
@@ -720,24 +719,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -2, y: -2}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2070382437458360023
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4150824489253598988}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8747cc0128761147aa48b289a24f960, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slider: {fileID: 7223884605879994042}
-  increaseAmount: 0.1
-  decreaseRate: 0.5
-  playerWin: 0
-  countText: {fileID: 8966639946202841779}
-  TapButton: {fileID: 4168468137290373006}
 --- !u!1 &4168468137290373006
 GameObject:
   m_ObjectHideFlags: 0
@@ -756,7 +737,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1084845968390728946
 RectTransform:
   m_ObjectHideFlags: 0
@@ -859,7 +840,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2070382437458360023}
+      - m_Target: {fileID: 8492617676840478392}
         m_TargetAssemblyTypeName: ImpactGame, Assembly-CSharp
         m_MethodName: OnButtonClick
         m_Mode: 1
@@ -888,7 +869,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1398190175493624040
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1136,7 +1117,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -84, y: -10}
-  m_SizeDelta: {x: 507.64868, y: 188.8628}
+  m_SizeDelta: {x: 400.24, y: 118.4}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &5035839645174800225
 CanvasRenderer:
@@ -1166,9 +1147,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Player 2
-
-'
+  m_text: Lv1. Martin
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dc2cc93475f76427c86a8262bee36b88, type: 2}
   m_sharedMaterial: {fileID: 2269793554123077917, guid: dc2cc93475f76427c86a8262bee36b88,
@@ -1196,12 +1175,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 90
+  m_fontSize: 78.7
   m_fontSizeBase: 90
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 82.1
   m_fontStyle: 0
   m_HorizontalAlignment: 4
   m_VerticalAlignment: 256
@@ -1250,6 +1229,7 @@ GameObject:
   - component: {fileID: 7981847817017603973}
   - component: {fileID: 3926860429365947557}
   - component: {fileID: 695096329225099075}
+  - component: {fileID: 8492617676840478392}
   m_Layer: 5
   m_Name: ImpactZoneFirstPanel
   m_TagString: Untagged
@@ -1334,7 +1314,28 @@ MonoBehaviour:
   c: {fileID: 3848212008307157531}
   background: {fileID: 4776017009003968478}
   vsImage: {fileID: 8723967874201770203}
-  ImpactGame: {fileID: 4150824489253598988}
+  impactGame: {fileID: 8492617676840478392}
+  goalkeeperName: {fileID: 6027914101618516906}
+  playerName: {fileID: 422992476522384305}
+  goalkeeperNames: []
+--- !u!114 &8492617676840478392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6740956854829946495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8747cc0128761147aa48b289a24f960, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 7223884605879994042}
+  increaseAmount: 0.1
+  decreaseRate: 0.5
+  playerWin: 0
+  countText: {fileID: 8966639946202841779}
+  TapButton: {fileID: 4168468137290373006}
 --- !u!1 &6937440705509750041
 GameObject:
   m_ObjectHideFlags: 0
@@ -1353,7 +1354,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &75639409019189340
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1684,7 +1685,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 72.69922, y: 143}
-  m_SizeDelta: {x: 522.3122, y: 188.86276}
+  m_SizeDelta: {x: 425.8, y: 112}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &9108560925416196537
 CanvasRenderer:
@@ -1714,7 +1715,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Player 1
+  m_text: 'Player
 
 '
   m_isRightToLeft: 0
@@ -1744,12 +1745,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 90
+  m_fontSize: 89.6
   m_fontSizeBase: 90
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 90
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256

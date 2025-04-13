@@ -32,7 +32,9 @@ public class ImpactGame : MonoBehaviour
         count = 5;
         button.interactable = false;
         canEnemy = false;
-        StartCoroutine(ReadyImpact());
+        slider.gameObject.SetActive(false);
+        countText.gameObject.SetActive(false);
+        TapButton.SetActive(false);
     }
 
     void Update()
@@ -55,6 +57,14 @@ public class ImpactGame : MonoBehaviour
 
         slider.value += increaseAmount;
         accumulatedIncrease += increaseAmount;
+    }
+
+    public void StartGame()
+    {
+        slider.gameObject.SetActive(true);
+        countText.gameObject.SetActive(true);
+        TapButton.SetActive(true);
+        StartCoroutine(ReadyImpact());
     }
 
     IEnumerator ReadyImpact()
@@ -92,7 +102,9 @@ public class ImpactGame : MonoBehaviour
 
         if(count <= 0)
         {
-            ImpactEnd();
+            canEnemy = false;
+            button.interactable = false;
+            StartCoroutine(ImpactEnd());
         }
     }
 
@@ -108,8 +120,10 @@ public class ImpactGame : MonoBehaviour
         }
     }
 
-    void ImpactEnd()
+    IEnumerator ImpactEnd()
     {
+        yield return new WaitForSeconds(1f);
+
         if(slider.value > 5f)
         {
             playerWin = true;
@@ -119,6 +133,7 @@ public class ImpactGame : MonoBehaviour
             playerWin=false;
         }
 
+        gameObject.SetActive(false);
         Debug.Log(playerWin);
     }
 }

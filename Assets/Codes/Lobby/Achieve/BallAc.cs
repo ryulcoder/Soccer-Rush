@@ -8,160 +8,51 @@ using static BallData;
 public class BallAc : MonoBehaviour
 {
     public BallData ballData;
-
-    bool get;
-
-    public int amount;
-
-    Slider slider;
-    TextMeshProUGUI sliderText;
-    public TextMeshProUGUI effectText;
-    Toggle toggle;
-
-    public GameObject GetButton;
-    Button GetButtonUi;
-
     public GameObject EquipButton;
-    Button EquipButtonUi;
+    public GameObject UnlockButton;
+    public GameObject EquippedButton;
 
-    public GameObject Equipped;
-
-    private void Awake()
+    void OnEnable()
     {
-        slider = GetComponentInChildren<Slider>();
-        toggle = GetComponentInChildren<Toggle>();
-        sliderText = slider.GetComponentInChildren<TextMeshProUGUI>();
-
-        EquipButtonUi = EquipButton.GetComponent<Button>();
-        EquipButtonUi.onClick.AddListener(ClickEquip);
-
-        GetButtonUi = EquipButton.GetComponent<Button>();
-        GetButtonUi.onClick.AddListener(ClickGet);
-
-        if (ballData.basic)
+        if (PlayerPrefs.HasKey(ballData.ballName))
         {
-            get = true;
-        }
-        SetPlayerPrefs();
-    }
-
-    private void OnEnable()
-    {
-        effectText.text = ballData.ballAblity;
-        
-        if (get)
-        {
-            GetState();
-        }
-        else
-        {
-            SetSlider();
-        }
-
-    }
-
-    private void Update()
-    {
-        if (!get)
-            return;
-
-        if (toggle.isOn)
-        {
-            Equipped.SetActive(true);
-            EquipButton.SetActive(false);
-        }
-    }
-
-    // 달성 슬라이더 조정
-    void SetSlider()
-    {
-        if (slider == null)
-            return;
-
-        float amount;
-
-        if (ballData.goalType == GoalType.totaldistance)
-        {
-            amount = PlayerPrefs.GetInt("TotalDistance");
-            Debug.Log(amount);
-            sliderText.text = "TotalDistance" + amount.ToString()+ "<#b3bedb>/"+ ballData.amount.ToString();
-
-        }
-        else if(ballData.goalType == GoalType.bestDistance)
-        {
-            amount = PlayerPrefs.GetInt("bestDistance");
-            sliderText.text = "bestDistance" + amount.ToString() + "<#b3bedb>/" + ballData.amount.ToString();
-        }
-        else
-        {
-            amount = 0;
-        }
-
-        float goalRate = amount / ballData.amount;
-        slider.value = goalRate;
-        Debug.Log(goalRate);
-
-
-        if (goalRate >= 1)
-        {
-            NoGetState();
-        }
-    }
-
-    // 달성했지만 겟은 누르지 않았을때
-    void NoGetState()
-    {
-        slider.gameObject.SetActive(false);
-        GetButton.SetActive(true);
-    }
-
-    // 이미 받은 상태일때
-    void GetState()
-    {
-        slider.gameObject.SetActive(false);
-        if ((int)ballData.ballType == PlayerPrefs.GetInt("BallNum"))
-        {
-            Equipped.SetActive(true);
-        }
-        else
-        {
+            UnlockButton.SetActive(false);
             EquipButton.SetActive(true);
+
+            // 공이 장착되어있을시
+            if (PlayerPrefs.GetInt("EquippedBall") == ballData.ballNo)
+            {
+                int ball = PlayerPrefs.GetInt("EquippedBall");
+                Debug.Log(ball);
+                EquipButton.SetActive(false);
+                EquippedButton.SetActive(true);
+            }
+        }
+
+        // 기본 공 설정
+        if (!PlayerPrefs.HasKey("EquippedBall"))
+        {
+            if (ballData.ballNo == 0)
+            {
+                EquipButton.SetActive(false);
+                EquippedButton.SetActive(true);
+            }
         }
     }
 
-    void ClickGet()
+    public void SelectBall()
     {
-        GetButton.SetActive(false);
+        BallManager.instance.ChangeBall();
+        PlayerPrefs.SetInt("EquippedBall", ballData.ballNo);
+        PlayerPrefs.Save();
+        EquipButton.SetActive(false);
+        EquippedButton.SetActive(true);
+    }
+
+    public void UnSelectBall()
+    {
         EquipButton.SetActive(true);
-        get = true;
+        EquippedButton.SetActive(false);
     }
 
-    void ClickEquip()
-    {
-        PlayerPrefs.SetInt("BallNum", (int)ballData.ballType);
-        PlayerPrefs.Save();
-        toggle.isOn = true;
-    }
-
-    void SetPlayerPrefs()
-    {
-        PlayerPrefs.SetInt("TotalDistance",100);
-        PlayerPrefs.Save();
-
-    }
-
-    //// 슬라이더 수치 정해주기
-    //void SetSliderText()
-    //{
-    //    switch (ballData.goalType)
-    //    {
-    //        case GoalType.distance:
-    //            sliderText.text = ballData.amount.ToString();
-
-    //            break;
-    //        case GoalType.point:
-    //            break;
-    //    }
-    //    sliderText.text = ballData.amount.ToString();
-    //}
 }

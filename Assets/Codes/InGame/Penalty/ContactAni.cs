@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class ContactAni : MonoBehaviour
@@ -11,11 +12,27 @@ public class ContactAni : MonoBehaviour
 
     public GameObject background;
     public GameObject vsImage;
-    public GameObject ImpactGame;
+    public ImpactGame impactGame;
 
+    int goalkeeperStage;
+    public TextMeshProUGUI goalkeeperName;
+    public TextMeshProUGUI playerName;
+
+    public string[] goalkeeperNames;
+
+
+    void Awake()
+    {
+        if (PlayerPrefs.HasKey("nickname"))
+        {
+            playerName.text = PlayerPrefs.GetString("nickname");
+        }
+        
+    }
     void OnEnable()
     {
         PlaySequence();
+        goalkeeperStage++;
     }
 
     void PlaySequence()
@@ -54,7 +71,7 @@ public class ContactAni : MonoBehaviour
     IEnumerator WaitMovePanel()
     {
         yield return new WaitForSeconds(1f);
-        ImpactGame.SetActive(true);
+        impactGame.StartGame();
     }
 
     private void OnDisable()

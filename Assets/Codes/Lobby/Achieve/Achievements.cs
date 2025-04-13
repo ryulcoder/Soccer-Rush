@@ -4,7 +4,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static AchData;
-using static BallData;
 
 public class Achievements : MonoBehaviour
 {

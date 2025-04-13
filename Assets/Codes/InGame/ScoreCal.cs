@@ -24,6 +24,7 @@ public class ScoreCal : MonoBehaviour
     public GameObject BestScoreStamp;
     public GameObject lastBestScore;
     public GameObject settingButton;
+    public Slider impactSlider;         // 임팩트 존 슬라이더
     public TextMeshProUGUI checkText;
 
     string unityLeaderboard = "SoccerRushRanking";
@@ -63,6 +64,7 @@ public class ScoreCal : MonoBehaviour
     {
         distanceText.text = Distance.ToString() + "m";
         scoreText.text = Score.ToString();
+        impactSlider.value = (distance % 200)/ 200;
     }
     
     // 결과창 보여주기
@@ -98,6 +100,7 @@ public class ScoreCal : MonoBehaviour
         }
         else
         {
+            SendAch();
             AddScore(unityLeaderboard, Score);
             SceneManager.LoadScene("Lobby");
         }
@@ -125,6 +128,7 @@ public class ScoreCal : MonoBehaviour
         }
         else
         {
+            SendAch();
             AddScore(unityLeaderboard, Score);
             SceneManager.LoadScene("InGame");
         }
@@ -157,5 +161,12 @@ public class ScoreCal : MonoBehaviour
         });
     }
 
-
+    // 업적 저장로그
+    void SendAch()
+    {
+        int pastTD = PlayerPrefs.GetInt("TotalDistance");
+        PlayerPrefs.SetInt("TotalDistance", Distance + pastTD);
+        //PlayerPrefs.SetInt("BreakThrough", Distance + pastTD);
+        
+    }
 }

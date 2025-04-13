@@ -71,7 +71,6 @@ public class AchManager : MonoBehaviour
                         break;
 
                 }
-                Debug.Log("bangOn");
             }
 
         }

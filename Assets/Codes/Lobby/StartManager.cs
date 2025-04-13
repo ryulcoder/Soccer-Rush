@@ -14,6 +14,7 @@ public class StartManager : MonoBehaviour
     public float staminaRegen;
     public float impactDmg;
     public float scoreMulti;
+    public int ball;
 
     void Awake()
     {
@@ -31,6 +32,10 @@ public class StartManager : MonoBehaviour
     
     public void CheckAch()
     {
+        int equippedBall = PlayerPrefs.GetInt("EquippedBall");
+        ball = equippedBall;
+        Debug.Log(ball);
+
         if (achDatas == null) 
             return; 
         foreach (AchData data in achDatas)
