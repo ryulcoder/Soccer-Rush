@@ -69,7 +69,7 @@ public class Tutorial : MonoBehaviour
 
         TutorialFloor.SetActive(isActive);
 
-        TutoUIs[TutoUIs.Length - 1].GetComponent<RectTransform>().anchoredPosition = ShootBtn.GetComponent<RectTransform>().anchoredPosition + Vector2.up * 300;
+        TutoUIs[^1].GetComponent<RectTransform>().anchoredPosition = ShootBtn.GetComponent<RectTransform>().anchoredPosition + Vector2.up * 300;
 
         if (isActive)
             for (int i = 0; i < Floors.Length; i++)

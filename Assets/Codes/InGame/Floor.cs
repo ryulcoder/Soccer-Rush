@@ -13,7 +13,7 @@ public class Floor : MonoBehaviour
     [Header("[ Floor ]")]
     public Floor otherFloor;
 
-    public List<Vector3> posList;
+    public List<Vector3> posList = new();
 
     static int fpRanInt = 0;
     static int fpRangeInt = 1;
@@ -21,17 +21,24 @@ public class Floor : MonoBehaviour
     static float prevX = -2;
     static float fpDistance = 0;
     static bool useLeftGap, prevLineIs2, fixedPattern;
-    Vector3 floorScale;
 
-    float[] defXs;
+    static string[] defNames = { "StandTackle_Front", "SlidingTackle_Front", "SlidingTackle_Anomaly", "Two_Defenders", "Three_Defenders", "Three_Defenders_Anomaly" };
+
     [SerializeField] float[] defPer;
-    [SerializeField] string[] defNames = { "StandTackle_Front", "SlidingTackle_Front", "SlidingTackle_Anomaly", "Two_Defenders" , "Three_Defenders", "Three_Defenders_Anomaly" };
-
     [SerializeField] float minGap, maxGap;
-    bool onPlayer, inPlayer, coroutine, fpCoolTimeOn, setVar;
-    int fpCount;
 
-    List<GameObject> targetObjs;
+    Vector3 floorScale, settingVec;
+
+    float[] defXs, ranXs;
+
+    bool onPlayer, inPlayer, coroutine, fpCoolTimeOn, setVar;
+    int fpCount, ran, ranDir, fpXIdx, otherXIdx, fpRanNum, defRanIdx;
+    float targetPos, ranNum, rNum, MaxPos;
+    string defStr;
+
+    List<GameObject> targetObjs = new();
+
+    const int totalDef = 85;
 
     void Start()
     {
@@ -54,9 +61,6 @@ public class Floor : MonoBehaviour
         defPer = GameManager.DefPer;
 
         floorScale = transform.localScale;
-        posList = new List<Vector3>();
-        targetObjs = new List<GameObject>();
-        targetObjs = new List<GameObject>();
         defXs = new float[] { -floorScale.x / 3, 0, floorScale.x / 3 };
 
         // 시작시 첫 floor 제외 순차적 수비 세팅
@@ -116,12 +120,13 @@ public class Floor : MonoBehaviour
         {
             PoolManager.SetPopObject("ImpactZone");
 
-            GameObject impactZone = PoolManager.PopSettingObject();
+            targetObjs.Add(PoolManager.PopSettingObject());
 
-            impactZone.transform.SetParent(transform, true);
-            impactZone.transform.localPosition = Vector3.zero;
-            impactZone.SetActive(true);
+            targetObjs[0].transform.SetParent(transform, true);
+            targetObjs[0].transform.localPosition = Vector3.zero;
+            targetObjs[0].SetActive(true);
 
+            targetObjs.Clear();
             yield break;
         }
 
@@ -140,12 +145,8 @@ public class Floor : MonoBehaviour
                 yield break;
         }
 
-        float[] ranXs;
-
-        float targetPos = transform.TransformPoint(0.5f * Vector3.back).z;
-        float MaxPos = targetPos + floorScale.z;
-
-        float ranNum;
+        targetPos = transform.TransformPoint(0.5f * Vector3.back).z;
+        MaxPos = targetPos + floorScale.z;
 
         // 새로운 수비 리스트 좌표 세팅
         while (true)
@@ -174,14 +175,12 @@ public class Floor : MonoBehaviour
 
         }
 
-        float prev = transform.TransformPoint(Vector3.forward * -0.5f).z;
-
         // 세팅한 수비 좌표 리스트를 토대로 수비 옵젝 세팅
         for (int posIdx=0; posIdx < posList.Count; posIdx++)
         {
             ranXs = defXs.OrderBy(_ => Random.value).ToArray();
 
-            string defStr = defNames[RanDef()];
+            defStr = defNames[RanDef()];
 
             // 3라인 수비 무지개 패턴
             if (defStr == "Three_Defenders_Anomaly")
@@ -198,7 +197,7 @@ public class Floor : MonoBehaviour
             // 3라인 수비 패턴
             else if (defStr == "Three_Defenders")
             {
-                int ran = Random.Range(0, 2);
+                ran = Random.Range(0, 2);
 
                 defStr = defNames[ran];
 
@@ -238,9 +237,6 @@ public class Floor : MonoBehaviour
                 targetObjs.Add(PoolManager.PopSettingObject());
             }
                 
-            
-
-            Vector3 settingVec;
 
             // 오브젝트pop 만약 프리팹인경우 복제 생성 후 정해진 위치 이동
             for (int i= 0;i < targetObjs.Count; i++)
@@ -276,10 +272,6 @@ public class Floor : MonoBehaviour
                     
                 targetObjs[i].transform.position = settingVec;
                 targetObjs[i].transform.SetParent(transform);
-
-                string[] nameStrs = targetObjs[i].name.Split("_");
-
-                targetObjs[i].name = "Z(" +(posList[posIdx].z - prev) + ")_" + nameStrs[1].Replace("(clone)", "") + "_" + nameStrs[2].Split("(")[0];
                 targetObjs[i].SetActive(true);
             }
 
@@ -293,7 +285,6 @@ public class Floor : MonoBehaviour
                 prevLineIs2 = false;
             }
 
-            prev = posList[posIdx].z;
             targetObjs.Clear();
         }
 
@@ -304,14 +295,14 @@ public class Floor : MonoBehaviour
     // 랜덤 수비 인덱스 
     int RanDef()
     {
-        float ranNum = Random.value * 100;
+        rNum = Random.value * 100;
 
         for (int i = 0; i < defPer.Length; i++)
         {
-            if (ranNum - defPer[i] <= 0)
+            if (rNum - defPer[i] <= 0)
                 return i;
             else
-                ranNum -= defPer[i];
+                rNum -= defPer[i];
 
         }
 
@@ -321,14 +312,11 @@ public class Floor : MonoBehaviour
 
     void FixedPatternSetDefends()
     {
-        int ranDir = Random.Range(1, 3);
+        ranDir = Random.Range(1, 3);
         if (ranDir == 1) ranDir = 0;
 
-        const int totalDef = 85;
-
-        float targetPos = transform.TransformPoint(0.5f * Vector3.back).z;
+        targetPos = transform.TransformPoint(0.5f * Vector3.back).z;
         float ranNum = Random.Range(minGap, maxGap);
-        int fpXIdx, otherXIdx = 0;
 
         if (!useLeftGap)
         {
@@ -337,9 +325,6 @@ public class Floor : MonoBehaviour
         }
 
         targetPos += ranNum;
-
-
-        int fpRanNum;
 
         if (fpCount < 2 && fpRangeInt == 2)
             fpRanNum = Random.Range(1, fpRangeInt);
@@ -392,8 +377,6 @@ public class Floor : MonoBehaviour
 
             // 2라인 블락 가운데 스킬 회피 전용 고정 패턴
             case 1:
-                int defRanIdx = 0;
-
                 fpXIdx = Random.Range(0, 2);
                 if (fpXIdx == 1)
                 {
@@ -476,10 +459,6 @@ public class Floor : MonoBehaviour
         {
             targetObjs[i].transform.position = posList[i];
             targetObjs[i].transform.SetParent(transform);
-
-            string[] nameStrs = targetObjs[i].name.Split("_");
-            targetObjs[i].name = "Z(" + posList[i].z + ")_" + nameStrs[1].Replace("(clone)", "") + "_" + nameStrs[2].Split("(")[0];
-
             targetObjs[i].SetActive(true);
 
         }

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -62,6 +63,21 @@ public class GameManager : MonoBehaviour
     [SerializeField] bool isImpact;
 
     public bool aroundDefenderClear, impactFail;
+
+    static List<float[]> difficultyList = new List<float[]>
+    {
+        new float[] { 70, 30, 0, 0, 0, 0 },
+        new float[] { 42.5f, 42.5f, 15, 0, 0, 0 },
+        new float[] { 25, 25, 25, 25, 0, 0 },
+        new float[] { 20, 20, 30, 30, 0, 0 },
+        new float[] { 10, 20, 25, 45, 0, 0 },
+        new float[] { 6, 17, 17, 40, 20, 0 },
+        new float[] { 0, 15, 15, 40, 20, 10 },
+        new float[] { 0, 15, 15, 50, 20, 10 },
+        new float[] { 0, 15, 15, 40, 10, 20 },
+        new float[] { 0, 15, 15, 45, 5, 20 },
+        new float[] { 0, 15, 15, 35, 5, 30 }
+    };
 
     public bool IsImpact {  
         get 
@@ -349,7 +365,6 @@ public class GameManager : MonoBehaviour
 
     void IncreaseDifficulty()
     {
-
         // Def [ stand, sliding, anomaly, 2_def, 3_def, 3_def_anomaly]
         switch (count)
         {
@@ -357,65 +372,54 @@ public class GameManager : MonoBehaviour
                 minGap = 130;
                 maxGap = 160;
 
-                defPer = new float[] { 70, 30, 0, 0, 0, 0 };
                 break;
 
             case 1:
                 minGap = 120;
-                defPer = new float[] { 42.5f, 42.5f, 15, 0, 0, 0 };
 
                 break;
 
             case 2:
                 minGap = 110;
-                defPer = new float[] { 25, 25, 25, 25, 0, 0 };
 
                 break;
 
             case 3:
                 minGap = 100;
-                defPer = new float[] { 20, 20, 30, 30, 0, 0 };
 
                 break;
 
             case 4:
                 maxGap = 150;
-                defPer = new float[] { 10, 20, 25, 45, 0, 0 };
 
                 break;
 
             case 5:
-                defPer = new float[] { 6, 17, 17, 40, 20, 0 };
 
                 break;
 
             case 6:
                 maxGap = 140;
-                defPer = new float[] { 0, 15, 15, 40, 20, 10 };
 
                 break;
 
             case 7:
                 maxGap = 130;
-                defPer = new float[] { 0, 15, 15, 50, 20, 10 };
 
                 break;
 
             case 8:
                 maxGap = 120;
-                defPer = new float[] { 0, 15, 15, 40, 10, 20 };
 
                 break;
 
             case 9:
                 maxGap = 110;
-                defPer = new float[] { 0, 15, 15, 45, 5, 20 };
 
                 break;
 
             case 10:
                 maxGap = 100;
-                defPer = new float[] { 0, 15, 15, 35, 5, 30 };
 
                 break;
 
@@ -423,6 +427,8 @@ public class GameManager : MonoBehaviour
                 return;
 
         }
+
+        defPer = difficultyList[count];
     }
 
 

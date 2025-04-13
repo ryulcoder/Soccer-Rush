@@ -11,7 +11,6 @@ public class Player : MonoBehaviour
     Stamina Stamina;
 
     Transform PlayerTransform;
-    Rigidbody PlayerRigibody;
     Animator PlayerAni;
 
     [Header("Particles")]
@@ -22,12 +21,12 @@ public class Player : MonoBehaviour
     public Transform TileTransform;
 
     public float speed, jumpSpeed, distance;
-    float totalSpeed, prev_x, next_x, returnZero;
+    float totalSpeed, next_x, returnZero;
 
     public bool dribbleSlowStart, getTackled, isAct, isImpact;
     bool start, dontMove, ballReset, isDribble, isJump, isSpin, isAvoid;
 
-    Vector3 direction, defaultVec;
+    Vector3 direction, defaultVec, movePos;
 
     public AnimatorStateInfo stateInfo;
 
@@ -63,15 +62,11 @@ public class Player : MonoBehaviour
         Stamina = Stamina.instance;
 
         PlayerTransform = transform;
-        PlayerRigibody = GetComponent<Rigidbody>();
         PlayerAni = GetComponent<Animator>();
 
         isJump = isSpin = true;
 
         distance = TileTransform.localScale.x / 3;
-
-        prev_x = PlayerRigibody.position.x;
-
 
         PlayerAni.SetTrigger("WaitRun");
 
@@ -139,21 +134,19 @@ public class Player : MonoBehaviour
     // 플레이어 좌우 움직임 업데이트 로직
     void PlayerMove_Update()
     {
-        Vector3 position = PlayerTransform.position;
+        movePos = PlayerTransform.position;
 
-        if (next_x != position.x)
+        if (next_x != movePos.x)
         {
             // 도착위치 도달 시 스탑 후 초기화
-            if (direction.x > 0 && position.x >= next_x - 1 || direction.x < 0 && position.x <= next_x + 1)
+            if (direction.x > 0 && movePos.x >= next_x - 1 || direction.x < 0 && movePos.x <= next_x + 1)
             {
                 isAct = false;
 
-                PlayerTransform.position = Vector3.right * next_x + Vector3.up * position.y + Vector3.forward * position.z;
+                PlayerTransform.position = Vector3.right * next_x + Vector3.up * movePos.y + Vector3.forward * movePos.z;
                 
                 if (stateInfo.IsName("Move_Left") || stateInfo.IsName("Move_Right"))
                     PlayerAni.SetTrigger("ReDribble");
-
-                prev_x = next_x;
             }
             else
                 PlayerTransform.position += 22 * Time.deltaTime * direction;
@@ -213,7 +206,7 @@ public class Player : MonoBehaviour
             LobbyAudioManager.instance.PlaySfx(LobbyAudioManager.Sfx.kick);
         }
 
-        direction = new(moveDirection, 0, 0);
+        direction = Vector3.right * moveDirection;
         next_x += moveDirection * distance;
 
         if (moveDirection > 0)
@@ -314,7 +307,6 @@ public class Player : MonoBehaviour
 
         PlayerAni.SetTrigger(tackleName);
 
-        Debug.LogWarning("태클 : " + tackleName);
     }
 
     // 슛팅 버튼 누를시
@@ -341,7 +333,7 @@ public class Player : MonoBehaviour
 
     public void PlayerReset()
     {
-        float player_x = gameObject.transform.position.x;
+        float player_x = transform.position.x;
 
         if (player_x >= distance / 2)
             player_x = distance;
@@ -350,7 +342,7 @@ public class Player : MonoBehaviour
         else
             player_x = -distance;
 
-        gameObject.transform.position = new(player_x, gameObject.transform.position.y, gameObject.transform.position.z);
+        gameObject.transform.position = Vector3.right * player_x + Vector3.up * transform.position.y + Vector3.forward * transform.position.z;
     }
 
     public void ImpactSetting()

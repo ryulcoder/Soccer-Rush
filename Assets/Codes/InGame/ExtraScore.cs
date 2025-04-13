@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public class ExtraScore : MonoBehaviour
@@ -15,9 +16,9 @@ public class ExtraScore : MonoBehaviour
 
     [Header("[ ExtraScore ]")]
     [SerializeField] float[] extraScore;
-    [SerializeField] float[] moveExtra = new float[] { 0, 10 };
-    [SerializeField] float[] skillExtra = new float[] { 15, 30 };
-    [SerializeField] float[] shootExtra = new float[] { 100 };
+    static float[] moveExtra = new float[] { 0, 10 };
+    static float[] skillExtra = new float[] { 15, 30 };
+    static float[] shootExtra = new float[] { 100 };
 
     [Header("[ ExtraScore Particle ]")]
     [SerializeField] GameObject ExtraParticle;
@@ -33,6 +34,8 @@ public class ExtraScore : MonoBehaviour
 
     [SerializeField] bool isLimit, scoreCoroutine;
     [SerializeField] string scoreType;
+
+    StringBuilder sb = new ();
 
     private void Awake()
     {
@@ -94,11 +97,16 @@ public class ExtraScore : MonoBehaviour
     // 플레이어 스킬 사용시 추가점수 코루틴
     IEnumerator CheckExtraScore(string scoreType)
     {
+        sb.Clear();
+        sb.Append("추가점수 +");
+
         if (scoreType == "HitShoot")
         {
             if (!tutorial)
                 totalScore += extraScore[0];
-            //Debug.LogWarning("추가점수 +" + extraScore[0]);
+
+            sb.Append(extraScore[0]);
+            Debug.LogWarning(sb.ToString());
 
             yield break;
         }
@@ -136,7 +144,9 @@ public class ExtraScore : MonoBehaviour
 
             if (!tutorial)
                 totalScore += extraScore[1];
-            Debug.LogWarning("추가점수 +" + extraScore[1]);
+
+            sb.Append(extraScore[1]);
+            Debug.LogWarning(sb.ToString());
         }
         else
         {
@@ -144,7 +154,9 @@ public class ExtraScore : MonoBehaviour
 
             if (!tutorial)
                 totalScore += extraScore[0];
-            Debug.LogWarning("추가점수 +" + extraScore[0]);
+
+            sb.Append(extraScore[0]);
+            Debug.LogWarning(sb.ToString());
         }
 
         yield break;

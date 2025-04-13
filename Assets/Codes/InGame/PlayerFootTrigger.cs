@@ -5,8 +5,10 @@ using UnityEngine;
 public class PlayerFootTrigger : MonoBehaviour
 {
     public Player Player;
+    Defender Defender;
 
     bool getTackle;
+    string stateName;
 
     private void OnTriggerEnter(Collider collider)
     {
@@ -15,9 +17,9 @@ public class PlayerFootTrigger : MonoBehaviour
         {
             getTackle = true;
 
-            Defender defender = collider.gameObject.GetComponent<DefenderFootTrigger>().Defender;
+            Defender = collider.gameObject.GetComponent<DefenderFootTrigger>().Defender;
 
-            string stateName = defender.currentState.ToString();
+            stateName = Defender.currentState.ToString();
 
             switch (stateName)
             {
@@ -28,7 +30,7 @@ public class PlayerFootTrigger : MonoBehaviour
                     stateName = "GetTackled_Front";
                     break;
                 case "Sliding_Tackle_Anomaly":
-                    stateName = defender.anomalyUserState;
+                    stateName = Defender.anomalyUserState;
                     break;
             }
 

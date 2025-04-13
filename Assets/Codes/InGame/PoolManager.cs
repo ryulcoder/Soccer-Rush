@@ -8,6 +8,7 @@ public class PoolManager : MonoBehaviour
     public GameObject ImpactZone;
 
     GameObject PopObjcet;
+    Transform def, PopTransform;
 
     public bool popEnd, poolEnd;
 
@@ -21,12 +22,12 @@ public class PoolManager : MonoBehaviour
         {
             if (transform.GetChild(i).name == "ImpactZone") continue;
 
-            GameObject def;
+            GameObject defObj;
 
             for (int j = 0; j < 15; j++)
             {
-                def = Instantiate(DefenderPrefabs[i], transform.GetChild(i));
-                def.SetActive(false);
+                defObj = Instantiate(DefenderPrefabs[i], transform.GetChild(i));
+                defObj.SetActive(false);
             }
         }
 
@@ -43,7 +44,7 @@ public class PoolManager : MonoBehaviour
     {
         while (FloorTransform.childCount > 1)
         {
-            Transform def = FloorTransform.GetChild(FloorTransform.childCount - 1);
+            def = FloorTransform.GetChild(FloorTransform.childCount - 1);
 
             if (def.name == "ImpactZone")
             {
@@ -86,7 +87,7 @@ public class PoolManager : MonoBehaviour
         popEnd = false;
 
         PopObjcet = null;
-        Transform PopTransform = null;
+        PopTransform = null;
 
         if (tag == "ImpactZone")
         {
@@ -121,8 +122,6 @@ public class PoolManager : MonoBehaviour
         PopObjcet.transform.SetParent(transform);
 
         popEnd = true;
-
-        //StartCoroutine (PopCoroutine(tag));
     }
 
     public GameObject PopSettingObject()
@@ -130,57 +129,5 @@ public class PoolManager : MonoBehaviour
         return PopObjcet;
     }
 
-
-
-
-
-
-    /*IEnumerator PopCoroutine(string tag) 
-    {
-        PopObjcet = null;
-        Transform PopTransform = null;
-
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            if (transform.GetChild(i).name == tag)
-            {
-                PopTransform = transform.GetChild(i);
-                break;
-            }
-        }
-
-        if (PopTransform && PopTransform.childCount == 0)
-        {
-            for (int i = 0; i < DefenderPrefabs.Length; i++)
-            {
-                if (DefenderPrefabs[i].CompareTag(tag))
-                {
-                    PopObjcet = Instantiate(DefenderPrefabs[i], PopTransform);
-                    yield return null;
-                }
-
-            }
-        }
-
-        PopObjcet = PopTransform.GetChild(0).gameObject;
-        PopObjcet.transform.SetParent(transform);
-        yield return null;
-
-        popEnd = true;
-    }*/
-
-   /* public void LeftObjectDestroy()
-    {
-        foreach (Transform child in transform)
-        {
-            if (child.childCount == 0) continue;
-
-            foreach (Transform chilchild in child)
-            {
-                Destroy(chilchild.gameObject);
-            }
-
-        }
-    }*/
 
 }

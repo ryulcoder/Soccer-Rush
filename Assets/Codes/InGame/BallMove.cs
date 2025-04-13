@@ -8,6 +8,7 @@ public class BallMove : MonoBehaviour
     public static BallMove instance;
 
     Player Player;
+    Defender Defender;
 
     [Header("[ Player ]")]
     Transform PlayerTrans;
@@ -119,8 +120,8 @@ public class BallMove : MonoBehaviour
         if (!isImpact && !isTackled && !spin && BallTrans.position.z < PlayerTrans.position.z + 3 && !isShooting && !ballReset)
         {
             ballReset = true;
-            Debug.LogWarning("pos: " + BallTrans.position + " 볼 위치 조정");
-            BallTrans.position = new Vector3(BallTrans.position.x, 1.926f, PlayerTrans.position.z + 5);
+            Debug.LogWarning("볼 위치 조정");
+            BallTrans.position = Vector3.right * BallTrans.position.x + Vector3.up * 1.926f + Vector3.forward * (PlayerTrans.position.z + 5);
 
             BallRigibody.velocity = Vector3.zero;
             BallRigibody.angularVelocity = Vector3.zero;  // 회전 속도도 초기화
@@ -281,8 +282,7 @@ public class BallMove : MonoBehaviour
         BallRigibody.velocity = Vector3.zero;
         BallRigibody.angularVelocity = Vector3.zero;
 
-        BallTrans.position = 
-            new Vector3(PlayerTrans.position.x, 1.926f, PlayerTrans.position.z + 4.5f);
+        BallTrans.position = Vector3.right * PlayerTrans.position.x + Vector3.up * 1.926f + Vector3.forward * (PlayerTrans.position.z + 4.5f);
 
         BallRigibody.AddForce(Vector3.up * 55 + Vector3.forward * 9, ForceMode.VelocityChange);
         BallRigibody.AddTorque(Vector3.right * 90, ForceMode.VelocityChange);
@@ -307,16 +307,16 @@ public class BallMove : MonoBehaviour
         if (!isTackled && collider.gameObject.name == "TackleFoot" && !isShooting && !collider.gameObject.GetComponent<DefenderFootTrigger>().Defender.isHit)
         {
             Debug.LogWarning("공 트리거 활성화");
-            Defender defender = collider.GetComponent<DefenderFootTrigger>().Defender;
+            Defender = collider.GetComponent<DefenderFootTrigger>().Defender;
 
             // 좌우 슬라이딩 태클 회피
-            if ((defender.anomalyUserState == "GetTackled_Right" || defender.anomalyUserState == "GetTackled_Left") && flick)
+            if ((Defender.anomalyUserState == "GetTackled_Right" || Defender.anomalyUserState == "GetTackled_Left") && flick)
             {
                 return;
             }
 
             // 정면 스탠드 태클 회피
-            if ((defender.currentState.ToString() == "Stand_Tackle_Front" || defender.anomalyUserState == "GetStandTackled_Front") && spin)
+            if ((Defender.currentState.ToString() == "Stand_Tackle_Front" || Defender.anomalyUserState == "GetStandTackled_Front") && spin)
             {
                 return;
             }
@@ -350,7 +350,7 @@ public class BallMove : MonoBehaviour
             Debug.LogWarning("수비 커트");
 
             // 볼만 태클 당했을 시 플레이어 강제 모션 
-            string stateName = defender.currentState.ToString();
+            string stateName = Defender.currentState.ToString();
 
             switch (stateName)
             {
@@ -361,7 +361,7 @@ public class BallMove : MonoBehaviour
                     stateName = "GetTackled_Front";
                     break;
                 case "Sliding_Tackle_Anomaly":
-                    stateName = defender.anomalyUserState;
+                    stateName = Defender.anomalyUserState;
                     break;
             }
 
@@ -410,7 +410,7 @@ public class BallMove : MonoBehaviour
             ballReset = true;
             kickDelay = true;
 
-            Debug.LogWarning("pos: " + BallTrans.position + " 슛팅 볼 위치 조정");
+            Debug.LogWarning("슛팅 볼 위치 조정");
             BallTrans.position = new Vector3(BallTrans.position.x, 1.926f, PlayerTrans.position.z + 4.5f);
 
             BallRigibody.velocity = Vector3.zero;

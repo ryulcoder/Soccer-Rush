@@ -140,7 +140,7 @@ public class ImpactZone : MonoBehaviour
         {
             BallRgb.AddTorque(torqueDir * 100, ForceMode.Force);
 
-            BallRgb.AddForce(Vector3.back * 50, ForceMode.Force);
+            BallRgb.AddForce(Vector3.back * 100, ForceMode.Force);
         }
     }
 

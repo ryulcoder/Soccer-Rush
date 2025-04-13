@@ -14,6 +14,8 @@ public class Stamina : MonoBehaviour
     GameManager GameManager;
     Player Player;
 
+    int limitSta;
+
     public Slider StaminaSlider;
     //public Text StaminaText;
 
@@ -45,7 +47,6 @@ public class Stamina : MonoBehaviour
         if (StaminaSlider.value != stamina)
         {
             StaminaSlider.value = Mathf.Lerp(StaminaSlider.value, stamina, Time.deltaTime * 5);
-            //StaminaText.text = stamina + " / " + totalStamina;
         }
     }
 
@@ -74,8 +75,6 @@ public class Stamina : MonoBehaviour
 
     public void GetLimitStamina(string limitType)
     {
-        int limitSta;
-
         switch (limitType)
         {
             /*case "AvoidMove":

@@ -9,8 +9,9 @@ public class SwipInput : MonoBehaviour
 
     public Player Player;
 
-    private Vector2 startTouchPosition;
-    private Vector2 endTouchPosition;
+    private Vector2 startTouchPosition, endTouchPosition;
+    private Vector2 delta;
+
     private bool swipeDetected = false;
 
     public float swipeThreshold = 50f; // 최소 스와이프 거리
@@ -42,7 +43,7 @@ public class SwipInput : MonoBehaviour
 
     private void DetectSwipe()
     {
-        Vector2 delta = endTouchPosition - startTouchPosition;
+        delta = endTouchPosition - startTouchPosition;
 
         if (Mathf.Abs(delta.x) > Mathf.Abs(delta.y)) // 좌우 스와이프
         {
