@@ -6,10 +6,10 @@ public class ImpactZoneTrigger : MonoBehaviour
 {
     public Transform ImpactZoneCenter;
 
+    public ImpactGame ImpactGame;
+
     Player Player;
     BallMove Ball;
-
-    
 
     [SerializeField] float stopPoint, gameSpeed;
 
@@ -33,7 +33,6 @@ public class ImpactZoneTrigger : MonoBehaviour
                 isBallStop = true;
 
                 Ball.ImpactSetting(stopPoint + 5);
-                BallMove.instance.deceleration = false;
             }
 
             if (!isPlayerStop && Player.transform.position.z >= stopPoint - 10.5f)
@@ -78,9 +77,14 @@ public class ImpactZoneTrigger : MonoBehaviour
 
     IEnumerator KickDelay()
     {
-        yield return new WaitForSeconds(0.4f);
-
         ballStopLoop = false;
+        BallMove.instance.deceleration = false;
+
+        ImpactGame.gameObject.SetActive(true);
+
+        yield return new WaitUntil(() => !ImpactGame.gameObject.activeSelf);
+
+        ImpactZone.Instance.win = ImpactGame.playerWin;
 
         if (ImpactZone.Instance.right)
             Player.Instance.GetComponent<Animator>().SetTrigger("Impact_Kick_Right");

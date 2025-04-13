@@ -21,7 +21,7 @@ public class ImpactZone : MonoBehaviour
     [Header("[ GameObject ]")]
     public GameObject Area;
     public GameObject Trigger;
-    public GameObject[] Vfxs; 
+    public GameObject[] Vfxs;
 
     Vector3 curveDefaultVec, endDefaultVec;
 
@@ -146,15 +146,13 @@ public class ImpactZone : MonoBehaviour
 
     void Reset()
     {
-
-
         duration = 1.2f;
         t = 0;
 
         curveDefaultVec = CurvePoint.position;
         endDefaultVec = GoalPoint.position;
 
-        //win = false;
+        win = false;
         impactKickOn = false;
         goalEndMove = false;
 
