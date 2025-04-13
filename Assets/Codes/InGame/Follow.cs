@@ -18,6 +18,8 @@ public class Follow : MonoBehaviour
 
     public float followSpeed = 50f; // 속도 조절 변수
 
+    float offsetX, targetX, lerpSpeed;
+
     void Awake()
     {
         transposer = virtualCamera.GetCinemachineComponent<CinemachineTransposer>();
@@ -25,7 +27,7 @@ public class Follow : MonoBehaviour
         defaultVec = transposer.m_FollowOffset;
     }
 
-    void FixedUpdate()
+    /*void FixedUpdate()
     {
         float offsetX = Target.position.x < 0 ? Target.position.x * left + defaultVec.x : -Target.position.x * right + defaultVec.x;
 
@@ -33,19 +35,21 @@ public class Follow : MonoBehaviour
         
         transposer.m_FollowOffset = Vector3.Lerp(transposer.m_FollowOffset, targetVec, Target.position.x < 0 ? Time.deltaTime * 2 : Time.deltaTime * 15);
 
-        /*// 목표 위치 계산
-        targetVec = new Vector3(
-            Target.position.x < 0 ? Target.position.x * left + defaultVec.x : Target.position.x * right + defaultVec.x,
-            transform.position.y,
-            Target.position.z + defaultVec.z
-        );
+    }*/
 
-        // 직접 이동 (Lerp 없이)
-        float step = followSpeed * Time.deltaTime;
-        transform.position = new Vector3(
-            Mathf.MoveTowards(transform.position.x, targetVec.x, step),
-            transform.position.y,
-            targetVec.z
-        );*/
+    void FixedUpdate()
+    {
+        targetX = Target.position.x;
+
+        offsetX = targetX < 0 ? targetX * left + defaultVec.x: -targetX * right + defaultVec.x;
+
+        targetVec.x = offsetX;
+        targetVec.y = transposer.m_FollowOffset.y;
+        targetVec.z = transposer.m_FollowOffset.z;
+
+        lerpSpeed = targetX < 0 ? Time.deltaTime * 2 : Time.deltaTime * 15;
+
+        transposer.m_FollowOffset = Vector3.Lerp(transposer.m_FollowOffset, targetVec, lerpSpeed);
     }
+
 }

@@ -21,7 +21,6 @@ public class Floor : MonoBehaviour
     static float prevX = -2;
     static float fpDistance = 0;
     static bool useLeftGap, prevLineIs2, fixedPattern;
-
     Vector3 floorScale;
 
     float[] defXs;
@@ -32,6 +31,7 @@ public class Floor : MonoBehaviour
     bool onPlayer, inPlayer, coroutine, fpCoolTimeOn, setVar;
     int fpCount;
 
+    List<GameObject> targetObjs;
 
     void Start()
     {
@@ -43,10 +43,11 @@ public class Floor : MonoBehaviour
             fpRangeInt = 1;
             leftGap = 0;
             prevX = -2;
-            fpDistance = 0;
+            fpDistance = 150;
             useLeftGap = false;
             prevLineIs2 = false;
-            fixedPattern = false;
+            fixedPattern = true;
+            fpCoolTimeOn = true;
         }
 
         (minGap, maxGap) = GameManager.DefGap;
@@ -54,7 +55,8 @@ public class Floor : MonoBehaviour
 
         floorScale = transform.localScale;
         posList = new List<Vector3>();
-
+        targetObjs = new List<GameObject>();
+        targetObjs = new List<GameObject>();
         defXs = new float[] { -floorScale.x / 3, 0, floorScale.x / 3 };
 
         // 시작시 첫 floor 제외 순차적 수비 세팅
@@ -92,7 +94,7 @@ public class Floor : MonoBehaviour
             yield break; 
         }
 
-        transform.position += new Vector3(0, 0, transform.localScale.z * GameManager.Tiles.Length);
+        transform.position += transform.localScale.z * GameManager.Tiles.Length * Vector3.forward;
 
         PoolManager.PoolObjects(transform);
 
@@ -110,6 +112,21 @@ public class Floor : MonoBehaviour
     // 수비 세팅
     IEnumerator SetDefenders()
     {
+        if (GameManager.IsImpact)
+        {
+            PoolManager.SetPopObject("ImpactZone");
+
+            GameObject impactZone = PoolManager.PopSettingObject();
+
+            impactZone.transform.SetParent(transform, true);
+            impactZone.transform.localPosition = Vector3.zero;
+            impactZone.SetActive(true);
+
+            yield break;
+        }
+
+        targetObjs.Clear();
+
         (minGap, maxGap) = GameManager.DefGap;
         defPer = GameManager.DefPer;
 
@@ -117,24 +134,15 @@ public class Floor : MonoBehaviour
         {
             fixedPattern = true;
 
-            if (fpRanInt != 1 && Random.Range(0, fpRanInt) == 0)
-            {
-                fixedPattern = false;
-                fpCoolTimeOn = false;
-            }
-            else
-            {
-                yield return StartCoroutine(FixedPatternSetDefends());
+            FixedPatternSetDefends();
 
-                if (fixedPattern)
-                    yield break;
-            }
+            if (fixedPattern)
+                yield break;
         }
 
-        List<GameObject> targetObjs = new();
         float[] ranXs;
 
-        float targetPos = transform.TransformPoint(new(0, 0, -0.5f)).z;
+        float targetPos = transform.TransformPoint(0.5f * Vector3.back).z;
         float MaxPos = targetPos + floorScale.z;
 
         float ranNum;
@@ -161,12 +169,12 @@ public class Floor : MonoBehaviour
             {
                 targetPos += ranNum;
 
-                posList.Add(new(0, 0.5f, targetPos));
+                posList.Add(Vector3.up * 0.5f + Vector3.forward * targetPos);
             }
 
         }
 
-        float prev = transform.TransformPoint(new(0, 0, -0.5f)).z;
+        float prev = transform.TransformPoint(Vector3.forward * -0.5f).z;
 
         // 세팅한 수비 좌표 리스트를 토대로 수비 옵젝 세팅
         for (int posIdx=0; posIdx < posList.Count; posIdx++)
@@ -183,10 +191,7 @@ public class Floor : MonoBehaviour
                 for (int i = 0; i < orderDefNames.Length; i++)
                 {
                     PoolManager.SetPopObject(orderDefNames[i]);
-
-                    yield return new WaitUntil(() => PoolManager.popEnd);
-
-                    targetObjs.Add(PoolManager.PopObjcet);
+                    targetObjs.Add(PoolManager.PopSettingObject());
                 }
                     
             }
@@ -203,12 +208,7 @@ public class Floor : MonoBehaviour
                 for (int i = 0; i < 3; i++)
                 {
                     PoolManager.SetPopObject(defStr);
-
-                    yield return new WaitUntil(() => PoolManager.popEnd);
-
-                    targetObjs.Add(PoolManager.PopObjcet);
-
-                    
+                    targetObjs.Add(PoolManager.PopSettingObject());
                 }
                     
             }
@@ -228,24 +228,14 @@ public class Floor : MonoBehaviour
                         defStr = defNames[Random.Range(0, 2)];
 
                     PoolManager.SetPopObject(defStr);
-
-                    yield return new WaitUntil(() => PoolManager.popEnd);
-
-                    targetObjs.Add(PoolManager.PopObjcet);
-
-                    
+                    targetObjs.Add(PoolManager.PopSettingObject());
                 }
             }
             // 1라인
             else
             {
                 PoolManager.SetPopObject(defStr);
-
-                yield return new WaitUntil(() => PoolManager.popEnd);
-
-                targetObjs.Add(PoolManager.PopObjcet);
-
-                
+                targetObjs.Add(PoolManager.PopSettingObject());
             }
                 
             
@@ -275,19 +265,21 @@ public class Floor : MonoBehaviour
                         prevX = ranXs[0];
                     }
 
-                    settingVec = new(prevX, posList[posIdx].y, posList[posIdx].z);
+                    settingVec = posList[posIdx];
+                    settingVec.x = prevX;
                 }
                 else
                 {
-                    settingVec = new(ranXs[i], posList[posIdx].y, posList[posIdx].z);
+                    settingVec = posList[posIdx];
+                    settingVec.x = ranXs[i];
                 }
                     
                 targetObjs[i].transform.position = settingVec;
                 targetObjs[i].transform.SetParent(transform);
 
                 string[] nameStrs = targetObjs[i].name.Split("_");
-                targetObjs[i].name = "Z(" +(posList[posIdx].z - prev) + ")_" + nameStrs[1].Replace("(clone)", "") + "_" + nameStrs[2].Split("(")[0];
 
+                targetObjs[i].name = "Z(" +(posList[posIdx].z - prev) + ")_" + nameStrs[1].Replace("(clone)", "") + "_" + nameStrs[2].Split("(")[0];
                 targetObjs[i].SetActive(true);
             }
 
@@ -327,16 +319,14 @@ public class Floor : MonoBehaviour
     }
 
 
-    IEnumerator FixedPatternSetDefends()
+    void FixedPatternSetDefends()
     {
         int ranDir = Random.Range(1, 3);
         if (ranDir == 1) ranDir = 0;
 
         const int totalDef = 85;
 
-        List<GameObject> fpDefList = new();
-
-        float targetPos = transform.TransformPoint(new(0, 0, -0.5f)).z;
+        float targetPos = transform.TransformPoint(0.5f * Vector3.back).z;
         float ranNum = Random.Range(minGap, maxGap);
         int fpXIdx, otherXIdx = 0;
 
@@ -375,35 +365,26 @@ public class Floor : MonoBehaviour
 
                 for (int i = 0; i < totalDef; i++)
                 {
-                    if (i == 0 || i % 11 == 0)
+                    if (i != 0 && i % 11 == 0)
                     {
                         PoolManager.SetPopObject("SlidingTackle_Anomaly");
+                        targetObjs.Add(PoolManager.PopSettingObject());
 
-                        yield return new WaitUntil(() => PoolManager.popEnd);
-
-                        fpDefList.Add(PoolManager.PopObjcet);
-                        posList.Add(new(defXs[fpXIdx], 0.5f, targetPos + 5 * i));
+                        posList.Add(Vector3.right * defXs[fpXIdx] + Vector3.up * 0.5f + Vector3.forward * (targetPos + 5 * i));
                         
 
                         if (fpXIdx == 1)
                             fpXIdx = otherXIdx;
                         else
                             fpXIdx = 1;
-
-                        
-                        
                     }
 
-                    if (i == 0 || i % 8 == 0)
+                    if (i != 0 && i % 8 == 0)
                     {
                         PoolManager.SetPopObject("StandTackle_Front");
+                        targetObjs.Add(PoolManager.PopSettingObject());
 
-                        yield return new WaitUntil(() => PoolManager.popEnd);
-
-                        fpDefList.Add(PoolManager.PopObjcet);
-                        posList.Add(new(defXs[ranDir], 0.5f, targetPos + 5 * i));
-                        
-                        
+                        posList.Add(Vector3.right * defXs[ranDir] + Vector3.up * 0.5f + Vector3.forward * (targetPos + 5 * i));
                     }
                 }
 
@@ -425,7 +406,7 @@ public class Floor : MonoBehaviour
 
                 for (int i = 0; i < totalDef; i++)
                 {
-                    if (i == 0 || i % 14 == 0)
+                    if (i != 0 && i % 14 == 0)
                     {
                         defRanIdx = Random.Range(0, 3);
 
@@ -433,18 +414,14 @@ public class Floor : MonoBehaviour
                         if (defRanIdx == 2)
                         {
                             PoolManager.SetPopObject("SlidingTackle_Anomaly");
+                            targetObjs.Add(PoolManager.PopSettingObject());
 
-                            yield return new WaitUntil(() => PoolManager.popEnd);
-
-                            fpDefList.Add(PoolManager.PopObjcet);
-                            posList.Add(new(defXs[fpXIdx], 0.5f, targetPos + 5 * i));
+                            posList.Add(Vector3.right * defXs[fpXIdx] + Vector3.up * 0.5f + Vector3.forward * (targetPos + 5 * i));
 
                             PoolManager.SetPopObject("StandTackle_Front");
+                            targetObjs.Add(PoolManager.PopSettingObject());
 
-                            yield return new WaitUntil(() => PoolManager.popEnd);
-
-                            fpDefList.Add(PoolManager.PopObjcet);
-                            posList.Add(new(defXs[otherXIdx], 0.5f, targetPos + 5 * i));
+                            posList.Add(Vector3.right * defXs[otherXIdx] + Vector3.up * 0.5f + Vector3.forward * (targetPos + 5 * i));
 
                             (otherXIdx, fpXIdx) = (fpXIdx, otherXIdx);
                         }
@@ -452,27 +429,23 @@ public class Floor : MonoBehaviour
                         else if (defRanIdx == 1)
                         {
                             PoolManager.SetPopObject("SlidingTackle_Front");
+                            targetObjs.Add(PoolManager.PopSettingObject());
 
-                            yield return new WaitUntil(() => PoolManager.popEnd);
-
-                            fpDefList.Add(PoolManager.PopObjcet);
-                            posList.Add(new(defXs[1], 0.5f, targetPos + 5 * i + 40));
+                            posList.Add(Vector3.right * defXs[1] + Vector3.up * 0.5f + Vector3.forward * (targetPos + 5 * i + 40));
                         }
                         // 스
                         else
                         {
                             PoolManager.SetPopObject("StandTackle_Front");
+                            targetObjs.Add(PoolManager.PopSettingObject());
 
-                            yield return new WaitUntil(() => PoolManager.popEnd);
-
-                            fpDefList.Add(PoolManager.PopObjcet);
-                            posList.Add(new(defXs[1], 0.5f, targetPos + 5 * i));
+                            posList.Add(Vector3.right * defXs[1] + Vector3.up * 0.5f + Vector3.forward * (targetPos + 5 * i));
                         }
                         
                     }
 
                     // 양 사이드 라인 블락
-                    if (i == 0 || i % 7 == 0)
+                    if (i != 0 && i % 7 == 0)
                     {
                         if (defRanIdx == 2)
                         {
@@ -481,19 +454,15 @@ public class Floor : MonoBehaviour
                         else
                         {
                             PoolManager.SetPopObject("StandTackle_Front");
+                            targetObjs.Add(PoolManager.PopSettingObject());
 
-                            yield return new WaitUntil(() => PoolManager.popEnd);
-
-                            fpDefList.Add(PoolManager.PopObjcet);
-                            posList.Add(new(defXs[0], 0.5f, targetPos + 5 * i));
+                            posList.Add(Vector3.right * defXs[0] + Vector3.up * 0.5f + Vector3.forward * (targetPos + 5 * i));
 
                             
                             PoolManager.SetPopObject("StandTackle_Front");
+                            targetObjs.Add(PoolManager.PopSettingObject());
 
-                            yield return new WaitUntil(() => PoolManager.popEnd);
-
-                            fpDefList.Add(PoolManager.PopObjcet);
-                            posList.Add(new(defXs[2], 0.5f, targetPos + 5 * i));
+                            posList.Add(Vector3.right * defXs[2] + Vector3.up * 0.5f + Vector3.forward * (targetPos + 5 * i));
                         }
                     }
                 }
@@ -503,15 +472,15 @@ public class Floor : MonoBehaviour
         }
 
 
-        for (int i = 0; i < fpDefList.Count; i++)
+        for (int i = 0; i < targetObjs.Count; i++)
         {
-            fpDefList[i].transform.position = posList[i];
-            fpDefList[i].transform.SetParent(transform);
+            targetObjs[i].transform.position = posList[i];
+            targetObjs[i].transform.SetParent(transform);
 
-            string[] nameStrs = fpDefList[i].name.Split("_");
-            fpDefList[i].name = "Z(" + posList[i].z + ")_" + nameStrs[1].Replace("(clone)", "") + "_" + nameStrs[2].Split("(")[0];
+            string[] nameStrs = targetObjs[i].name.Split("_");
+            targetObjs[i].name = "Z(" + posList[i].z + ")_" + nameStrs[1].Replace("(clone)", "") + "_" + nameStrs[2].Split("(")[0];
 
-            fpDefList[i].SetActive(true);
+            targetObjs[i].SetActive(true);
 
         }
 
@@ -527,8 +496,8 @@ public class Floor : MonoBehaviour
 
     void FixedPatternCoolTimeCheck()
     {
-        if (fpDistance + 100 < GameManager.ScoreCal.Distance)
-        {
+        if (fpDistance + 100 <= GameManager.ScoreCal.Distance) { 
+
             if (fpRangeInt == 1) fpRangeInt = 2;
 
             fixedPattern = false;
@@ -556,23 +525,24 @@ public class Floor : MonoBehaviour
 
     private void OnTriggerStay(Collider collider)
     {
-        if (collider.gameObject.name == "PlayerFoot")
+        if (collider.gameObject.name == "PlayerFoot" )
         {
             if (!inPlayer)
                 inPlayer = true;
 
             onPlayer = true;
-
-            return;
         }
 
 
     }
     private void OnTriggerExit(Collider collider)
     {
-        if (collider.gameObject.name != "PlayerFoot") return;
+        if (collider.gameObject.name == "PlayerFoot") {
 
-        onPlayer = false;
+            onPlayer = false;
+        }
+
+        
     }
 
 }

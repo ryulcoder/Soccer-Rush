@@ -31,8 +31,8 @@ public class ExtraScore : MonoBehaviour
 
     public bool tutorial;
 
-    bool isLimit, scoreCoroutine;
-    string scoreType;
+    [SerializeField] bool isLimit, scoreCoroutine;
+    [SerializeField] string scoreType;
 
     private void Awake()
     {
@@ -126,6 +126,7 @@ public class ExtraScore : MonoBehaviour
                     ExtraParticle.SetActive(false);
 
                 ExtraParticle.SetActive(true);
+
                 if (LobbyAudioManager.instance != null) 
                 { 
                     LobbyAudioManager.instance.PlaySfx(LobbyAudioManager.Sfx.bonusPoint);
@@ -135,7 +136,7 @@ public class ExtraScore : MonoBehaviour
 
             if (!tutorial)
                 totalScore += extraScore[1];
-            //Debug.LogWarning("추가점수 +" + extraScore[1]);
+            Debug.LogWarning("추가점수 +" + extraScore[1]);
         }
         else
         {
@@ -143,7 +144,7 @@ public class ExtraScore : MonoBehaviour
 
             if (!tutorial)
                 totalScore += extraScore[0];
-            //Debug.LogWarning("추가점수 +" + extraScore[0]);
+            Debug.LogWarning("추가점수 +" + extraScore[0]);
         }
 
         yield break;

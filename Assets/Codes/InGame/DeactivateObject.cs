@@ -7,7 +7,7 @@ public class DeactivateObject : MonoBehaviour
     public float time = 0.8f;
 
 
-    private void Update()
+    private void Start()
     {
         StartCoroutine(Deactivate());
     }
@@ -17,5 +17,7 @@ public class DeactivateObject : MonoBehaviour
         yield return new WaitForSeconds(time);
 
         gameObject.SetActive(false);
+
+        yield break;
     }
 }
