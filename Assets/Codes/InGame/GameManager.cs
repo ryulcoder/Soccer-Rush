@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
 
     [Header("[ Ball Skins ]")]
     public GameObject[] ballSkins;
+    static int ballSkinIdx;
 
     [Header("[ Game Setting ]")]
     [SerializeField] float gameSpeed = 1;
@@ -56,21 +57,38 @@ public class GameManager : MonoBehaviour
 
     int revive = 1;
 
-    int count, reviveCount, revivePosition;
-    bool coroutine, reviveSpeedUp;
+    int count, waitDisCount, stopPosition;
+    bool coroutine, reSpeedUp, GameEnd;
+    [SerializeField] bool isImpact;
 
-    public bool aroundDefenderClear;
-    bool GameEnd;
+    public bool aroundDefenderClear, impactFail;
 
-    static int ballSkinIdx;
+    public bool IsImpact {  
+        get 
+        {
+            if (isImpact)
+            {
+                isImpact = false; 
+                return true;
+            }
+            else 
+                return false; 
+        } 
+    }
 
     void Awake()
     {
         Instance = this;
-        Time.timeScale = 0;
-#if (!UNITY_EDITOR)
+
+#if (UNITY_EDITOR)
+        QualitySettings.vSyncCount = 0;
+        //Application.targetFrameRate = 120;
+#else
         Shader.WarmupAllShaders();
 #endif
+
+        Time.timeScale = 0;
+
 
         if (ballSkinIdx != PlayerPrefs.GetInt("BallSkin", 0))
             ballSkinIdx = PlayerPrefs.GetInt("BallSkin", 0);
@@ -104,7 +122,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (Player.getTackled && !coroutine)
+        if ((Player.getTackled || impactFail) && !coroutine)
         {
             coroutine = true;
 
@@ -113,22 +131,22 @@ public class GameManager : MonoBehaviour
             StartCoroutine(GameOver());
         }
 
-        if (!Player.getTackled && coroutine)
+        if ((!Player.getTackled && !impactFail) && coroutine)
         {
             coroutine = false;
             aroundDefenderClear = false;
         }
 
-        if (reviveSpeedUp && (ScoreCal.Distance - revivePosition) / 2 - reviveCount >= 1)
+        if (reSpeedUp && (ScoreCal.Distance - stopPosition) / 2 - waitDisCount >= 1)
         {
-            reviveCount++;
+            waitDisCount++;
 
             Time.timeScale += (gameSpeed - 1) * 0.1f;
 
             if (Time.timeScale >= gameSpeed)
             {
                 Time.timeScale = gameSpeed;
-                reviveSpeedUp = false;
+                reSpeedUp = false;
             }
                 
         }
@@ -137,14 +155,27 @@ public class GameManager : MonoBehaviour
 
     void LateUpdate()
     {
-        if (!reviveSpeedUp && ScoreCal.Distance / 50 - count >= 1)
+        if (!reSpeedUp && (ScoreCal.Distance + 50) / 200 - count >= 1)
         {
             count += 1;
 
-            GameSpeedUp();
+            isImpact = true;
+
             IncreaseDifficulty();
+
+            Debug.LogWarning("난이도 업");
         }
     }
+
+    // 다시 게임으로 복귀할 때 호출
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        if (!hasFocus && !GameEnd)
+        {
+            GamePause();
+        }
+    }
+
 
     IEnumerator GameOver()
     {
@@ -157,15 +188,22 @@ public class GameManager : MonoBehaviour
         GameEndPanel.SetActive(true);
         GameEndBlurPanel.SetActive(true);
         ScoreCal.SetResult();
+
         if(revive > 0)
         {
             continueButton.SetActive(true);
         }
+
         PlayerDeathAd();
 
-        BallMove.gameObject.SetActive(false);
-        Player.PlayerReset();
+        if (Player.getTackled)
+        {
+            BallMove.gameObject.SetActive(false);
+            Player.PlayerReset();
+        }
+       
     }
+
 
 
     public void BallReset()
@@ -175,11 +213,10 @@ public class GameManager : MonoBehaviour
 
     public void GameSpeedUp()
     {
-        Time.timeScale = gameSpeed += speedUp;
+        gameSpeed += speedUp;
 
         Debug.Log("속도업!!!");
     }
-
 
     public void GameStart()
     {
@@ -212,6 +249,7 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
     }
 
+
     // 플레이어 죽으면 광고 띄우기
     public void PlayerDeathAd()
     {
@@ -226,35 +264,71 @@ public class GameManager : MonoBehaviour
         googleAd.ShowRewardedAd();
     }
 
-    // 다시 게임으로 복귀할 때 호출
-    private void OnApplicationFocus(bool hasFocus)
-    {
-        if (!hasFocus && !GameEnd)
-        {
-            GamePause();
-        }
-    }
-
+    // 플레이어 살리기
     public void PlayerRevive()
     {
         GameEndPanel.SetActive(false);
         GameEndBlurPanel.SetActive(false);
 
-        Player.GetComponent<Animator>().SetTrigger("ReStart");
+        if (Player.getTackled)
+        {
+            Player.GetComponent<Animator>().SetTrigger("ReStart");
+            ReSpeedUp();
+        }
+        else if (impactFail)
+        {
+            StartCoroutine(ImpactRevive());
+
+            GameSpeedUp();
+        }
 
         revive--;
         continueButton.SetActive(false);
-
-        revivePosition = ScoreCal.Distance;
-        reviveSpeedUp = true;
     }
 
+    IEnumerator ImpactRevive()
+    {
+        impactFail = false;
+
+        ImpactZone.Instance.Off();
+
+        BallMove.instance.ImpactEnd(false);
+
+        yield return new WaitForSeconds(0.4f);
+
+        Player.dribbleSlowStart = true;
+
+        Player.GetComponent<Animator>().SetTrigger("ReDribble");
+        Player.GetComponent<Animator>().SetTrigger("Dribble");
+    }
+
+
+    public void ReSpeedUp()
+    {
+        reSpeedUp = true;
+        stopPosition = ScoreCal.Distance;
+    }
+
+    public void InputOn()
+    {
+        StartCoroutine(InputOnDelay());
+    }
+
+    IEnumerator InputOnDelay()
+    {
+        yield return new WaitForSeconds(1);
+
+        SwipInput.instance.gameObject.SetActive(true);
+        Player.Instance.shootButton.gameObject.SetActive(true);
+    }
+
+
+    // 광고 뒷판 띄우기
     void ADBackOn()
     {
         ADBack.SetActive(true);
         StartCoroutine(ADBackOffCoroutine());
     }
-
     IEnumerator ADBackOffCoroutine()
     { 
         yield return new WaitForSeconds(0.2f);
@@ -264,7 +338,7 @@ public class GameManager : MonoBehaviour
         yield break;
     }
 
-
+    // 볼스킨 세팅
     void SetBallSkin()
     {
         if (ballSkinIdx == 0) return;
@@ -272,7 +346,6 @@ public class GameManager : MonoBehaviour
         BallMove.GetComponent<MeshFilter>().sharedMesh = ballSkins[ballSkinIdx].GetComponent<MeshFilter>().sharedMesh;
         BallMove.GetComponent<MeshRenderer>().sharedMaterials = ballSkins[ballSkinIdx].GetComponent<MeshRenderer>().sharedMaterials;
     }
-
 
     void IncreaseDifficulty()
     {

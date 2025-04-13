@@ -11,7 +11,6 @@ public class BallMove : MonoBehaviour
 
     [Header("[ Player ]")]
     Transform PlayerTrans;
-    Animator PlayerAni;
 
     [Header("[ Ball ]")]
     Transform BallTrans;
@@ -23,7 +22,7 @@ public class BallMove : MonoBehaviour
 
     [SerializeField] bool kickDelay;
     float dampingFactor = 0.98f;
-    public bool deceleration, kick, isTackled, resetKick;
+    public bool deceleration, kick, isTackled, resetKick, isImpact;
 
     // ballMove
     float ballMaxY;
@@ -38,7 +37,6 @@ public class BallMove : MonoBehaviour
 
 
     Vector3 movement = Vector3.forward;
-    Vector3 torqueDir;
 
     Vector3 playerVec, ballVec, moveTorqueDir;
 
@@ -62,7 +60,6 @@ public class BallMove : MonoBehaviour
         Player = Player.Instance;
 
         PlayerTrans = Player.gameObject.transform;
-        PlayerAni = Player.gameObject.GetComponent<Animator>();
 
         BallTrans = transform;
         BallRigibody = GetComponent<Rigidbody>();
@@ -102,12 +99,12 @@ public class BallMove : MonoBehaviour
         {
             if (Player.dribbleSlowStart)
             {
-                BallRigibody.velocity = new Vector3(BallRigibody.velocity.x, BallRigibody.velocity.y, 35);
+                BallRigibody.velocity = Vector3.right * BallRigibody.velocity.x + Vector3.up * BallRigibody.velocity.y + Vector3.forward * 35;
             }
 
             if (flick && BallRigibody.velocity.z > 10)
             {
-                BallRigibody.velocity = new Vector3(BallRigibody.velocity.x, BallRigibody.velocity.y, 9);
+                BallRigibody.velocity = Vector3.right * BallRigibody.velocity.x + Vector3.up * BallRigibody.velocity.y + Vector3.forward * 9;
             }
 
             BallRigibody.angularVelocity *= dampingFactor;
@@ -119,7 +116,7 @@ public class BallMove : MonoBehaviour
     // 공이 이탈 시 위치 조정 업데이트 로직
     void BallPositionReset_Update()
     {
-        if (!isTackled && !spin && BallTrans.position.z < PlayerTrans.position.z + 3 && !isShooting && !ballReset)
+        if (!isImpact && !isTackled && !spin && BallTrans.position.z < PlayerTrans.position.z + 3 && !isShooting && !ballReset)
         {
             ballReset = true;
             Debug.LogWarning("pos: " + BallTrans.position + " 볼 위치 조정");
@@ -136,23 +133,26 @@ public class BallMove : MonoBehaviour
     // 좌/우 로 플레이어가 움직일 시 플레이어 따라 볼 이동 혹은 회전 업데이트 로직
     void BallMove_Update()
     {
-        if (!spin && ballVec.x != playerVec.x)
+        if (!isImpact && !spin && ballVec.x != playerVec.x)
         {
             if (!moveKick)
             {
                 if (ballVec.x < playerVec.x)
-                    moveTorqueDir = new Vector3(1, 1, 0);
+                    moveTorqueDir = Vector3.right * 0.3f + Vector3.up;
                 else if (ballVec.x > playerVec.x)
-                    moveTorqueDir = new Vector3(1, -1, 0);
+                    moveTorqueDir = Vector3.right * 0.3f + Vector3.down;
                 else
                     moveTorqueDir = Vector3.right;
 
+                moveTorqueDir = Vector3.Cross(moveTorqueDir.normalized, Vector3.forward);
+
+                BallRigibody.angularVelocity = Vector3.zero;
                 BallRigibody.AddTorque(moveTorqueDir * 90, ForceMode.VelocityChange);
 
                 moveKick = true;
             }
 
-            BallTrans.position = new(playerVec.x, ballVec.y, ballVec.z);
+            BallTrans.position = Vector3.right * playerVec.x + Vector3.up * ballVec.y + Vector3.forward * ballVec.z;
         }
         else
         {
@@ -200,7 +200,7 @@ public class BallMove : MonoBehaviour
 
             kickDelay = false;
 
-            BallTrans.position = new Vector3(PlayerTrans.position.x, BallTrans.position.y, PlayerTrans.position.z + 4.5f);
+            BallTrans.position = Vector3.right * PlayerTrans.position.x + Vector3.up * BallTrans.position.y + Vector3.forward * (PlayerTrans.position.z + 4.5f);
 
             BallRigibody.velocity = Vector3.zero;
             BallRigibody.angularVelocity = Vector3.zero;
@@ -224,6 +224,7 @@ public class BallMove : MonoBehaviour
             ballVelLimit = false;
             isShooting = false;
             resetKick = false;
+            isImpact = false;
         }
 
         shootBlurImage.fillAmount = 0;
@@ -234,7 +235,7 @@ public class BallMove : MonoBehaviour
 
         BallRigibody.velocity = Vector3.zero;
         BallRigibody.angularVelocity = Vector3.zero;
-        BallTrans.position = new Vector3(PlayerTrans.position.x, 1.926f, PlayerTrans.position.z + 5);
+        BallTrans.position = Vector3.right * PlayerTrans.position.x + Vector3.up * 1.926f + Vector3.forward * (PlayerTrans.position.z + 5);
     }
 
     // 플레이어 스핀개인기 시 볼 움직임
@@ -280,9 +281,10 @@ public class BallMove : MonoBehaviour
         BallRigibody.velocity = Vector3.zero;
         BallRigibody.angularVelocity = Vector3.zero;
 
-        BallTrans.position = new Vector3(PlayerTrans.position.x, 1.926f, PlayerTrans.position.z + 4.5f);
+        BallTrans.position = 
+            new Vector3(PlayerTrans.position.x, 1.926f, PlayerTrans.position.z + 4.5f);
 
-        BallRigibody.AddForce(new(0, 55, 9), ForceMode.VelocityChange);
+        BallRigibody.AddForce(Vector3.up * 55 + Vector3.forward * 9, ForceMode.VelocityChange);
         BallRigibody.AddTorque(Vector3.right * 90, ForceMode.VelocityChange);
     }
 
@@ -339,7 +341,7 @@ public class BallMove : MonoBehaviour
 
                 BallRigibody.velocity = Vector3.zero;
 
-                Vector3 direction = new Vector3(BallTrans.position.x - collider.transform.position.x, 1, BallTrans.position.z - collider.transform.position.z);
+                Vector3 direction = new(BallTrans.position.x - collider.transform.position.x, 1, BallTrans.position.z - collider.transform.position.z);
 
                 BallRigibody.AddForce(direction * 100, ForceMode.VelocityChange);
                 BallRigibody.AddTorque(direction * 90, ForceMode.VelocityChange);
@@ -368,8 +370,17 @@ public class BallMove : MonoBehaviour
             Player.GetTackled(stateName);
         }
 
+        if (isImpact && collider.gameObject.name == "PlayerFoot")
+        {
+            isImpact = false;
+
+            GameManager.Instance.ReSpeedUp();
+            GameManager.Instance.InputOn();
+        }
+
+
         // 플레이어 발 트리거로 인한 볼 이동 혹은 회전
-        if (!spin && !flick && !kickDelay && !isTackled && collider.gameObject.name == "PlayerFoot")
+        if (!isImpact && !spin && !flick && !kickDelay && !isTackled && collider.gameObject.name == "PlayerFoot")
         {
             kickDelay = true;
 
@@ -428,7 +439,7 @@ public class BallMove : MonoBehaviour
             {
                 Player.JumpEnd();
 
-                BallRigibody.velocity = new(BallRigibody.velocity.x, 0, BallRigibody.velocity.z);
+                BallRigibody.velocity = Vector3.right * BallRigibody.velocity.x + Vector3.forward * BallRigibody.velocity.z;
 
                 BallRigibody.AddForce(movement * speed / 2, ForceMode.VelocityChange);
                 BallRigibody.AddTorque(Vector3.right * 10, ForceMode.VelocityChange);
@@ -444,23 +455,6 @@ public class BallMove : MonoBehaviour
         {
             Debug.Log("부딫힘");
         }
-        //// 슛하고 공이 다시올때 변수꺼주기
-        //if (collision.gameObject.CompareTag("Player") && isShooting)
-        //{
-        //    ballReset = true;
-        //    Debug.LogWarning("pos: " + BallTrans.position + " 볼 위치 조정");
-        //    BallTrans.position = new Vector3(0, BallTrans.position.y, PlayerTrans.position.z + 4.5f);
-
-        //    BallRigibody.velocity = Vector3.zero;
-        //    BallRigibody.angularVelocity = Vector3.zero;  // 회전 속도도 초기화
-        //    BallRigibody.AddForce(1.2f * speed * movement, ForceMode.VelocityChange);
-        //    BallRigibody.AddTorque(Vector3.right * 90, ForceMode.VelocityChange);
-
-        //    isShooting = false;
-        //    kickDelay = false;
-
-        //    StartCoroutine(ResetCooltime());
-        //}
     }
 
     public void Shoot()
@@ -477,7 +471,7 @@ public class BallMove : MonoBehaviour
 
         startPosition = transform.position;
         BallRigibody.velocity = Vector3.zero;
-        BallRigibody.AddForce(new(0, 0, 250), ForceMode.VelocityChange);
+        BallRigibody.AddForce(Vector3.forward * 250, ForceMode.VelocityChange);
         BallRigibody.AddTorque(Vector3.right * 90, ForceMode.VelocityChange);
         shootBlurImage.fillAmount = 1;
         StartCoroutine(ShootCooltime());
@@ -504,7 +498,7 @@ public class BallMove : MonoBehaviour
         if (transform.position.z - startPosition.z > ballMaxZ && isShooting)
         {
             BallRigibody.velocity = Vector3.zero;
-            BallRigibody.AddForce(new(0, 0, -50), ForceMode.VelocityChange);
+            BallRigibody.AddForce(Vector3.forward * -50, ForceMode.VelocityChange);
             BallRigibody.AddTorque(Vector3.left * 90, ForceMode.VelocityChange);
 
             Debug.Log("나 멈춘다잉");
@@ -517,7 +511,7 @@ public class BallMove : MonoBehaviour
         if (collider.CompareTag("DefenderHitBox") && isShooting)
         {
             BallRigibody.velocity = Vector3.zero;
-            BallRigibody.AddForce(new(0, 0, -50), ForceMode.VelocityChange);
+            BallRigibody.AddForce(Vector3.forward * -50, ForceMode.VelocityChange);
             BallRigibody.AddTorque(Vector3.left * 90, ForceMode.VelocityChange);
 
             Instantiate(HitParticle, collider.ClosestPoint(transform.position += Vector3.up * 2.5f), Quaternion.identity);
@@ -540,5 +534,26 @@ public class BallMove : MonoBehaviour
         yield return null;
 
         resetKick = false;
+    }
+
+    public void ImpactSetting(float stopPoint)
+    {
+        isImpact = true;
+
+        BallRigibody.velocity = Vector3.zero;
+        BallRigibody.angularVelocity = Vector3.zero;
+
+        transform.position = transform.position.y * Vector3.up + stopPoint * Vector3.forward;
+    }
+
+    public void ImpactEnd(bool isGoal)
+    {
+        if (isGoal)
+            BallTrans.position = Vector3.up * 1.926f + Vector3.forward * BallTrans.position.z;
+        else
+            BallTrans.position = Vector3.up * 1.926f + Vector3.forward * (PlayerTrans.position.z + 5);
+
+        BallRigibody.velocity = Vector3.zero;
+        BallRigibody.angularVelocity = Vector3.zero;
     }
 }

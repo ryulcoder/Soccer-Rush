@@ -26,6 +26,7 @@ public class Defender : MonoBehaviour
     Animator DefenderAni;
     float totalSpeed;
     string anomalyStr;
+    bool isSliding_Front;
 
     public AnimatorStateInfo stateInfo;
 
@@ -33,6 +34,8 @@ public class Defender : MonoBehaviour
     {
         totalSpeed = 0;
         DefenderAni = gameObject.GetComponent<Animator>();
+
+        isSliding_Front = currentState.ToString() == "Sliding_Tackle_Front";
     }
 
     void OnEnable()
@@ -42,22 +45,21 @@ public class Defender : MonoBehaviour
 
     void FixedUpdate()
     {
-        StartCoroutine(Defender_Update());
+        Defender_Update();
     }
 
     // 달리기 후 슬라이딩 태클을 하는 수비수 업데이트 로직
-    IEnumerator Defender_Update()
+    void Defender_Update()
     {
         if (isTackle && GameManager.Instance.aroundDefenderClear)
         {
             Reset();
-            yield break;
         }
 
         stateInfo = DefenderAni.GetCurrentAnimatorStateInfo(0);
 
         // SlidingTackleFront_Update
-        if (isTackle && currentState.ToString() == "Sliding_Tackle_Front" && !isHit)
+        if (isTackle && isSliding_Front && !isHit)
         {
             if (!stateInfo.IsName("Wait") && !stateInfo.IsName("Tackle_Front"))
             {
@@ -74,8 +76,6 @@ public class Defender : MonoBehaviour
             }
 
         }
-        else
-            yield return null;
 
     }
 

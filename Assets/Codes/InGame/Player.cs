@@ -22,12 +22,12 @@ public class Player : MonoBehaviour
     public Transform TileTransform;
 
     public float speed, jumpSpeed, distance;
-    float totalSpeed, prev_x, next_x;
+    float totalSpeed, prev_x, next_x, returnZero;
 
-    public bool dribbleSlowStart, getTackled, isAct;
-    bool start, dontMove, isDribble, isJump, isSpin, isAvoid, ballReset;
+    public bool dribbleSlowStart, getTackled, isAct, isImpact;
+    bool start, dontMove, ballReset, isDribble, isJump, isSpin, isAvoid;
 
-    Vector3 direction;
+    Vector3 direction, defaultVec;
 
     public AnimatorStateInfo stateInfo;
 
@@ -89,6 +89,7 @@ public class Player : MonoBehaviour
         {
             PlayerMove_Update();
             PlayerDribble_Update();
+            PlayerImpactShoot_Update();
         }
     }
 
@@ -147,9 +148,8 @@ public class Player : MonoBehaviour
             {
                 isAct = false;
 
-                PlayerTransform.position = new(next_x, position.y, position.z);
-                //Debug.Log(PlayerTransform.position);
-
+                PlayerTransform.position = Vector3.right * next_x + Vector3.up * position.y + Vector3.forward * position.z;
+                
                 if (stateInfo.IsName("Move_Left") || stateInfo.IsName("Move_Right"))
                     PlayerAni.SetTrigger("ReDribble");
 
@@ -186,6 +186,17 @@ public class Player : MonoBehaviour
                 // 드리블 이동
                 PlayerTransform.position += Vector3.forward * totalSpeed;
             }
+        }
+    }
+
+    void PlayerImpactShoot_Update()
+    {
+        if (isImpact && (stateInfo.IsName("Shoot_Right") || stateInfo.IsName("Shoot_Center")))
+        {
+            if (returnZero == 0 && transform.position.x <= 0)
+                isImpact = false;
+
+            transform.position = Vector3.MoveTowards(transform.position, defaultVec + 2 * returnZero * Vector3.left, Time.deltaTime);
         }
     }
 
@@ -342,6 +353,47 @@ public class Player : MonoBehaviour
         gameObject.transform.position = new(player_x, gameObject.transform.position.y, gameObject.transform.position.z);
     }
 
+    public void ImpactSetting()
+    {
+        SwipInput.instance.gameObject.SetActive(false);
+        shootButton.gameObject.SetActive(false);
+
+        returnZero = 1;
+        isImpact = true;
+
+        StartCoroutine(ImpactMoveCenterLoop());
+    }
+
+    IEnumerator ImpactMoveCenterLoop()
+    {
+        yield return new WaitForSeconds(2);
+
+        if (transform.position.x > 0)
+            MoveLeftRight(-1);
+        else if (transform.position.x < 0)
+            MoveLeftRight(1);
+
+        yield break;
+    }
+
+    public void ImpactZoneKickOn()
+    {
+        returnZero = 0;
+        totalSpeed = 0;
+
+        ImpactZone.Instance.ImpactKickOn();
+    }
+
+    public void GoalCheck(bool isGoal)
+    {
+        if (isGoal)
+            PlayerAni.SetTrigger("Goal");
+        else
+            PlayerAni.SetTrigger("NoGoal");
+    }
+
+    
+
     public void Spinballtouch()
     {
         if (LobbyAudioManager.instance == null)
@@ -364,5 +416,7 @@ public class Player : MonoBehaviour
             return;
         LobbyAudioManager.instance.PlaySfx(LobbyAudioManager.Sfx.kick);
     }
+
+    
 
 }

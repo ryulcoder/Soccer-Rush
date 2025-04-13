@@ -6,17 +6,16 @@ public class Goalkeeper : MonoBehaviour
 {
     public static Goalkeeper Instance;
 
+    public Transform ImpactZoneArea;
     public Transform GoalKeeperTrans;
-    public Transform GoalKeeperHip;
-    public Animator GoalkeeperAni;
-
+    public Transform GoalKeeperArmature;
     public Transform GoalPoint;
 
-    Vector3 divingDir;
+    public Animator GoalkeeperAni;
 
-    float reactSpeed = 0.1f;
+    [SerializeField] float reactSpeed = 0.1f;
     float divingSpeed;
-    bool right, jump, fall, nextY;
+    bool right, jump, fall;
 
     public bool isGoal;
 
@@ -25,25 +24,6 @@ public class Goalkeeper : MonoBehaviour
         Instance = this;
     }
 
-    void Start()
-    {
-        GoalKeeperTrans.localPosition = 9 * Vector3.back;
-
-        if (Penalty.Instance.right)
-        {
-            right = true;
-            divingDir = (Vector3.up + Vector3.right).normalized;
-            divingDir.x = 1.7f;
-        }
-        else
-        {
-            right = false;
-            divingDir = (Vector3.up + Vector3.left).normalized;
-            divingDir.x = -1.7f;
-        }
-
-        divingSpeed = 10;
-    }
 
     void FixedUpdate()
     {
@@ -57,8 +37,7 @@ public class Goalkeeper : MonoBehaviour
                 return;
             }
 
-            GoalKeeperTrans.localPosition += divingSpeed * Time.deltaTime * divingDir;
-            divingSpeed += Time.deltaTime * 7;
+            GoalKeeperTrans.localPosition += divingSpeed * Time.deltaTime * Vector3.up;
 
         }
 
@@ -68,27 +47,25 @@ public class Goalkeeper : MonoBehaviour
             {
                 fall = false;
 
-                GoalKeeperTrans.localPosition = new(GoalKeeperTrans.localPosition.x, 0, GoalKeeperTrans.localPosition.z);
+                GoalKeeperTrans.localPosition = Vector3.right * GoalKeeperTrans.localPosition.x + Vector3.forward * GoalKeeperTrans.localPosition.z;
                 return;
             }
-            else if (!nextY && GoalKeeperTrans.localPosition.y <= 1)
-            {
-                nextY = true;
-                divingSpeed = 1;
-            }
 
-            GoalKeeperTrans.localPosition += divingSpeed * Time.deltaTime * divingDir;
-            divingSpeed += Time.deltaTime * 15;
+            GoalKeeperTrans.localPosition += divingSpeed * Time.deltaTime * Vector3.down;
         }
+
     }
+
 
     public void Reset()
     {
-        right = false;
+        right = ImpactZone.Instance.right;
+
+        divingSpeed = 10;
+
         jump = false; 
         fall = false;
         isGoal = false;
-        nextY = false;
 
         GoalkeeperAni.Play("Idle", -1, 0f);
     }
@@ -119,29 +96,19 @@ public class Goalkeeper : MonoBehaviour
 
         jump = false;
         fall = true;
-
-        if (right)
-            divingDir = Vector3.down + Vector3.right * 0.5f;
-        else
-            divingDir = Vector3.down + Vector3.left * 0.5f;
     }
 
     public void DivingEnd()
     {
-        if (!isGoal)
-            Goalkeeper_Hands.instance.DropBall();
-
-        StartCoroutine(DivingEndDelay());  
-    }
-
-
-    IEnumerator DivingEndDelay()
-    {
-        yield return new WaitForSeconds(0.2f);
-
         if (isGoal)
             GoalkeeperAni.SetTrigger("Goal");
         else
+        {
+            ImpactZone.Instance.DropBall();
             GoalkeeperAni.SetTrigger("NoGoal");
+        }
+
+        Debug.LogWarning("DivingEnd");
     }
+
 }

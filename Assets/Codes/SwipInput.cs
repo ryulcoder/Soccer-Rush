@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class SwipInput : MonoBehaviour
 {
+    public static SwipInput instance;
+
     public Player Player;
 
     private Vector2 startTouchPosition;
@@ -12,6 +14,11 @@ public class SwipInput : MonoBehaviour
     private bool swipeDetected = false;
 
     public float swipeThreshold = 50f; // 최소 스와이프 거리
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     private void Update()
     {
@@ -66,8 +73,8 @@ public class SwipInput : MonoBehaviour
         }
     }
 
-    private void OnSwipeLeft() => Debug.Log("Swipe Left!");
+    /*private void OnSwipeLeft() => Debug.Log("Swipe Left!");
     private void OnSwipeRight() => Debug.Log("Swipe Right!");
     private void OnSwipeUp() => Debug.Log("Swipe Up!");
-    private void OnSwipeDown() => Debug.Log("Swipe Down!");
+    private void OnSwipeDown() => Debug.Log("Swipe Down!");*/
 }
