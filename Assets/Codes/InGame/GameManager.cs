@@ -187,7 +187,7 @@ public class GameManager : MonoBehaviour
             count += 1;
 
             //isImpact = true;
-
+            GameSpeedUp();
             IncreaseDifficulty();
 
             Debug.LogWarning("난이도 업");
