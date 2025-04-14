@@ -138,7 +138,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if ((Player.getTackled) && !coroutine)
+        if ((Player.getTackled || impactFail) && !coroutine)
         {
             coroutine = true;
 
@@ -147,17 +147,7 @@ public class GameManager : MonoBehaviour
             StartCoroutine(GameOver());
         }
 
-        if (impactFail && !coroutine)
-        {
-            coroutine = true;
-
-            Debug.LogWarning("최종스코어: " + ExtraScore.instance.CheckEndScore());
-
-            StartCoroutine(GameOverNoRevive());
-        }
-
-
-        if ((!Player.getTackled && !impactFail) && coroutine)
+        if (!Player.getTackled && !impactFail && coroutine)
         {
             coroutine = false;
             aroundDefenderClear = false;
@@ -181,7 +171,7 @@ public class GameManager : MonoBehaviour
 
     void LateUpdate()
     {
-        if (!reSpeedUp && (ScoreCal.Distance + 50) / 200 - count >= 1)
+        if (!reSpeedUp && (ScoreCal.Distance + 50) / 100 - count >= 1)
         {
             count += 1;
 
@@ -217,7 +207,7 @@ public class GameManager : MonoBehaviour
 
         if(revive > 0)
         {
-            continueButton.SetActive(true);
+            continueButton.SetActive(!impactFail);
         }
 
         PlayerDeathAd();
@@ -229,30 +219,6 @@ public class GameManager : MonoBehaviour
         }
        
     }
-
-    IEnumerator GameOverNoRevive()
-    {
-        Time.timeScale = 1;
-        GameEnd = true;
-        yield return new WaitForSecondsRealtime(1.7f);
-
-        aroundDefenderClear = true;
-
-        GameEndPanel.SetActive(true);
-        GameEndBlurPanel.SetActive(true);
-        ScoreCal.SetResult();
-
-        PlayerDeathAd();
-
-        if (Player.getTackled)
-        {
-            BallMove.gameObject.SetActive(false);
-            Player.PlayerReset();
-        }
-
-
-    }
-
 
 
     public void BallReset()
@@ -319,36 +285,11 @@ public class GameManager : MonoBehaviour
         GameEndPanel.SetActive(false);
         GameEndBlurPanel.SetActive(false);
 
-        if (Player.getTackled)
-        {
-            Player.GetComponent<Animator>().SetTrigger("ReStart");
-            ReSpeedUp();
-        }
-        else if (impactFail)
-        {
-            StartCoroutine(ImpactRevive());
-
-            GameSpeedUp();
-        }
+        Player.GetComponent<Animator>().SetTrigger("ReStart");
+        ReSpeedUp();
 
         revive--;
         continueButton.SetActive(false);
-    }
-
-    IEnumerator ImpactRevive()
-    {
-        impactFail = false;
-
-        ImpactZone.Instance.Off();
-
-        BallMove.instance.ImpactEnd(false);
-
-        yield return new WaitForSeconds(0.4f);
-
-        Player.dribbleSlowStart = true;
-
-        Player.GetComponent<Animator>().SetTrigger("ReDribble");
-        Player.GetComponent<Animator>().SetTrigger("Dribble");
     }
 
 

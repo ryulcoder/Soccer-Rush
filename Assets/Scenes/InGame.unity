@@ -719,6 +719,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed9bd69682574fb4ca7f11647cae8995, type: 3}
+--- !u!1 &263396874 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7236099265347792562, guid: 859ac2c11a319e641a7e1c81f75f2f33,
+    type: 3}
+  m_PrefabInstance: {fileID: 914797075}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &272203233
 GameObject:
   m_ObjectHideFlags: 0
@@ -2059,7 +2065,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 104
@@ -4333,6 +4339,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 496023578}
     m_Modifications:
+    - target: {fileID: 695096329225099075, guid: 859ac2c11a319e641a7e1c81f75f2f33,
+        type: 3}
+      propertyPath: IZLabel
+      value: 
+      objectReference: {fileID: 263396874}
     - target: {fileID: 1323383702867530481, guid: 859ac2c11a319e641a7e1c81f75f2f33,
         type: 3}
       propertyPath: m_Pivot.x
@@ -4457,6 +4468,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8492617676840478392, guid: 859ac2c11a319e641a7e1c81f75f2f33,
+        type: 3}
+      propertyPath: decreaseRates.Array.data[0]
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5136,7 +5152,7 @@ MonoBehaviour:
   - {fileID: 2024749598}
   duration: 0.95
   right: 0
-  win: 1
+  win: 0
   goalEndMove: 0
   impactKickOn: 0
 --- !u!4 &1210599581

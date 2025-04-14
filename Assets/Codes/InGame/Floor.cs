@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class Floor : MonoBehaviour
@@ -26,6 +25,8 @@ public class Floor : MonoBehaviour
 
     [SerializeField] float[] defPer;
     [SerializeField] float minGap, maxGap;
+
+    string[] orderDefNames = { "StandTackle_Front", "SlidingTackle_Front", "SlidingTackle_Anomaly" };
 
     Vector3 floorScale, settingVec;
 
@@ -62,6 +63,8 @@ public class Floor : MonoBehaviour
 
         floorScale = transform.localScale;
         defXs = new float[] { -floorScale.x / 3, 0, floorScale.x / 3 };
+
+        ranXs = defXs;
 
         // 시작시 첫 floor 제외 순차적 수비 세팅
         if (otherFloor)
@@ -178,14 +181,14 @@ public class Floor : MonoBehaviour
         // 세팅한 수비 좌표 리스트를 토대로 수비 옵젝 세팅
         for (int posIdx=0; posIdx < posList.Count; posIdx++)
         {
-            ranXs = defXs.OrderBy(_ => Random.value).ToArray();
+            ranXs = Shuffle(ranXs);
 
             defStr = defNames[RanDef()];
 
             // 3라인 수비 무지개 패턴
             if (defStr == "Three_Defenders_Anomaly")
             {
-                string[] orderDefNames = defNames[..3].OrderBy(_ => Random.value).ToArray();
+                orderDefNames = Shuffle(orderDefNames);
 
                 for (int i = 0; i < orderDefNames.Length; i++)
                 {
@@ -524,4 +527,15 @@ public class Floor : MonoBehaviour
         
     }
 
+
+    public static T[] Shuffle<T>(T[] array)
+    {
+        for (int i = array.Length - 1; i > 0; i--)
+        {
+            int j = Random.Range(0, i + 1);
+            (array[j], array[i]) = (array[i], array[j]);
+        }
+
+        return array;
+    }
 }

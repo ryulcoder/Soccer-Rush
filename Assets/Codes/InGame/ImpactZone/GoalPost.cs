@@ -17,6 +17,14 @@ public class GoalPost : MonoBehaviour
         {
             isGoal = true;
 
+            if (LobbyAudioManager.instance != null)
+            {
+
+                LobbyAudioManager.instance.PlaySfx(LobbyAudioManager.Sfx.goalNet);
+
+            }
+
+
             ImpactZone.Instance.GoalAndDropBall();
         }
     }

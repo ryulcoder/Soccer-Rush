@@ -152,7 +152,6 @@ public class ImpactZone : MonoBehaviour
         curveDefaultVec = CurvePoint.position;
         endDefaultVec = GoalPoint.position;
 
-        win = false;
         impactKickOn = false;
         goalEndMove = false;
 

@@ -159,6 +159,9 @@ public class ExtraScore : MonoBehaviour
             Debug.LogWarning(sb.ToString());
         }
 
+
+        GameManager.Instance.ScoreCal.bTAmount += 1;
+
         yield break;
     }
     

@@ -373,6 +373,13 @@ public class Player : MonoBehaviour
         returnZero = 0;
         totalSpeed = 0;
 
+        if (LobbyAudioManager.instance != null)
+        {
+
+            LobbyAudioManager.instance.PlaySfx(LobbyAudioManager.Sfx.shoot);
+
+        }
+
         ImpactZone.Instance.ImpactKickOn();
     }
 

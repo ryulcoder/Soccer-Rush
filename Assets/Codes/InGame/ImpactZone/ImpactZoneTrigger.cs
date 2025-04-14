@@ -80,6 +80,8 @@ public class ImpactZoneTrigger : MonoBehaviour
         ballStopLoop = false;
         BallMove.instance.deceleration = false;
 
+        yield return new WaitForSeconds(0.5f);
+
         ImpactGame.gameObject.SetActive(true);
 
         yield return new WaitUntil(() => !ImpactGame.gameObject.activeSelf);
