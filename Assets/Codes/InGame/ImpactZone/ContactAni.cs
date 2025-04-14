@@ -59,9 +59,11 @@ public class ContactAni : MonoBehaviour
         yield return new WaitForSeconds(1f);
         vsImage.SetActive(false);
         background.SetActive(false);
+
+
         Sequence seq2 = DOTween.Sequence();
-        seq2.Append(a.DOAnchorPosY(-650f, 0.5f).SetEase(Ease.OutQuad))
-            .Join(b.DOAnchorPosY(650f, 0.5f).SetEase(Ease.OutQuad))
+        seq2.Append(a.DOAnchorPosY(-570f, 0.5f).SetEase(Ease.OutQuad))
+            .Join(b.DOAnchorPosY(570f, 0.5f).SetEase(Ease.OutQuad))
             .OnComplete(() =>
             {
                 StartCoroutine(WaitMovePanel());
