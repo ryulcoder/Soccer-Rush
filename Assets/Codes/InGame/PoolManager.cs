@@ -48,7 +48,6 @@ public class PoolManager : MonoBehaviour
 
             if (def.name == "ImpactZone")
             {
-                def.GetComponent<ImpactZone>().Off();
                 def.SetParent(transform);
 
                 break;

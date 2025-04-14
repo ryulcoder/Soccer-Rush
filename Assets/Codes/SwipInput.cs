@@ -16,6 +16,8 @@ public class SwipInput : MonoBehaviour
 
     public float swipeThreshold = 50f; // 최소 스와이프 거리
 
+    public bool isImpact;
+
     private void Awake()
     {
         instance = this;
@@ -23,6 +25,8 @@ public class SwipInput : MonoBehaviour
 
     private void Update()
     {
+        if (isImpact) return;
+
         if (Touchscreen.current == null) return;
 
         if (Touchscreen.current.primaryTouch.press.isPressed)

@@ -347,7 +347,7 @@ public class Player : MonoBehaviour
 
     public void ImpactSetting()
     {
-        SwipInput.instance.gameObject.SetActive(false);
+        SwipInput.instance.isImpact = true;
         shootButton.gameObject.SetActive(false);
 
         returnZero = 1;

@@ -109,8 +109,19 @@ public class GameManager : MonoBehaviour
         if (ballSkinIdx != PlayerPrefs.GetInt("BallSkin", 0))
             ballSkinIdx = PlayerPrefs.GetInt("BallSkin", 0);
 
-        totalStamina = PlayerPrefs.GetFloat("TotalStamina", 100);
-        regenTime = PlayerPrefs.GetFloat("RegenTime", 2);
+        if (StartManager.Instance)
+        {
+            totalStamina = 100 + StartManager.Instance.staminaUse;
+            regenTime = 2 - StartManager.Instance.staminaRegen;
+
+            Debug.Log("스테미너 추가스텟 받음");
+        }
+        else
+        {
+            totalStamina = 100;
+            regenTime = 2;
+        }
+        
 
     }
 
@@ -308,7 +319,7 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
 
-        SwipInput.instance.gameObject.SetActive(true);
+        SwipInput.instance.isImpact = false;
         Player.Instance.shootButton.gameObject.SetActive(true);
     }
 
