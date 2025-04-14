@@ -8,9 +8,15 @@ public class ContinueCount : MonoBehaviour
     public Text countText;
     private int count;
 
+    public GameObject freeImage;
+
     void OnEnable()
     {
-        count = 5;
+        if (!PlayerPrefs.HasKey("FreeRevive"))
+        {
+            freeImage.SetActive(true);
+        }
+        count = 8;
         StartCoroutine(CountReduce());
     }
 
@@ -25,5 +31,18 @@ public class ContinueCount : MonoBehaviour
         }
 
         gameObject.SetActive(false);
+    }
+
+    public void Revive()
+    {
+        if (!PlayerPrefs.HasKey("FreeRevive"))
+        {
+            PlayerPrefs.SetInt("FreeRevive", 1);
+            GameManager.Instance.PlayerRevive();
+        }
+        else
+        {
+            GameManager.Instance.ReviveAd();
+        }
     }
 }

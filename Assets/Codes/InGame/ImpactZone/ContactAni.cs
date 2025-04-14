@@ -12,6 +12,7 @@ public class ContactAni : MonoBehaviour
 
     public GameObject background;
     public GameObject vsImage;
+    public GameObject IZLabel;
     public ImpactGame impactGame;
 
     int goalkeeperStage;
@@ -19,6 +20,7 @@ public class ContactAni : MonoBehaviour
     public TextMeshProUGUI playerName;
 
     public string[] goalkeeperNames;
+ 
 
 
     void Awake()
@@ -31,7 +33,10 @@ public class ContactAni : MonoBehaviour
     }
     void OnEnable()
     {
+        IZLabel.SetActive(true);
         PlaySequence();
+        impactGame.goalkeeperStage = goalkeeperStage;
+        goalkeeperName.text = goalkeeperNames[goalkeeperStage];
         goalkeeperStage++;
     }
 
@@ -59,7 +64,7 @@ public class ContactAni : MonoBehaviour
         yield return new WaitForSeconds(1f);
         vsImage.SetActive(false);
         background.SetActive(false);
-
+        IZLabel.SetActive(false);
 
         Sequence seq2 = DOTween.Sequence();
         seq2.Append(a.DOAnchorPosY(-570f, 0.5f).SetEase(Ease.OutQuad))

@@ -7,7 +7,8 @@ public class ImpactGame : MonoBehaviour
     public Slider slider;
     public float increaseAmount = 0.1f; // 버튼 한번에 증가할 수치
     float maxIncreasePerSecond; // 초당 최대 증가량
-    public float decreaseRate = 0.5f; // 초당 감소량
+    public int goalkeeperStage;
+    public float[] decreaseRates;
 
     private float accumulatedIncrease = 0f;
     private float timer = 0f;
@@ -114,7 +115,7 @@ public class ImpactGame : MonoBehaviour
         {
             if (slider.value > 0f)
             {
-                slider.value -= decreaseRate * Time.deltaTime;
+                slider.value -= decreaseRates[goalkeeperStage] * Time.deltaTime;
                 slider.value = Mathf.Max(slider.value, 0f); // 음수 방지
             }
         }
@@ -126,13 +127,16 @@ public class ImpactGame : MonoBehaviour
 
         if(slider.value > 5f)
         {
+            // 이겼을때
             playerWin = true;
+            PlayerPrefs.SetInt("TopImpactZone", goalkeeperStage + 1);
+            PlayerPrefs.Save();
         }
         else
         {
             playerWin=false;
         }
-
+        
         gameObject.SetActive(false);
         Debug.Log(playerWin);
     }

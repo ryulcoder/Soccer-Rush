@@ -5195,7 +5195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 824187c4787373b4f9865b5eaddb6f4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballData: {fileID: 11400000, guid: 0891ec09d0bd97d4381cc8f1ba29f7fe, type: 2}
+  ballData: {fileID: 11400000, guid: 833a88f63876c22479ea4fcc0b569dd6, type: 2}
   EquipButton: {fileID: 895981299}
   UnlockButton: {fileID: 1413522637}
   EquippedButton: {fileID: 161324065}
@@ -18194,7 +18194,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &569132761
 RectTransform:
   m_ObjectHideFlags: 0
@@ -23500,6 +23500,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 4f3b2e5ea3325ca4a8cf326584f0d09f, type: 3}
   - {fileID: 8300000, guid: 482cbecf61cbe2644a87d64b7ea5f856, type: 3}
   - {fileID: 8300000, guid: 40554ebf1b6a63f45bd5192898fbbae5, type: 3}
+  - {fileID: 8300000, guid: c4dee29b917a43d4aadd9cfa6dc5cd73, type: 3}
   sfxVolume: 0.5
   channels: 15
   sfxObject: {fileID: 0}

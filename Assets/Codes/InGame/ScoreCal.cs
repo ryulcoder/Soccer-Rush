@@ -17,6 +17,7 @@ public class ScoreCal : MonoBehaviour
     public Transform player;
     float distance;
     float score;
+    public int bTAmount;
     public Text distanceText;
     public Text scoreText;
     public Text distanceResult;
@@ -27,6 +28,7 @@ public class ScoreCal : MonoBehaviour
     public Slider impactSlider;         // 임팩트 존 슬라이더
     public TextMeshProUGUI checkText;
 
+    public TextMeshProUGUI bTText;     // 수비수 제친 숫자
     string unityLeaderboard = "SoccerRushRanking";
 
 
@@ -65,6 +67,7 @@ public class ScoreCal : MonoBehaviour
         distanceText.text = Distance.ToString() + "m";
         scoreText.text = Score.ToString();
         impactSlider.value = (distance % 200)/ 200;
+        bTText.text = bTAmount.ToString();
     }
     
     // 결과창 보여주기
@@ -165,8 +168,10 @@ public class ScoreCal : MonoBehaviour
     void SendAch()
     {
         int pastTD = PlayerPrefs.GetInt("TotalDistance");
+        int pastBT = PlayerPrefs.GetInt("BreakThrough");
         PlayerPrefs.SetInt("TotalDistance", Distance + pastTD);
-        //PlayerPrefs.SetInt("BreakThrough", Distance + pastTD);
-        
+        PlayerPrefs.SetInt("BreakThrough", bTAmount + pastBT); 
+
+        PlayerPrefs.Save();
     }
 }

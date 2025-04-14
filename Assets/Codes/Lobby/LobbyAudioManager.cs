@@ -28,7 +28,7 @@ public class LobbyAudioManager : MonoBehaviour
     bool needPlaySfx;
 
 
-    public enum Sfx {button, kick, shoot, shootHit, fallDown, death, bonusPoint, deathPunch, startWhistle}
+    public enum Sfx {button, kick, shoot, shootHit, fallDown, death, bonusPoint, deathPunch, startWhistle, goalNet}
 
     void Awake()
     {

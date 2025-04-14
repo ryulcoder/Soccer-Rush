@@ -138,7 +138,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if ((Player.getTackled || impactFail) && !coroutine)
+        if ((Player.getTackled) && !coroutine)
         {
             coroutine = true;
 
@@ -146,6 +146,16 @@ public class GameManager : MonoBehaviour
 
             StartCoroutine(GameOver());
         }
+
+        if (impactFail && !coroutine)
+        {
+            coroutine = true;
+
+            Debug.LogWarning("최종스코어: " + ExtraScore.instance.CheckEndScore());
+
+            StartCoroutine(GameOverNoRevive());
+        }
+
 
         if ((!Player.getTackled && !impactFail) && coroutine)
         {
@@ -218,6 +228,29 @@ public class GameManager : MonoBehaviour
             Player.PlayerReset();
         }
        
+    }
+
+    IEnumerator GameOverNoRevive()
+    {
+        Time.timeScale = 1;
+        GameEnd = true;
+        yield return new WaitForSecondsRealtime(1.7f);
+
+        aroundDefenderClear = true;
+
+        GameEndPanel.SetActive(true);
+        GameEndBlurPanel.SetActive(true);
+        ScoreCal.SetResult();
+
+        PlayerDeathAd();
+
+        if (Player.getTackled)
+        {
+            BallMove.gameObject.SetActive(false);
+            Player.PlayerReset();
+        }
+
+
     }
 
 

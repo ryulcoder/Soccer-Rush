@@ -44,5 +44,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5eddabe87e8caa4ab1be4668477a93d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameManager: {fileID: 0}
   player: {fileID: 0}
+  bTAmount: 0
+  distanceText: {fileID: 0}
+  scoreText: {fileID: 0}
+  distanceResult: {fileID: 0}
+  scoreResult: {fileID: 0}
+  BestScoreStamp: {fileID: 0}
+  lastBestScore: {fileID: 0}
+  settingButton: {fileID: 0}
+  impactSlider: {fileID: 0}
+  checkText: {fileID: 0}
+  bTText: {fileID: 0}

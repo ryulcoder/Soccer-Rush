@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 627a7a483b1199946a987538a36d4fb9, type: 3}
-  m_Name: StarBall
+  m_Name: BlackStar
   m_EditorClassIdentifier: 
   ballNo: 2
-  ballName: StarBall
+  ballName: BlackStar
