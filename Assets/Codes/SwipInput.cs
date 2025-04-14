@@ -78,6 +78,12 @@ public class SwipInput : MonoBehaviour
         }
     }
 
+    public void Reset()
+    {
+        isImpact= false;
+        swipeDetected = false;
+    }
+
     /*private void OnSwipeLeft() => Debug.Log("Swipe Left!");
     private void OnSwipeRight() => Debug.Log("Swipe Right!");
     private void OnSwipeUp() => Debug.Log("Swipe Up!");

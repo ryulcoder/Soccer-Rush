@@ -6672,6 +6672,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 835559946}
   swipeThreshold: 50
+  isImpact: 0
 --- !u!4 &2133563349
 Transform:
   m_ObjectHideFlags: 0

@@ -186,7 +186,7 @@ public class GameManager : MonoBehaviour
         {
             count += 1;
 
-            isImpact = true;
+            //isImpact = true;
 
             IncreaseDifficulty();
 
@@ -319,7 +319,7 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1);
 
-        SwipInput.instance.isImpact = false;
+        SwipInput.instance.Reset();
         Player.Instance.shootButton.gameObject.SetActive(true);
     }
 
