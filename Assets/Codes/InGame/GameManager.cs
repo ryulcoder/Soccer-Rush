@@ -171,7 +171,7 @@ public class GameManager : MonoBehaviour
 
     void LateUpdate()
     {
-        if (!reSpeedUp && (ScoreCal.Distance + 50) / 100 - count >= 1)
+        if (!reSpeedUp && (ScoreCal.Distance + 50) / 200 - count >= 1)
         {
             count += 1;
 
