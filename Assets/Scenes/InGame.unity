@@ -4512,12 +4512,27 @@ PrefabInstance:
     - target: {fileID: 6740956854829946495, guid: 859ac2c11a319e641a7e1c81f75f2f33,
         type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7223884605879994042, guid: 859ac2c11a319e641a7e1c81f75f2f33,
+        type: 3}
+      propertyPath: m_Interactable
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8492617676840478392, guid: 859ac2c11a319e641a7e1c81f75f2f33,
         type: 3}
       propertyPath: decreaseRates.Array.data[0]
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8596363415342776291, guid: 859ac2c11a319e641a7e1c81f75f2f33,
+        type: 3}
+      propertyPath: m_Interactable
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8596363415342776291, guid: 859ac2c11a319e641a7e1c81f75f2f33,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
