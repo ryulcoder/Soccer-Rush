@@ -117,4 +117,9 @@ public class Stamina : MonoBehaviour
     {
         StaminaText.text = stamina.ToString() + "/" + totalStamina.ToString(); 
     }
+
+    public void RefillStamina()
+    {
+        stamina = totalStamina;
+    }
 }

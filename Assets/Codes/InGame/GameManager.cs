@@ -307,7 +307,7 @@ public class GameManager : MonoBehaviour
 
         Player.GetComponent<Animator>().SetTrigger("ReStart");
         ReSpeedUp();
-
+        Stamina.instance.RefillStamina();
         revive--;
         continueButton.SetActive(false);
     }
