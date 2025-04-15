@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class SwipInput : MonoBehaviour
@@ -82,6 +83,9 @@ public class SwipInput : MonoBehaviour
     {
         isImpact= false;
         swipeDetected = false;
+
+        startTouchPosition = Vector2.zero;
+        endTouchPosition = Vector2.zero;
     }
 
     /*private void OnSwipeLeft() => Debug.Log("Swipe Left!");

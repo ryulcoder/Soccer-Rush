@@ -111,7 +111,12 @@ public class BallMove : MonoBehaviour
             BallRigibody.angularVelocity *= dampingFactor;
             BallRigibody.velocity *= dampingFactor;
 
-            //Debug.Log(BallRigibody.velocity);
+            if (!isShooting && BallRigibody.velocity.z > 58)
+            {
+                BallRigibody.velocity = Vector3.right * BallRigibody.velocity.x + Vector3.up * BallRigibody.velocity.y + Vector3.forward * 58;
+                
+            }
+                
         }
     }
     // 공이 이탈 시 위치 조정 업데이트 로직
