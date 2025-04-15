@@ -4512,7 +4512,7 @@ PrefabInstance:
     - target: {fileID: 6740956854829946495, guid: 859ac2c11a319e641a7e1c81f75f2f33,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7223884605879994042, guid: 859ac2c11a319e641a7e1c81f75f2f33,
         type: 3}
@@ -6732,6 +6732,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 835559946}
+  startTouchPosition: {x: 0, y: 0}
+  endTouchPosition: {x: 0, y: 0}
+  delta: {x: 0, y: 0}
   swipeThreshold: 50
   isImpact: 0
 --- !u!4 &2133563349

@@ -86,6 +86,8 @@ public class ImpactZoneTrigger : MonoBehaviour
 
         yield return new WaitUntil(() => !ImpactGame.gameObject.activeSelf);
 
+        yield return new WaitForSeconds(0.5f);
+
         ImpactZone.Instance.win = ImpactGame.playerWin;
 
         if (ImpactZone.Instance.right)

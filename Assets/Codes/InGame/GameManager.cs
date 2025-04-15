@@ -182,21 +182,11 @@ public class GameManager : MonoBehaviour
 
     void LateUpdate()
     {
-        /*if (!reSpeedUp && (ScoreCal.Distance + 50) / 200 - count >= 1)
+        if (!reSpeedUp && (ScoreCal.Distance + 50) / 100 - count >= 1)
         {
             count += 1;
 
             isImpact = true;
-            IncreaseDifficulty();
-
-            Debug.LogWarning("난이도 업");
-        }*/
-
-        if (ScoreCal.Distance/ 200 - count >= 1)
-        {
-            count += 1;
-
-            GameSpeedUp();
             IncreaseDifficulty();
 
             Debug.LogWarning("난이도 업");

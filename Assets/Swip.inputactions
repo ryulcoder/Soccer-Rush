@@ -1,0 +1,54 @@
+{
+    "name": "Swip",
+    "maps": [
+        {
+            "name": "InputAction",
+            "id": "5c833f2a-dfab-490a-b102-838613911199",
+            "actions": [
+                {
+                    "name": "PointerPress",
+                    "type": "Button",
+                    "id": "dc9c25c1-0b68-47ed-ae5f-b2da52072c84",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PointerPosition",
+                    "type": "Value",
+                    "id": "842048f4-5ac2-4f4d-a3e6-ad40a38bbee4",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "7652ca93-99d3-4d92-848f-ed4cf73125bd",
+                    "path": "<Pointer>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PointerPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6ec0ea27-3b5e-4a0c-ac0d-7da5c1b1f38b",
+                    "path": "<Pointer>/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PointerPress",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
