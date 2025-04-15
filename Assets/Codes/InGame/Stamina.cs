@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,7 +18,7 @@ public class Stamina : MonoBehaviour
     int limitSta;
 
     public Slider StaminaSlider;
-    //public Text StaminaText;
+    public TextMeshProUGUI StaminaText;
 
     private void Awake()
     {
@@ -48,6 +49,8 @@ public class Stamina : MonoBehaviour
         {
             StaminaSlider.value = Mathf.Lerp(StaminaSlider.value, stamina, Time.deltaTime * 5);
         }
+
+        SetStText();
     }
 
     void ReGenStamina()
@@ -108,5 +111,10 @@ public class Stamina : MonoBehaviour
             stamina += limitSta;
 
         Debug.LogWarning("추가 스태미너 +5");
+    }
+
+    void SetStText()
+    {
+        StaminaText.text = stamina.ToString() + "/" + totalStamina.ToString(); 
     }
 }
