@@ -25,13 +25,14 @@ public class ImpactGame : MonoBehaviour
     {
         maxIncreasePerSecond = 10 * increaseAmount;
         button = TapButton.GetComponent<Button>();
+        button.onClick.AddListener(OnButtonClick);
     }
 
     private void OnEnable()
     {
         slider.value = 5f;
         count = 5;
-        button.interactable = false;
+        //button.interactable = false;
         canEnemy = false;
         slider.gameObject.SetActive(false);
         countText.gameObject.SetActive(false);
@@ -82,7 +83,7 @@ public class ImpactGame : MonoBehaviour
 
     IEnumerator ReduceCount()
     {
-        button.interactable = true;
+        //button.interactable = true;
         while(count > 0)
         {
             countText.text = count.ToString();
@@ -104,7 +105,7 @@ public class ImpactGame : MonoBehaviour
         if(count <= 0)
         {
             canEnemy = false;
-            button.interactable = false;
+            //button.interactable = false;
             StartCoroutine(ImpactEnd());
         }
     }
