@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class ImpactGame : MonoBehaviour
 {
     public Slider slider;
-    public float increaseAmount = 0.1f; // 버튼 한번에 증가할 수치
+    public float increaseAmount; // 버튼 한번에 증가할 수치
     float maxIncreasePerSecond; // 초당 최대 증가량
     public int goalkeeperStage;
     public float[] decreaseRates;
@@ -32,11 +32,16 @@ public class ImpactGame : MonoBehaviour
     {
         slider.value = 5f;
         count = 5;
-        //button.interactable = false;
+        button.interactable = false;
         canEnemy = false;
         slider.gameObject.SetActive(false);
         countText.gameObject.SetActive(false);
         TapButton.SetActive(false);
+    }
+
+    void Start()
+    {
+        increaseAmount = 0.1f + StartManager.Instance.impactDmg;
     }
 
     void Update()
@@ -83,7 +88,7 @@ public class ImpactGame : MonoBehaviour
 
     IEnumerator ReduceCount()
     {
-        //button.interactable = true;
+        button.interactable = true;
         while(count > 0)
         {
             countText.text = count.ToString();
@@ -105,7 +110,7 @@ public class ImpactGame : MonoBehaviour
         if(count <= 0)
         {
             canEnemy = false;
-            //button.interactable = false;
+            button.interactable = false;
             StartCoroutine(ImpactEnd());
         }
     }

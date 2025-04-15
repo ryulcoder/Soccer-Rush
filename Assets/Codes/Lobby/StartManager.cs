@@ -46,9 +46,11 @@ public class StartManager : MonoBehaviour
                 {
                     case AchData.AchReward.staminaUse:
                         staminaUse += data.effectAmount;
+                        staminaUse = 20;
                         break;
                     case AchData.AchReward.staminaRegen:
                         staminaRegen += data.effectAmount;
+                        staminaRegen = 1;
                         break;
                     case AchData.AchReward.impactDmg:
                         impactDmg += data.effectAmount;
