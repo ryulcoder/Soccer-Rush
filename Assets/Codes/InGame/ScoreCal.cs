@@ -31,6 +31,7 @@ public class ScoreCal : MonoBehaviour
     public TextMeshProUGUI bTText;     // 수비수 제친 숫자
     string unityLeaderboard = "SoccerRushRanking";
 
+    float scoreMulti;
 
     public int Distance { get { return (int)distance; } }
     public int Score { get { return (int)score; } }
@@ -53,11 +54,13 @@ public class ScoreCal : MonoBehaviour
         {
             Debug.Log("이미 로그인되어 있음");
         }
+
+        scoreMulti = GameManager.Instance.scoreMulti;
     }
 
     void Update()
     {
-        score = player.position.z / 10 + ExtraScore.instance.CheckEndScore();
+        score = player.position.z / 10 * scoreMulti + ExtraScore.instance.CheckEndScore();
         distance = player.position.z / 20;
         SetScore();
     }

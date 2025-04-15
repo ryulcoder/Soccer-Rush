@@ -30,7 +30,7 @@ public class Floor : MonoBehaviour
 
     Vector3 floorScale, settingVec;
 
-    float[] defXs, ranXs;
+    [SerializeField]float[] defXs, ranXs;
 
     bool onPlayer, inPlayer, coroutine, fpCoolTimeOn, setVar;
     int fpCount, ran, ranDir, fpXIdx, otherXIdx, fpRanNum, defRanIdx;
@@ -51,7 +51,7 @@ public class Floor : MonoBehaviour
             fpRangeInt = 1;
             leftGap = 0;
             prevX = -2;
-            fpDistance = 150;
+            fpDistance = 100;
             useLeftGap = false;
             prevLineIs2 = false;
             fixedPattern = true;
@@ -63,8 +63,7 @@ public class Floor : MonoBehaviour
 
         floorScale = transform.localScale;
         defXs = new float[] { -floorScale.x / 3, 0, floorScale.x / 3 };
-
-        ranXs = defXs;
+        ranXs = new float[] { -floorScale.x / 3, 0, floorScale.x / 3 };
 
         // 시작시 첫 floor 제외 순차적 수비 세팅
         if (otherFloor)
@@ -119,6 +118,8 @@ public class Floor : MonoBehaviour
     // 수비 세팅
     IEnumerator SetDefenders()
     {
+        targetObjs.Clear();
+
         if (GameManager.IsImpact)
         {
             PoolManager.SetPopObject("ImpactZone");
@@ -132,8 +133,6 @@ public class Floor : MonoBehaviour
             targetObjs.Clear();
             yield break;
         }
-
-        targetObjs.Clear();
 
         (minGap, maxGap) = GameManager.DefGap;
         defPer = GameManager.DefPer;
@@ -315,9 +314,6 @@ public class Floor : MonoBehaviour
 
     void FixedPatternSetDefends()
     {
-        ranDir = Random.Range(1, 3);
-        if (ranDir == 1) ranDir = 0;
-
         targetPos = transform.TransformPoint(0.5f * Vector3.back).z;
         float ranNum = Random.Range(minGap, maxGap);
 
@@ -339,6 +335,9 @@ public class Floor : MonoBehaviour
         {
             // 1라인 블락 좌우 회피 전용 고정 패턴
             case 0:
+
+                ranDir = Random.Range(1, 3);
+                if (ranDir == 1) ranDir = 0;
 
                 if (ranDir == 0)
                 {
@@ -471,16 +470,19 @@ public class Floor : MonoBehaviour
 
         if (fpRanInt == 1) fpRanInt = 2;
 
-        fpDistance = GameManager.ScoreCal.Distance;
+        
         fpCoolTimeOn = true;
         fpCount++;
     }
 
     void FixedPatternCoolTimeCheck()
     {
-        if (fpDistance + 100 <= GameManager.ScoreCal.Distance) { 
+        if (fpDistance + 200 <= GameManager.ScoreCal.Distance + 50)
+        {
 
-            if (fpRangeInt == 1) fpRangeInt = 2;
+            fpDistance += 200;
+
+            if (fpRangeInt == 1 && fpCount == 1) fpRangeInt = 2;
 
             fixedPattern = false;
             fpCoolTimeOn = false;

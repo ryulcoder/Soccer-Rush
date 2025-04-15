@@ -1087,6 +1087,8 @@ MonoBehaviour:
   defPer: []
   minGap: 0
   maxGap: 0
+  defXs: []
+  ranXs: []
 --- !u!4 &319297160
 Transform:
   m_ObjectHideFlags: 0
@@ -3896,6 +3898,8 @@ MonoBehaviour:
   defPer: []
   minGap: 0
   maxGap: 0
+  defXs: []
+  ranXs: []
 --- !u!4 &562881218
 Transform:
   m_ObjectHideFlags: 0
@@ -5167,6 +5171,8 @@ MonoBehaviour:
   defPer: []
   minGap: 0
   maxGap: 0
+  defXs: []
+  ranXs: []
 --- !u!1 &1210599577
 GameObject:
   m_ObjectHideFlags: 0
@@ -5574,7 +5580,8 @@ MonoBehaviour:
   - 0
   - 0
   totalStamina: 100
-  regenTime: 0
+  regenTime: 2
+  scoreMulti: 1
   googleAd: {fileID: 204312665}
   Tutorial: {fileID: 1563810578}
   PoolManager: {fileID: 1452395630}

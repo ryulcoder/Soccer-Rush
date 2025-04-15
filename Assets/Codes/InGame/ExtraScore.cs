@@ -19,6 +19,7 @@ public class ExtraScore : MonoBehaviour
     static float[] moveExtra = new float[] { 0, 10 };
     static float[] skillExtra = new float[] { 15, 30 };
     static float[] shootExtra = new float[] { 100 };
+    float scoreMulti;
 
     [Header("[ ExtraScore Particle ]")]
     [SerializeField] GameObject ExtraParticle;
@@ -46,6 +47,8 @@ public class ExtraScore : MonoBehaviour
     {
         Player = Player.Instance;
         BallMove = BallMove.instance;
+
+        scoreMulti = GameManager.Instance.scoreMulti;
     }
 
     void Update()
@@ -103,9 +106,9 @@ public class ExtraScore : MonoBehaviour
         if (scoreType == "HitShoot")
         {
             if (!tutorial)
-                totalScore += extraScore[0];
+                totalScore += extraScore[0] * scoreMulti;
 
-            sb.Append(extraScore[0]);
+            sb.Append(extraScore[0] * scoreMulti);
             Debug.LogWarning(sb.ToString());
 
             yield break;
@@ -143,9 +146,9 @@ public class ExtraScore : MonoBehaviour
             }
 
             if (!tutorial)
-                totalScore += extraScore[1];
+                totalScore += extraScore[1] * scoreMulti;
 
-            sb.Append(extraScore[1]);
+            sb.Append(extraScore[1] * scoreMulti);
             Debug.LogWarning(sb.ToString());
         }
         else
@@ -153,9 +156,9 @@ public class ExtraScore : MonoBehaviour
             if (extraScore[0] == 0) yield break;
 
             if (!tutorial)
-                totalScore += extraScore[0];
+                totalScore += extraScore[0] * scoreMulti;
 
-            sb.Append(extraScore[0]);
+            sb.Append(extraScore[0] * scoreMulti);
             Debug.LogWarning(sb.ToString());
         }
 

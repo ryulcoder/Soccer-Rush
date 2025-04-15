@@ -22,14 +22,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] float playerAniSpeed = 1.3f;
     [SerializeField] float ballMoveSpeed = 59;
 
+
     [Header("[ Def Setting ]")]
     [SerializeField] float minGap = 130;
     [SerializeField] float maxGap = 160;
     [SerializeField] float[] defPer = { 70, 30, 0, 0, 0, 0};
 
-    [Header("[ Player Stamina ]")]
-    public float totalStamina;
-    public float regenTime;
+    [Header("[ StartManager ]")]
+    public float totalStamina = 100;
+    public float regenTime = 2;
+    public float scoreMulti = 1;
 
     [Header("[ Code ]")]
     public GoogleAd googleAd;
@@ -113,13 +115,9 @@ public class GameManager : MonoBehaviour
         {
             totalStamina = 100 + StartManager.Instance.staminaUse;
             regenTime = 2 - StartManager.Instance.staminaRegen;
+            scoreMulti = StartManager.Instance.scoreMulti;
 
             Debug.Log("스테미너 추가스텟 받음");
-        }
-        else
-        {
-            totalStamina = 100;
-            regenTime = 2;
         }
         
 
@@ -182,14 +180,12 @@ public class GameManager : MonoBehaviour
 
     void LateUpdate()
     {
-        if (!reSpeedUp && (ScoreCal.Distance + 50) / 100 - count >= 1)
+        if ((ScoreCal.Distance + 50) / 200 - count >= 1)
         {
             count += 1;
 
             isImpact = true;
             IncreaseDifficulty();
-
-            Debug.LogWarning("난이도 업");
         }
     }
 
@@ -240,7 +236,7 @@ public class GameManager : MonoBehaviour
     {
         gameSpeed += speedUp;
 
-        Debug.Log("속도업!!!");
+        Debug.LogWarning("스피드 업!");
     }
 
     public void GameStart()
@@ -413,6 +409,8 @@ public class GameManager : MonoBehaviour
         }
 
         defPer = difficultyList[count];
+
+        Debug.LogWarning("난이도 업");
     }
 
 
