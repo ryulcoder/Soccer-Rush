@@ -317,7 +317,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator InputOnDelay()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(1.5f);
 
         SwipInput.instance.Reset();
         Player.Instance.shootButton.gameObject.SetActive(true);
