@@ -28,7 +28,7 @@ public class SetGraphic : MonoBehaviour
 
         prevScene = SceneManager.GetActiveScene().name;
 
-        if (isWarmupShader)
+        if (!isWarmupShader)
         {
             isWarmupShader = true;
             Shader.WarmupAllShaders();
