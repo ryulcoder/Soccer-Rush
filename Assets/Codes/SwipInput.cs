@@ -42,7 +42,7 @@ public class SwipInput : MonoBehaviour
 
     private void OnTouchStarted(InputAction.CallbackContext context)
     {
-        if (isImpact || Time.timeScale == 0)
+        if (Player.Instance.getTackled || isImpact || Time.timeScale == 0)
         {
             startTouchPosition = Vector2.zero;
             endTouchPosition = Vector2.zero;
@@ -55,7 +55,7 @@ public class SwipInput : MonoBehaviour
 
     private void OnTouchEnded(InputAction.CallbackContext context)
     {
-        if (isImpact || Time.timeScale == 0)
+        if (Player.Instance.getTackled || isImpact || Time.timeScale == 0)
         {
             startTouchPosition = Vector2.zero;
             endTouchPosition = Vector2.zero;

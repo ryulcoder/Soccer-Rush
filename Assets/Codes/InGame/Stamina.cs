@@ -60,10 +60,10 @@ public class Stamina : MonoBehaviour
             return;
         }
 
-        if (stamina + 0.05f * totalStamina > totalStamina)
+        if (stamina + 5 > totalStamina)
             stamina = totalStamina;
         else
-            stamina += 0.05f * totalStamina;
+            stamina += 5;
     }
 
     public bool UseStamina(float sta)
@@ -80,12 +80,9 @@ public class Stamina : MonoBehaviour
     {
         switch (limitType)
         {
-            /*case "AvoidMove":
-                if (!(Player.stateInfo.IsName("Move_Left") || Player.stateInfo.IsName("Move_Right"))) 
-                    return;
-
+            case "HitShoot":
                 limitSta = 5;
-                break;*/
+                break;
 
             case "AvoidJump":
                 if (!Player.stateInfo.IsName("Jump_Run"))

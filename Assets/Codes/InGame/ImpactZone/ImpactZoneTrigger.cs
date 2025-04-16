@@ -33,6 +33,7 @@ public class ImpactZoneTrigger : MonoBehaviour
                 isBallStop = true;
 
                 Ball.ImpactSetting(stopPoint + 5);
+
             }
 
             if (!isPlayerStop && Player.transform.position.z >= stopPoint - 10.5f)
@@ -49,6 +50,7 @@ public class ImpactZoneTrigger : MonoBehaviour
                 ballStopLoop = true;
 
                 ImpactKick();
+
             }
                 
         }
@@ -67,6 +69,8 @@ public class ImpactZoneTrigger : MonoBehaviour
         if (ballStopLoop)
         {
             Ball.ImpactSetting(stopPoint + 5);
+            Debug.LogWarning(Ball.transform);
+            Debug.LogWarning(Ball.BallRigibody.velocity);
         }
     }
 
@@ -94,6 +98,8 @@ public class ImpactZoneTrigger : MonoBehaviour
             Player.Instance.GetComponent<Animator>().SetTrigger("Impact_Kick_Right");
         else
             Player.Instance.GetComponent<Animator>().SetTrigger("Impact_Kick_Left");
+
+        ballStopLoop = false;
     }
 
 
