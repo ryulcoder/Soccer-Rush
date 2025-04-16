@@ -105,6 +105,8 @@ public class ExtraScore : MonoBehaviour
 
         if (scoreType == "HitShoot")
         {
+            Stamina.instance.GetLimitStamina(scoreType);
+
             if (!tutorial)
                 totalScore += extraScore[0] * scoreMulti;
 

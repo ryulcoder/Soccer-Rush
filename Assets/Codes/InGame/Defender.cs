@@ -24,7 +24,7 @@ public class Defender : MonoBehaviour
     public DefenderFootTrigger[] FootTriggers;
 
     Animator DefenderAni;
-    float totalSpeed;
+    float totalSpeed, playerSubDis;
     string anomalyStr;
     bool isSliding_Front;
 
@@ -51,10 +51,12 @@ public class Defender : MonoBehaviour
     // 달리기 후 슬라이딩 태클을 하는 수비수 업데이트 로직
     void Defender_Update()
     {
-        if (isTackle && GameManager.Instance.aroundDefenderClear)
-        {
-            Reset();
-        }
+        playerSubDis = Vector3.Distance(Player.Instance.transform.position, transform.position);
+
+        if (isTackle && GameManager.Instance.aroundDefenderClear) Reset();
+
+        else if (playerSubDis <= 100 && GameManager.Instance.aroundDefenderClear) Reset();
+        
 
         stateInfo = DefenderAni.GetCurrentAnimatorStateInfo(0);
 

@@ -15,7 +15,7 @@ public class BallMove : MonoBehaviour
 
     [Header("[ Ball ]")]
     Transform BallTrans;
-    Rigidbody BallRigibody;
+    public Rigidbody BallRigibody;
     Animator BallAni;
 
     [Space]
@@ -543,7 +543,7 @@ public class BallMove : MonoBehaviour
 
     public void ImpactSetting(float stopPoint)
     {
-        isImpact = true;
+        if (!isImpact) isImpact = true;
 
         BallRigibody.velocity = Vector3.zero;
         BallRigibody.angularVelocity = Vector3.zero;

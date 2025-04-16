@@ -7,6 +7,9 @@ using Debug = UnityEngine.Debug;
 public class SetGraphic : MonoBehaviour
 {
     private static SetGraphic instance;
+
+    static bool isWarmupShader;
+
     string prevScene;
 
     void Awake()
@@ -24,6 +27,13 @@ public class SetGraphic : MonoBehaviour
         }
 
         prevScene = SceneManager.GetActiveScene().name;
+
+        if (isWarmupShader)
+        {
+            isWarmupShader = true;
+            Shader.WarmupAllShaders();
+        }
+            
     }
 
     void Update()

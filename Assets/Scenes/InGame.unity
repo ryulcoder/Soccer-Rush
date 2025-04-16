@@ -5534,8 +5534,8 @@ MonoBehaviour:
   ADBack: {fileID: 1747595072}
   ballSkins:
   - {fileID: 919132149155446097, guid: 1fba2235bef00ab4b817d5cf2dd91b86, type: 3}
-  - {fileID: 919132149155446097, guid: 41a9a235d99f6ad4093f256efb5863b1, type: 3}
   - {fileID: 919132149155446097, guid: 99fd3e08bd5b3a44b9d08d27a5e5bb14, type: 3}
+  - {fileID: 919132149155446097, guid: 41a9a235d99f6ad4093f256efb5863b1, type: 3}
   - {fileID: 919132149155446097, guid: d3d71b9b2a26f164b8d87e8b8215cc08, type: 3}
   gameSpeed: 1
   speedUp: 0.05
@@ -7824,6 +7824,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 125b8d01c7919014e90afcb71e929998, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BallRigibody: {fileID: 0}
   speed: 0
   kickDelay: 0
   deceleration: 0

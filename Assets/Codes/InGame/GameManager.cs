@@ -63,6 +63,7 @@ public class GameManager : MonoBehaviour
     int count, waitDisCount, stopPosition;
     bool coroutine, reSpeedUp, GameEnd;
     [SerializeField] bool isImpact;
+    float impacDis = 200;
 
     public bool aroundDefenderClear, impactFail;
 
@@ -98,24 +99,15 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
 
-#if (UNITY_EDITOR)
-        QualitySettings.vSyncCount = 0;
-        //Application.targetFrameRate = 120;
-#else
-        Shader.WarmupAllShaders();
-#endif
-
         Time.timeScale = 0;
-
-
-        if (ballSkinIdx != PlayerPrefs.GetInt("BallSkin", 0))
-            ballSkinIdx = PlayerPrefs.GetInt("BallSkin", 0);
 
         if (StartManager.Instance)
         {
             totalStamina = 100 + StartManager.Instance.staminaUse;
             regenTime = 2 - StartManager.Instance.staminaRegen;
             scoreMulti = StartManager.Instance.scoreMulti;
+
+            ballSkinIdx = StartManager.Instance.ball;
 
             Debug.Log("스테미너 추가스텟 받음");
         }
@@ -180,9 +172,22 @@ public class GameManager : MonoBehaviour
 
     void LateUpdate()
     {
-        if ((ScoreCal.Distance + 50) / 200 - count >= 1)
+        if ((ScoreCal.Distance + 50) / impacDis - count >= 1)
         {
             count += 1;
+
+            if (count >= 9)
+            {
+                impacDis = 800;
+            }
+            else if (count >= 6)
+            {
+                impacDis = 600;
+            }
+            else if (count >= 3)
+            {
+                impacDis = 400;
+            }
 
             isImpact = true;
             IncreaseDifficulty();
