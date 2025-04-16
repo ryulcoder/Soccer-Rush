@@ -6288,6 +6288,61 @@ PrefabInstance:
       propertyPath: distanceResult
       value: 
       objectReference: {fileID: 1180046938}
+    - target: {fileID: 2932427346380560155, guid: b2d9fc04abee9b545a7e92789950a5e0,
+        type: 3}
+      propertyPath: iZDistances.Array.size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2932427346380560155, guid: b2d9fc04abee9b545a7e92789950a5e0,
+        type: 3}
+      propertyPath: iZDistances.Array.data[0]
+      value: 210
+      objectReference: {fileID: 0}
+    - target: {fileID: 2932427346380560155, guid: b2d9fc04abee9b545a7e92789950a5e0,
+        type: 3}
+      propertyPath: iZDistances.Array.data[1]
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 2932427346380560155, guid: b2d9fc04abee9b545a7e92789950a5e0,
+        type: 3}
+      propertyPath: iZDistances.Array.data[2]
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 2932427346380560155, guid: b2d9fc04abee9b545a7e92789950a5e0,
+        type: 3}
+      propertyPath: iZDistances.Array.data[3]
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 2932427346380560155, guid: b2d9fc04abee9b545a7e92789950a5e0,
+        type: 3}
+      propertyPath: iZDistances.Array.data[4]
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 2932427346380560155, guid: b2d9fc04abee9b545a7e92789950a5e0,
+        type: 3}
+      propertyPath: iZDistances.Array.data[5]
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 2932427346380560155, guid: b2d9fc04abee9b545a7e92789950a5e0,
+        type: 3}
+      propertyPath: iZDistances.Array.data[6]
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 2932427346380560155, guid: b2d9fc04abee9b545a7e92789950a5e0,
+        type: 3}
+      propertyPath: iZDistances.Array.data[7]
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 2932427346380560155, guid: b2d9fc04abee9b545a7e92789950a5e0,
+        type: 3}
+      propertyPath: iZDistances.Array.data[8]
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 2932427346380560155, guid: b2d9fc04abee9b545a7e92789950a5e0,
+        type: 3}
+      propertyPath: iZDistances.Array.data[9]
+      value: 800
+      objectReference: {fileID: 0}
     - target: {fileID: 7245074290390410669, guid: b2d9fc04abee9b545a7e92789950a5e0,
         type: 3}
       propertyPath: m_Name

@@ -23,7 +23,6 @@ public class ImpactGame : MonoBehaviour
 
     private void Awake()
     {
-        maxIncreasePerSecond = 10 * increaseAmount;
         button = TapButton.GetComponent<Button>();
         button.onClick.AddListener(OnButtonClick);
     }
@@ -41,9 +40,11 @@ public class ImpactGame : MonoBehaviour
 
     void Start()
     {
-        if(StartManager.Instance != null)
+        increaseAmount = 0.1f;
+        if (StartManager.Instance != null)
         {
             increaseAmount = 0.1f + StartManager.Instance.impactDmg;
+            maxIncreasePerSecond = 10 * increaseAmount;
         }
     }
 

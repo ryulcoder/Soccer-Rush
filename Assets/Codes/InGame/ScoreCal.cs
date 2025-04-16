@@ -33,6 +33,11 @@ public class ScoreCal : MonoBehaviour
 
     float scoreMulti;
 
+    public float[] iZDistances;
+    float iZDistance;
+    float iZDistanceSum;
+    int iZIndex = 0;
+
     public int Distance { get { return (int)distance; } }
     public int Score { get { return (int)score; } }
 
@@ -56,6 +61,7 @@ public class ScoreCal : MonoBehaviour
         }
 
         scoreMulti = GameManager.Instance.scoreMulti;
+        StartCoroutine(UpdateDistanceCoroutine());
     }
 
     void Update()
@@ -69,7 +75,6 @@ public class ScoreCal : MonoBehaviour
     {
         distanceText.text = Distance.ToString() + "m";
         scoreText.text = Score.ToString();
-        impactSlider.value = (distance % 200)/ 200;
         bTText.text = bTAmount.ToString();
     }
     
@@ -176,5 +181,29 @@ public class ScoreCal : MonoBehaviour
         PlayerPrefs.SetInt("BreakThrough", bTAmount + pastBT); 
 
         PlayerPrefs.Save();
+    }
+
+    IEnumerator UpdateDistanceCoroutine()
+    {
+        while (true)
+        {
+            IZDistanceSet();
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
+    void IZDistanceSet()
+    {
+        // iZDistanceSum은 전역 변수로 유지한다고 가정할게
+        if (distance > iZDistanceSum + iZDistances[iZIndex])
+        {
+            iZDistanceSum += iZDistances[iZIndex]; // 새로 추가된 거리만 누적
+            iZIndex++;
+        }
+
+        iZDistance = distance - iZDistanceSum;
+
+        float currentSegment = iZDistances[iZIndex];
+        impactSlider.value = (iZDistance % currentSegment) / currentSegment;
     }
 }
