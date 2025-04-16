@@ -63,7 +63,7 @@ public class GameManager : MonoBehaviour
     int count, waitDisCount, stopPosition;
     bool coroutine, reSpeedUp, GameEnd;
     [SerializeField] bool isImpact;
-    float impacDis = 200;
+    float impactDis = 200;
 
     public bool aroundDefenderClear, impactFail;
 
@@ -172,22 +172,25 @@ public class GameManager : MonoBehaviour
 
     void LateUpdate()
     {
-        if ((ScoreCal.Distance + 50) / impacDis - count >= 1)
+        if (ScoreCal.Distance + 50 >= impactDis)
         {
             count += 1;
 
             if (count >= 9)
             {
-                impacDis = 800;
+                impactDis += 800;
             }
             else if (count >= 6)
             {
-                impacDis = 600;
+                impactDis += 600;
             }
             else if (count >= 3)
             {
-                impacDis = 400;
+                impactDis += 400;
             }
+            else
+                impactDis += 200;
+
 
             isImpact = true;
             IncreaseDifficulty();
