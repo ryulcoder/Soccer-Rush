@@ -37,7 +37,10 @@ public class ContactAni : MonoBehaviour
         PlaySequence();
         impactGame.goalkeeperStage = goalkeeperStage;
         goalkeeperName.text = goalkeeperNames[goalkeeperStage];
-        goalkeeperStage++;
+        if(goalkeeperStage < goalkeeperNames.Length - 1)
+        {
+            goalkeeperStage++;
+        }
     }
 
     void PlaySequence()
