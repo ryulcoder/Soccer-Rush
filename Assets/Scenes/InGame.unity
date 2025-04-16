@@ -4442,8 +4442,63 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8492617676840478392, guid: 859ac2c11a319e641a7e1c81f75f2f33,
         type: 3}
-      propertyPath: decreaseRates.Array.data[0]
+      propertyPath: increaseAmount
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8492617676840478392, guid: 859ac2c11a319e641a7e1c81f75f2f33,
+        type: 3}
+      propertyPath: decreaseRates.Array.size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8492617676840478392, guid: 859ac2c11a319e641a7e1c81f75f2f33,
+        type: 3}
+      propertyPath: decreaseRates.Array.data[0]
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8492617676840478392, guid: 859ac2c11a319e641a7e1c81f75f2f33,
+        type: 3}
+      propertyPath: decreaseRates.Array.data[1]
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8492617676840478392, guid: 859ac2c11a319e641a7e1c81f75f2f33,
+        type: 3}
+      propertyPath: decreaseRates.Array.data[2]
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8492617676840478392, guid: 859ac2c11a319e641a7e1c81f75f2f33,
+        type: 3}
+      propertyPath: decreaseRates.Array.data[3]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8492617676840478392, guid: 859ac2c11a319e641a7e1c81f75f2f33,
+        type: 3}
+      propertyPath: decreaseRates.Array.data[4]
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8492617676840478392, guid: 859ac2c11a319e641a7e1c81f75f2f33,
+        type: 3}
+      propertyPath: decreaseRates.Array.data[5]
+      value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8492617676840478392, guid: 859ac2c11a319e641a7e1c81f75f2f33,
+        type: 3}
+      propertyPath: decreaseRates.Array.data[6]
+      value: 2.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8492617676840478392, guid: 859ac2c11a319e641a7e1c81f75f2f33,
+        type: 3}
+      propertyPath: decreaseRates.Array.data[7]
+      value: 2.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8492617676840478392, guid: 859ac2c11a319e641a7e1c81f75f2f33,
+        type: 3}
+      propertyPath: decreaseRates.Array.data[8]
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8492617676840478392, guid: 859ac2c11a319e641a7e1c81f75f2f33,
+        type: 3}
+      propertyPath: decreaseRates.Array.data[9]
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 8596363415342776291, guid: 859ac2c11a319e641a7e1c81f75f2f33,
         type: 3}

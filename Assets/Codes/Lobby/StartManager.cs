@@ -64,5 +64,6 @@ public class StartManager : MonoBehaviour
 
             }
         }
+        scoreMulti += 1f;       // 기본 배율 1 추가
     }
 }
