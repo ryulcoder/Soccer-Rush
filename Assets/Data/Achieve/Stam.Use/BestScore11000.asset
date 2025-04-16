@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d0c2fe2b33c86845895ec252f1e6678, type: 3}
-  m_Name: BestScore3
+  m_Name: BestScore11000
   m_EditorClassIdentifier: 
   staminaUseImage: {fileID: 21300000, guid: 86991e39c8d864b198c0b90042adfcc5, type: 3}
   staminaRegenImage: {fileID: 21300000, guid: aa5a7bca8bcaf437f9b920981b31c39f, type: 3}
@@ -18,8 +18,8 @@ MonoBehaviour:
   ballImage: {fileID: 0}
   pointPlusImage: {fileID: 21300000, guid: cbd500a1336964dc6a2510633420abcd, type: 3}
   achType: 0
-  achReward: 3
-  achName: Ball2
-  effect: OrangeBall
-  amount: 1500
-  effectAmount: 2
+  achReward: 0
+  achName: Stamina.7
+  effect: Stamina +1
+  amount: 11000
+  effectAmount: 1

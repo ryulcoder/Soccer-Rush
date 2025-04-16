@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d0c2fe2b33c86845895ec252f1e6678, type: 3}
-  m_Name: BestScore2
+  m_Name: BreakThrough3000
   m_EditorClassIdentifier: 
   staminaUseImage: {fileID: 21300000, guid: 86991e39c8d864b198c0b90042adfcc5, type: 3}
   staminaRegenImage: {fileID: 21300000, guid: aa5a7bca8bcaf437f9b920981b31c39f, type: 3}
   impactDmgImage: {fileID: 21300000, guid: 43c87b9aeb3be4e859866f1d88e61793, type: 3}
   ballImage: {fileID: 0}
   pointPlusImage: {fileID: 21300000, guid: cbd500a1336964dc6a2510633420abcd, type: 3}
-  achType: 0
-  achReward: 1
-  achName: Stam.Regen1
-  effect: Stam.Regen -0.2s
-  amount: 1000
-  effectAmount: 0.2
+  achType: 3
+  achReward: 2
+  achName: Impact.Dmg3
+  effect: Impact.Dmg UP
+  amount: 3000
+  effectAmount: 0.1

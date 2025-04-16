@@ -34,13 +34,13 @@ public class Achievements : MonoBehaviour
         GetButtonUi = GetButton.GetComponent<Button>();
         GetButtonUi.onClick.AddListener(ClickGet);
 
-        SetPlayerPrefs();
+        //SetPlayerPrefs();
     }
 
     void Start()
     {
         effectText.text = achData.effect;
-        
+        SetImage();
     }
 
     private void OnEnable()
@@ -75,11 +75,11 @@ public class Achievements : MonoBehaviour
                 sliderText.text = amount.ToString() + "<#b3bedb>/" + achData.amount.ToString();
                 break;
             case AchType.killDefenders:
-                amount = PlayerPrefs.GetInt("KillDefenders");
+                amount = PlayerPrefs.GetInt("BreakThrough");
                 sliderText.text = amount.ToString() + "<#b3bedb>/" + achData.amount.ToString();
                 break;
             case AchType.topStage:
-                amount = PlayerPrefs.GetInt("TopStage");
+                amount = PlayerPrefs.GetInt("TopImpactZone");
                 sliderText.text = amount.ToString() + "<#b3bedb>/" + achData.amount.ToString();
                 break;
             default:
@@ -98,6 +98,28 @@ public class Achievements : MonoBehaviour
         }
     }
 
+    void SetImage()
+    {
+        switch (achData.achReward)
+        {
+            case AchReward.staminaUse:
+                image.sprite = achData.staminaUseImage;
+                break;
+            case AchReward.staminaRegen:
+                image.sprite = achData.staminaRegenImage;
+                break;
+            case AchReward.impactDmg:
+                image.sprite = achData.impactDmgImage;
+                break;
+            case AchReward.pointPlus:
+                image.sprite = achData.pointPlusImage;
+                break;
+            case AchReward.ball:
+                break;
+            default:
+                break;
+        }
+    }
     // 달성했지만 겟은 누르지 않았을때
     void NoGetState()
     {
@@ -113,13 +135,17 @@ public class Achievements : MonoBehaviour
         GetButton.SetActive(false);
         get = true;
         PlayerPrefs.SetFloat(achData.achName, achData.effectAmount);
+        PlayerPrefs.Save();
         GetDown();
     }
 
     // 실험용
     void SetPlayerPrefs()
     {
-        PlayerPrefs.SetInt("BestScore", 1500);
+        PlayerPrefs.SetInt("BestScore", 4000);
+        PlayerPrefs.SetInt("TotalDistance", 1500);
+        PlayerPrefs.SetInt("BreakThrough", 1500);
+        PlayerPrefs.SetInt("TopImpactZone", 5);
         PlayerPrefs.Save();
 
     }

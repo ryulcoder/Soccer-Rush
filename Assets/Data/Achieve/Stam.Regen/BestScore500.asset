@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d0c2fe2b33c86845895ec252f1e6678, type: 3}
-  m_Name: BestScore4
+  m_Name: BestScore500
   m_EditorClassIdentifier: 
   staminaUseImage: {fileID: 21300000, guid: 86991e39c8d864b198c0b90042adfcc5, type: 3}
   staminaRegenImage: {fileID: 21300000, guid: aa5a7bca8bcaf437f9b920981b31c39f, type: 3}
@@ -18,8 +18,8 @@ MonoBehaviour:
   ballImage: {fileID: 0}
   pointPlusImage: {fileID: 21300000, guid: cbd500a1336964dc6a2510633420abcd, type: 3}
   achType: 0
-  achReward: 2
-  achName: Impact.Dmg1
-  effect: Impact.Dmg +0.2
-  amount: 2000
-  effectAmount: 0.2
+  achReward: 1
+  achName: Stam.Regen1
+  effect: Stam.Regen -0.1s
+  amount: 500
+  effectAmount: 0.1

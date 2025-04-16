@@ -43,7 +43,7 @@ public class ImpactGame : MonoBehaviour
     {
         if(StartManager.Instance != null)
         {
-            increaseAmount = 0.5f + StartManager.Instance.impactDmg;
+            increaseAmount = 0.1f + StartManager.Instance.impactDmg;
         }
     }
 

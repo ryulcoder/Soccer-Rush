@@ -46,11 +46,9 @@ public class StartManager : MonoBehaviour
                 {
                     case AchData.AchReward.staminaUse:
                         staminaUse += data.effectAmount;
-                        staminaUse = 20;
                         break;
                     case AchData.AchReward.staminaRegen:
                         staminaRegen += data.effectAmount;
-                        staminaRegen = 1;
                         break;
                     case AchData.AchReward.impactDmg:
                         impactDmg += data.effectAmount;
@@ -64,6 +62,10 @@ public class StartManager : MonoBehaviour
 
             }
         }
+        Debug.Log("sta:"+staminaRegen);
+        Debug.Log("stau:"+ staminaUse);
+        Debug.Log("imp:"+ impactDmg);
+        Debug.Log("sco:"+ scoreMulti);
         scoreMulti += 1f;       // 기본 배율 1 추가
     }
 }
