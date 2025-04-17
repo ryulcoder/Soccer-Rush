@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
     public float speed, jumpSpeed, distance, totalSpeed;
     [SerializeField] float next_x, returnZero;
 
-    public bool dribbleSlowStart, getTackled, isAct, isImpact, redribble;
+    public bool dribbleSlowStart, getTackled, isAct, isImpact;
     bool start, dontMove, ballReset, isDribble, isJump, isSpin, isAvoid;
 
     Vector3 direction, defaultVec, movePos;
@@ -150,29 +150,12 @@ public class Player : MonoBehaviour
 
                     if (stateInfo.IsName("Move_Left") || stateInfo.IsName("Move_Right"))
                     {
-                        redribble = true;
-                        PlayerAni.ResetTrigger("ReDribble");
                         PlayerAni.SetTrigger("ReDribble");
                     }
 
                 }
                 else
                     PlayerTransform.position += 22 * Time.deltaTime * direction;
-
-            }
-            else
-            {
-                if (redribble && (stateInfo.IsName("Move_Left") || stateInfo.IsName("Move_Right")))
-                {
-                    PlayerAni.ResetTrigger("ReDribble");
-                    PlayerAni.SetTrigger("ReDribble");
-                    redribble = true;
-                }
-                else if (redribble)
-                {
-                    redribble = false;
-                    PlayerAni.ResetTrigger("ReDribble");
-                }
 
             }
         }
