@@ -44,8 +44,8 @@ public class ImpactGame : MonoBehaviour
         if (StartManager.Instance != null)
         {
             increaseAmount = 0.1f + StartManager.Instance.impactDmg;
-            maxIncreasePerSecond = 10 * increaseAmount;
         }
+        maxIncreasePerSecond = 10 * increaseAmount;
     }
 
     void Update()
