@@ -27,7 +27,6 @@ public class BallMove : MonoBehaviour
 
     // ballMove
     float ballMaxY;
-    bool moveKick;
     bool ballReset;
 
     // spinMove
@@ -41,7 +40,7 @@ public class BallMove : MonoBehaviour
 
 
     Vector3 movement = Vector3.forward;
-    Vector3 moveTorqueDir = Vector3.right;
+    public Vector3 moveTorqueDir = Vector3.right;
 
     Vector3 playerVec, ballVec;
 
@@ -149,38 +148,7 @@ public class BallMove : MonoBehaviour
     {
         if (!isImpact && !spin && ballVec.x != playerVec.x)
         {
-            if (!moveKick)
-            {
-                if (ballVec.x < playerVec.x - 0.00001f)
-                {
-                    moveTorqueDir = Vector3.right + Vector3.forward;
-                    moveTorqueDir = Vector3.Cross(moveTorqueDir.normalized, Vector3.down);
-                }
-                else if (ballVec.x > playerVec.x + 0.00001f)
-                {
-                    moveTorqueDir = Vector3.right + Vector3.back;
-                    moveTorqueDir = Vector3.Cross(moveTorqueDir.normalized, Vector3.up);
-                }
-                else
-                {
-                    BallTrans.position = Vector3.right * playerVec.x + Vector3.up * ballVec.y + Vector3.forward * ballVec.z;
-                    moveTorqueDir = Vector3.right;
-                }
-                    
-
-                //BallRigibody.angularVelocity = Vector3.zero;
-                //BallRigibody.AddTorque(moveTorqueDir * 90, ForceMode.VelocityChange);
-
-                moveKick = true;
-            }
-
             BallTrans.position = Vector3.right * playerVec.x + Vector3.up * ballVec.y + Vector3.forward * ballVec.z;
-        }
-        else
-        {
-            moveTorqueDir = Vector3.right;
-
-            moveKick = false;
         }
     }
     // 플레이어 점프시 공 띄우기 업데이트 로직
@@ -410,6 +378,8 @@ public class BallMove : MonoBehaviour
             BallRigibody.angularVelocity = Vector3.zero;
 
             deceleration = true;
+
+            if (Player.stateInfo.IsName("Dribble")) moveTorqueDir = Vector3.right;
 
             // 볼 리지바디 이동, 회전 힘 작용
             BallRigibody.AddForce(movement * speed, ForceMode.VelocityChange);

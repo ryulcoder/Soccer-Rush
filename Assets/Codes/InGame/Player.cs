@@ -214,11 +214,22 @@ public class Player : MonoBehaviour
         next_x += moveDirection * distance;
 
         if (moveDirection > 0)
-            PlayerAni.SetTrigger("MoveRight");
-        else
-            PlayerAni.SetTrigger("MoveLeft");
-        
+        {
+            BallMove.moveTorqueDir = Vector3.Cross((Vector3.right + Vector3.forward).normalized, Vector3.down);
+            BallMove.BallRigibody.angularVelocity = Vector3.zero;
+            BallMove.BallRigibody.AddTorque(BallMove.moveTorqueDir * 90, ForceMode.VelocityChange);
 
+            PlayerAni.SetTrigger("MoveRight");
+        }
+        else
+        {
+            BallMove.moveTorqueDir = Vector3.Cross((Vector3.right + Vector3.back).normalized, Vector3.up);
+            BallMove.BallRigibody.angularVelocity = Vector3.zero;
+            BallMove.BallRigibody.AddTorque(BallMove.moveTorqueDir * 90, ForceMode.VelocityChange);
+
+            PlayerAni.SetTrigger("MoveLeft");
+        }
+            
         if (Mathf.Abs(next_x) >= distance)
         {
             next_x = moveDirection * distance;
