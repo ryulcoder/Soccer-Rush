@@ -21,9 +21,9 @@ public class Player : MonoBehaviour
     public Transform TileTransform;
 
     public float speed, jumpSpeed, distance, totalSpeed;
-    float next_x, returnZero;
+    [SerializeField] float next_x, returnZero;
 
-    public bool dribbleSlowStart, getTackled, isAct, isImpact;
+    public bool dribbleSlowStart, getTackled, isAct, isImpact, redribble;
     bool start, dontMove, ballReset, isDribble, isJump, isSpin, isAvoid;
 
     Vector3 direction, defaultVec, movePos;
@@ -135,23 +135,46 @@ public class Player : MonoBehaviour
     // 플레이어 좌우 움직임 업데이트 로직
     void PlayerMove_Update()
     {
-        movePos = PlayerTransform.position;
-
-        if (next_x != movePos.x)
+        if (!getTackled)
         {
-            // 도착위치 도달 시 스탑 후 초기화
-            if (direction.x > 0 && movePos.x >= next_x - 1 || direction.x < 0 && movePos.x <= next_x + 1)
-            {
-                isAct = false;
+            movePos = PlayerTransform.position;
 
-                PlayerTransform.position = Vector3.right * next_x + Vector3.up * movePos.y + Vector3.forward * movePos.z;
-                
-                if (stateInfo.IsName("Move_Left") || stateInfo.IsName("Move_Right"))
-                    PlayerAni.SetTrigger("ReDribble");
+            if (next_x != movePos.x)
+            {
+                // 도착위치 도달 시 스탑 후 초기화
+                if (direction.x > 0 && movePos.x >= next_x - 1 || direction.x < 0 && movePos.x <= next_x + 1)
+                {
+                    isAct = false;
+
+                    PlayerTransform.position = Vector3.right * next_x + Vector3.up * movePos.y + Vector3.forward * movePos.z;
+
+                    if (stateInfo.IsName("Move_Left") || stateInfo.IsName("Move_Right"))
+                    {
+                        redribble = true;
+                        PlayerAni.ResetTrigger("ReDribble");
+                        PlayerAni.SetTrigger("ReDribble");
+                    }
+
+                }
+                else
+                    PlayerTransform.position += 22 * Time.deltaTime * direction;
+
             }
             else
-                PlayerTransform.position += 22 * Time.deltaTime * direction;
-            
+            {
+                if (redribble && (stateInfo.IsName("Move_Left") || stateInfo.IsName("Move_Right")))
+                {
+                    PlayerAni.ResetTrigger("ReDribble");
+                    PlayerAni.SetTrigger("ReDribble");
+                    redribble = true;
+                }
+                else if (redribble)
+                {
+                    redribble = false;
+                    PlayerAni.ResetTrigger("ReDribble");
+                }
+
+            }
         }
     }
     // 플레이어 드리블 업데이트 로직
@@ -303,6 +326,7 @@ public class Player : MonoBehaviour
             LobbyAudioManager.instance.PlaySfx(LobbyAudioManager.Sfx.deathPunch);
         }
 
+        ResetAllTriggers();
         PlayerAni.SetTrigger(tackleName);
 
     }
@@ -414,6 +438,16 @@ public class Player : MonoBehaviour
         LobbyAudioManager.instance.PlaySfx(LobbyAudioManager.Sfx.kick);
     }
 
-    
+    void ResetAllTriggers()
+    {
+        for (int i = 0; i < PlayerAni.parameterCount; i++)
+        {
+            AnimatorControllerParameter param = PlayerAni.GetParameter(i);
+            if (param.type == AnimatorControllerParameterType.Trigger)
+            {
+                PlayerAni.ResetTrigger(param.name);
+            }
+        }
+    }
 
 }
