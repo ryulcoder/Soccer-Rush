@@ -20,6 +20,6 @@ MonoBehaviour:
   achType: 1
   achReward: 3
   achName: Ball3
-  effect: Black Star
+  effect: BlackStar
   amount: 15000
-  effectAmount: 2
+  effectAmount: 1
