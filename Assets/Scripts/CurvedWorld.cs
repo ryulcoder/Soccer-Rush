@@ -5,7 +5,7 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class CurvedWorld : MonoBehaviour {
 
-    public Vector3 Curvature = new Vector3(0, 0.0005f, 0);
+    public Vector3 Curvature = Vector3.right * 0.0005f + Vector3.up * 0.002f;
 
     int CurvatureID;
 

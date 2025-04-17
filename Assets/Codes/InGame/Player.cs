@@ -20,8 +20,8 @@ public class Player : MonoBehaviour
     [Space]
     public Transform TileTransform;
 
-    public float speed, jumpSpeed, distance;
-    float totalSpeed, next_x, returnZero;
+    public float speed, jumpSpeed, distance, totalSpeed;
+    float next_x, returnZero;
 
     public bool dribbleSlowStart, getTackled, isAct, isImpact;
     bool start, dontMove, ballReset, isDribble, isJump, isSpin, isAvoid;
@@ -64,7 +64,8 @@ public class Player : MonoBehaviour
         PlayerTransform = transform;
         PlayerAni = GetComponent<Animator>();
 
-        isJump = isSpin = true;
+        isSpin = true;
+        isJump = true;
 
         distance = TileTransform.localScale.x / 3;
 
@@ -186,9 +187,6 @@ public class Player : MonoBehaviour
     {
         if (isImpact && (stateInfo.IsName("Shoot_Right") || stateInfo.IsName("Shoot_Center")))
         {
-            if (returnZero == 0 && transform.position.x <= 0)
-                isImpact = false;
-
             transform.position = Vector3.MoveTowards(transform.position, defaultVec + 2 * returnZero * Vector3.left, Time.deltaTime);
         }
     }

@@ -8,8 +8,6 @@ public class SetGraphic : MonoBehaviour
 {
     private static SetGraphic instance;
 
-    static bool isWarmupShader;
-
     string prevScene;
 
     void Awake()
@@ -27,12 +25,6 @@ public class SetGraphic : MonoBehaviour
         }
 
         prevScene = SceneManager.GetActiveScene().name;
-
-        if (!isWarmupShader)
-        {
-            isWarmupShader = true;
-            Shader.WarmupAllShaders();
-        }
             
     }
 
@@ -71,8 +63,11 @@ public class SetGraphic : MonoBehaviour
 
     private void ApplyGraphicsSettings()
     {
-        QualitySettings.vSyncCount = 0;     // 수직 동기화 해제
-        Application.targetFrameRate = 60;   // 프레임 60으로 고정
+        if (QualitySettings.vSyncCount != 0)
+            QualitySettings.vSyncCount = 0;     // 수직 동기화 해제
+
+        if (Application.targetFrameRate != 60)
+            Application.targetFrameRate = 60;   // 프레임 60으로 고정
 
         Debug.LogWarning("수직동기화 해제 && 프레임 60 고정");
     }

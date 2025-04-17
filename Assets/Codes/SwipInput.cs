@@ -28,6 +28,8 @@ public class SwipInput : MonoBehaviour
     }
     private void OnEnable()
     {
+        if (SwipInputActions == null) return;
+
         SwipInputActions.InputAction.PointerPress.started += OnTouchStarted;
         SwipInputActions.InputAction.PointerPress.canceled += OnTouchEnded;
         SwipInputActions.InputAction.Enable();
@@ -35,6 +37,8 @@ public class SwipInput : MonoBehaviour
 
     private void OnDisable()
     {
+        if (SwipInputActions == null) return;
+
         SwipInputActions.InputAction.PointerPress.started -= OnTouchStarted;
         SwipInputActions.InputAction.PointerPress.canceled -= OnTouchEnded;
         SwipInputActions.InputAction.Disable();

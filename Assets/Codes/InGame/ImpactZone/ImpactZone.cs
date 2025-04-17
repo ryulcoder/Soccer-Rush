@@ -138,9 +138,9 @@ public class ImpactZone : MonoBehaviour
 
         if (Ball.position.y <= 1.93f)
         {
-            BallRgb.AddTorque(torqueDir * 100, ForceMode.Force);
+            BallRgb.AddTorque(torqueDir * 80, ForceMode.Force);
 
-            BallRgb.AddForce(Vector3.back * 100, ForceMode.Force);
+            BallRgb.AddForce(Vector3.back * 80, ForceMode.Force);
         }
     }
 
@@ -226,9 +226,10 @@ public class ImpactZone : MonoBehaviour
 
         yield return new WaitForSeconds(1.5f);
 
-        Player.Instance.dribbleSlowStart = true;
         Player.Instance.GetComponent<Animator>().SetTrigger("ReDribble");
         Player.Instance.GetComponent<Animator>().SetTrigger("Dribble");
+
+        Player.Instance.dribbleSlowStart = true;
 
         Off();
     }

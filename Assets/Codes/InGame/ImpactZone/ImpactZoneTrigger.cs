@@ -57,7 +57,7 @@ public class ImpactZoneTrigger : MonoBehaviour
 
         if (speedDown)
         {
-            Time.timeScale -= (gameSpeed - 1) * 0.1f;
+            Time.timeScale -= Time.deltaTime;
 
             if (Time.timeScale <= 1)
             {
@@ -69,8 +69,6 @@ public class ImpactZoneTrigger : MonoBehaviour
         if (ballStopLoop)
         {
             Ball.ImpactSetting(stopPoint + 5);
-            Debug.LogWarning(Ball.transform);
-            Debug.LogWarning(Ball.BallRigibody.velocity);
         }
     }
 
@@ -81,7 +79,6 @@ public class ImpactZoneTrigger : MonoBehaviour
 
     IEnumerator KickDelay()
     {
-        ballStopLoop = false;
         BallMove.instance.deceleration = false;
 
         yield return new WaitForSeconds(0.5f);

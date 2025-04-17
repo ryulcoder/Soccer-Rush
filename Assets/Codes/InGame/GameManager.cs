@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
 
     int revive = 1;
 
-    int count, waitDisCount, stopPosition;
+    int count;
     bool coroutine, reSpeedUp, GameEnd;
     [SerializeField] bool isImpact;
     float impactDis = 200;
@@ -154,16 +154,16 @@ public class GameManager : MonoBehaviour
             aroundDefenderClear = false;
         }
 
-        if (reSpeedUp && (ScoreCal.Distance - stopPosition) / 2 - waitDisCount >= 1)
+        if (reSpeedUp)
         {
-            waitDisCount++;
-
-            Time.timeScale += (gameSpeed - 1) * 0.1f;
+            Time.timeScale += Time.deltaTime * 0.5f;
 
             if (Time.timeScale >= gameSpeed)
             {
                 Time.timeScale = gameSpeed;
                 reSpeedUp = false;
+                
+                if (Player.isImpact) Player.isImpact = false;
             }
                 
         }
@@ -309,8 +309,14 @@ public class GameManager : MonoBehaviour
 
     public void ReSpeedUp()
     {
+        StartCoroutine(WaitReSpeedUp());
+    }
+
+    IEnumerator WaitReSpeedUp()
+    {
+        yield return new WaitWhile(() => Player.dribbleSlowStart);
+
         reSpeedUp = true;
-        stopPosition = ScoreCal.Distance;
     }
 
     public void InputOn()
@@ -320,7 +326,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator InputOnDelay()
     {
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1);
 
         SwipInput.instance.Reset();
         Player.Instance.shootButton.gameObject.SetActive(true);
