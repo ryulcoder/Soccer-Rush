@@ -39,7 +39,7 @@ public class Floor : MonoBehaviour
 
     List<GameObject> targetObjs = new();
 
-    const int totalDef = 85;
+    const int totalDef = 72;
 
     void Start()
     {
@@ -352,7 +352,7 @@ public class Floor : MonoBehaviour
 
                 for (int i = 0; i < totalDef; i++)
                 {
-                    if (i != 0 && i % 11 == 0)
+                    if (i % 11 == 0)
                     {
                         PoolManager.SetPopObject("SlidingTackle_Anomaly");
                         targetObjs.Add(PoolManager.PopSettingObject());
@@ -366,7 +366,7 @@ public class Floor : MonoBehaviour
                             fpXIdx = 1;
                     }
 
-                    if (i != 0 && i % 8 == 0)
+                    if (i % 8 == 0)
                     {
                         PoolManager.SetPopObject("StandTackle_Front");
                         targetObjs.Add(PoolManager.PopSettingObject());
@@ -391,7 +391,7 @@ public class Floor : MonoBehaviour
 
                 for (int i = 0; i < totalDef; i++)
                 {
-                    if (i != 0 && i % 14 == 0)
+                    if (i % 14 == 0)
                     {
                         defRanIdx = Random.Range(0, 3);
 
@@ -430,7 +430,7 @@ public class Floor : MonoBehaviour
                     }
 
                     // 양 사이드 라인 블락
-                    if (i != 0 && i % 7 == 0)
+                    if (i % 7 == 0)
                     {
                         if (defRanIdx == 2)
                         {

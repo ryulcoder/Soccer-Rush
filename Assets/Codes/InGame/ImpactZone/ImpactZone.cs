@@ -224,7 +224,7 @@ public class ImpactZone : MonoBehaviour
         BallMove.instance.ImpactEnd(true);
         GameManager.Instance.GameSpeedUp();
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1.8f);
 
         Player.Instance.GetComponent<Animator>().SetTrigger("ReDribble");
         Player.Instance.GetComponent<Animator>().SetTrigger("Dribble");

@@ -4,10 +4,21 @@ using UnityEngine;
 
 public class WarmupShader : MonoBehaviour
 {
-    
+
+    static bool isWarmup;
+
     void Start()
     {
-        Shader.WarmupAllShaders();
+
+#if !UNITY_EDITOR
+        if (!isWarmup)
+        {
+            isWarmup = true;
+
+            Shader.WarmupAllShaders();
+        }
+#endif
+            
     }
 
 }

@@ -151,18 +151,22 @@ public class BallMove : MonoBehaviour
         {
             if (!moveKick)
             {
-                if (ballVec.x < playerVec.x)
+                if (ballVec.x < playerVec.x - 0.00001f)
                 {
                     moveTorqueDir = Vector3.right + Vector3.forward;
                     moveTorqueDir = Vector3.Cross(moveTorqueDir.normalized, Vector3.down);
                 }
-                else if (ballVec.x > playerVec.x)
+                else if (ballVec.x > playerVec.x + 0.00001f)
                 {
                     moveTorqueDir = Vector3.right + Vector3.back;
                     moveTorqueDir = Vector3.Cross(moveTorqueDir.normalized, Vector3.up);
                 }
                 else
+                {
+                    BallTrans.position = Vector3.right * playerVec.x + Vector3.up * ballVec.y + Vector3.forward * ballVec.z;
                     moveTorqueDir = Vector3.right;
+                }
+                    
 
                 //BallRigibody.angularVelocity = Vector3.zero;
                 //BallRigibody.AddTorque(moveTorqueDir * 90, ForceMode.VelocityChange);
@@ -172,14 +176,12 @@ public class BallMove : MonoBehaviour
 
             BallTrans.position = Vector3.right * playerVec.x + Vector3.up * ballVec.y + Vector3.forward * ballVec.z;
         }
-        else if (!isImpact && !spin && ballVec.x == playerVec.x)
+        else
         {
             moveTorqueDir = Vector3.right;
 
             moveKick = false;
         }
-        else
-            moveKick = false;
     }
     // 플레이어 점프시 공 띄우기 업데이트 로직
     void BallFlick_Update()
