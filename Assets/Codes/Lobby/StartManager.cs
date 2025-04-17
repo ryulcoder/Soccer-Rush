@@ -32,6 +32,11 @@ public class StartManager : MonoBehaviour
     
     public void CheckAch()
     {
+        staminaUse = 0f;
+        staminaRegen = 0f;
+        impactDmg = 0f;
+        scoreMulti = 0f;
+
         int equippedBall = PlayerPrefs.GetInt("EquippedBall");
         ball = equippedBall;
         Debug.Log(ball);
