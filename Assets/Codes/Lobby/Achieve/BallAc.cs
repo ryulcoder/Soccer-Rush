@@ -45,6 +45,8 @@ public class BallAc : MonoBehaviour
         BallManager.instance.ChangeBall();
         PlayerPrefs.SetInt("EquippedBall", ballData.ballNo);
         PlayerPrefs.Save();
+        Debug.Log(PlayerPrefs.GetInt("EquippedBall"));
+
         EquipButton.SetActive(false);
         EquippedButton.SetActive(true);
     }

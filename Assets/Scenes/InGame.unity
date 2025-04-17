@@ -1232,6 +1232,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 184796770432457702, guid: a91fcc387890cbd4b8405452da1568df,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1228565217647964005, guid: a91fcc387890cbd4b8405452da1568df,
         type: 3}
       propertyPath: m_Name
@@ -3549,6 +3554,7 @@ MonoBehaviour:
   speed: 1
   jumpSpeed: 8
   distance: 0
+  totalSpeed: 0
   dribbleSlowStart: 0
   getTackled: 0
   isAct: 0
@@ -6864,8 +6870,9 @@ MonoBehaviour:
   kick: 0
   isTackled: 0
   resetKick: 0
-  isImpact: 0
   spin: 0
+  isImpact: 0
+  isImpactCoroutine: 0
   HitParticle: {fileID: 8223277700252251927, guid: 94cf806b3bc318649af23fe370b8d925,
     type: 3}
   shootSpeed: 10

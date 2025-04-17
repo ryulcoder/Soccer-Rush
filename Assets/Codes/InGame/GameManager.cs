@@ -108,7 +108,7 @@ public class GameManager : MonoBehaviour
             scoreMulti = StartManager.Instance.scoreMulti;
 
             ballSkinIdx = StartManager.Instance.ball;
-
+            Debug.Log(ballSkinIdx);
             Debug.Log("스테미너 추가스텟 받음");
         }
         
