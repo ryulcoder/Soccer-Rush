@@ -139,8 +139,14 @@ public class ImpactGame : MonoBehaviour
         {
             // ÀÌ°åÀ»¶§
             playerWin = true;
-            PlayerPrefs.SetInt("TopImpactZone", goalkeeperStage + 1);
-            PlayerPrefs.Save();
+            
+            int topImpact = PlayerPrefs.GetInt("TopImpactZone");
+            
+            if (goalkeeperStage + 1 > topImpact)
+            {
+                PlayerPrefs.SetInt("TopImpactZone", goalkeeperStage + 1);
+                PlayerPrefs.Save();
+            }
         }
         else
         {
