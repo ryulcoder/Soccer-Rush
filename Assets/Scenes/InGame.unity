@@ -1247,6 +1247,16 @@ PrefabInstance:
       propertyPath: m_MatchWidthOrHeight
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 2115124280753339320, guid: a91fcc387890cbd4b8405452da1568df,
+        type: 3}
+      propertyPath: PausePanel
+      value: 
+      objectReference: {fileID: 654741797}
+    - target: {fileID: 2115124280753339320, guid: a91fcc387890cbd4b8405452da1568df,
+        type: 3}
+      propertyPath: ResumeCount
+      value: 
+      objectReference: {fileID: 1307722496}
     - target: {fileID: 2162588186980222822, guid: a91fcc387890cbd4b8405452da1568df,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1307,6 +1317,26 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4021379664166730390, guid: a91fcc387890cbd4b8405452da1568df,
+        type: 3}
+      propertyPath: PausePanel
+      value: 
+      objectReference: {fileID: 654741797}
+    - target: {fileID: 4021379664166730390, guid: a91fcc387890cbd4b8405452da1568df,
+        type: 3}
+      propertyPath: ResumeCount
+      value: 
+      objectReference: {fileID: 1307722496}
+    - target: {fileID: 4723160103817782396, guid: a91fcc387890cbd4b8405452da1568df,
+        type: 3}
+      propertyPath: PausePanel
+      value: 
+      objectReference: {fileID: 654741797}
+    - target: {fileID: 4723160103817782396, guid: a91fcc387890cbd4b8405452da1568df,
+        type: 3}
+      propertyPath: ResumeCount
+      value: 
+      objectReference: {fileID: 1307722496}
     - target: {fileID: 5239021198110547707, guid: a91fcc387890cbd4b8405452da1568df,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -1322,6 +1352,16 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -1.4350586
       objectReference: {fileID: 0}
+    - target: {fileID: 5731324555509460317, guid: a91fcc387890cbd4b8405452da1568df,
+        type: 3}
+      propertyPath: PausePanel
+      value: 
+      objectReference: {fileID: 654741797}
+    - target: {fileID: 5731324555509460317, guid: a91fcc387890cbd4b8405452da1568df,
+        type: 3}
+      propertyPath: ResumeCount
+      value: 
+      objectReference: {fileID: 1307722496}
     - target: {fileID: 6102463205120567575, guid: a91fcc387890cbd4b8405452da1568df,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1337,6 +1377,16 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1360049847}
+    - target: {fileID: 7876082059775500019, guid: a91fcc387890cbd4b8405452da1568df,
+        type: 3}
+      propertyPath: PausePanel
+      value: 
+      objectReference: {fileID: 654741797}
+    - target: {fileID: 7876082059775500019, guid: a91fcc387890cbd4b8405452da1568df,
+        type: 3}
+      propertyPath: ResumeCount
+      value: 
+      objectReference: {fileID: 1307722496}
     - target: {fileID: 7931437153246750356, guid: a91fcc387890cbd4b8405452da1568df,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -3555,6 +3605,8 @@ MonoBehaviour:
   jumpSpeed: 8
   distance: 0
   totalSpeed: 0
+  next_x: 0
+  returnZero: 0
   dribbleSlowStart: 0
   getTackled: 0
   isAct: 0
@@ -4755,6 +4807,12 @@ Transform:
   - {fileID: 1383106502}
   m_Father: {fileID: 1210599581}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1307722496 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6491948806887364461, guid: a91fcc387890cbd4b8405452da1568df,
+    type: 3}
+  m_PrefabInstance: {fileID: 451270171}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1308058516
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5080,8 +5138,10 @@ MonoBehaviour:
   - {fileID: 445619778}
   - {fileID: 2037039544}
   - {fileID: 655982662}
-  NoTuto: 1
+  ResumeCount: {fileID: 1307722496}
+  NoTuto: 0
   isTuto: 0
+  isSelfPause: 0
 --- !u!4 &1563810579
 Transform:
   m_ObjectHideFlags: 0
@@ -6873,6 +6933,7 @@ MonoBehaviour:
   spin: 0
   isImpact: 0
   isImpactCoroutine: 0
+  moveTorqueDir: {x: 1, y: 0, z: 0}
   HitParticle: {fileID: 8223277700252251927, guid: 94cf806b3bc318649af23fe370b8d925,
     type: 3}
   shootSpeed: 10

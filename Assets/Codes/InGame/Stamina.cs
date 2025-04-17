@@ -70,8 +70,7 @@ public class Stamina : MonoBehaviour
     {
         if (stamina - sta < 0) return false;
 
-        if (!GameManager.Tutorial.isTuto)
-            stamina -= sta;
+        stamina -= sta;
 
         return true;
     }

@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class SwipAni : MonoBehaviour
 {
+    public GameObject PausePanel;
+    public GameObject ResumeCount;
+
     public enum SwipDirection
     {
         Left, Right, Up, Down
@@ -57,7 +60,7 @@ public class SwipAni : MonoBehaviour
             StartCoroutine(ClickWait());
         }
 
-        if (swipOn)
+        if (swipOn && !(PausePanel.activeSelf || ResumeCount.activeSelf))
         {
             SwipMove();
         }

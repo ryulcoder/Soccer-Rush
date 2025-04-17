@@ -19,9 +19,10 @@ public class Tutorial : MonoBehaviour
     public GameObject SwipInput;
     public GameObject ShootBtn;
     public GameObject[] Floors;
+    public GameObject ResumeCount;
 
     [Space]
-    public bool NoTuto, isTuto;
+    public bool NoTuto, isTuto, isSelfPause;
 
     Player Player;
 
@@ -31,7 +32,11 @@ public class Tutorial : MonoBehaviour
 
     void Awake()
     {
-        //PlayerPrefs.DeleteKey("Tutorial");
+#if (UNITY_EDITOR)
+        PlayerPrefs.DeleteKey("Tutorial");
+#else
+        NoTuto = false;
+#endif
         TutorialOn(PlayerPrefs.GetInt("Tutorial", 0) == 0 && !NoTuto);
     }
 
@@ -88,6 +93,8 @@ public class Tutorial : MonoBehaviour
 
     public void TutoralSet(int num)
     {
+        isSelfPause = true;
+
         Time.timeScale = 0;
 
         TutorialBtn.onClick.RemoveAllListeners();
@@ -101,7 +108,11 @@ public class Tutorial : MonoBehaviour
 
     void TutoListener(int num)
     {
+        if (ResumeCount.activeSelf) return;
+
         tutoNum = num;
+
+        isSelfPause = false;
 
         Time.timeScale = gameSpeed;
 

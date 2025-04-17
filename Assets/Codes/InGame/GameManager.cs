@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour
     BallMove BallMove;
 
     int revive = 1;
+    float pauseTime;
 
     int count;
     bool coroutine, reSpeedUp, GameEnd;
@@ -258,11 +259,14 @@ public class GameManager : MonoBehaviour
         PausePanel.SetActive(true);
         PauseBlurPanel.SetActive(true);
 
+        pauseTime = Time.timeScale;
+
         Time.timeScale = 0;
     }
     public void GameResume()
     {
-        Time.timeScale = gameSpeed; 
+        if (!Tutorial.isSelfPause) Time.timeScale = pauseTime; 
+
         PausePanel.SetActive(false);
         PauseBlurPanel.SetActive(false);
     }
