@@ -19,7 +19,7 @@ MonoBehaviour:
   pointPlusImage: {fileID: 21300000, guid: cbd500a1336964dc6a2510633420abcd, type: 3}
   achType: 0
   achReward: 3
-  achName: Ball2
+  achName: OrangeBall
   effect: OrangeBall
   amount: 4000
   effectAmount: 1

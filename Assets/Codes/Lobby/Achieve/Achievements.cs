@@ -34,7 +34,7 @@ public class Achievements : MonoBehaviour
         GetButtonUi = GetButton.GetComponent<Button>();
         GetButtonUi.onClick.AddListener(ClickGet);
 
-        //SetPlayerPrefs();
+        SetPlayerPrefs();
     }
 
     void Start()
@@ -143,9 +143,6 @@ public class Achievements : MonoBehaviour
     void SetPlayerPrefs()
     {
         PlayerPrefs.SetInt("BestScore", 4000);
-        PlayerPrefs.SetInt("TotalDistance", 1500);
-        PlayerPrefs.SetInt("BreakThrough", 1500);
-        PlayerPrefs.SetInt("TopImpactZone", 5);
         PlayerPrefs.Save();
 
     }

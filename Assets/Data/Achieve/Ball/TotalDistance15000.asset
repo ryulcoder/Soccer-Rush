@@ -19,7 +19,7 @@ MonoBehaviour:
   pointPlusImage: {fileID: 21300000, guid: cbd500a1336964dc6a2510633420abcd, type: 3}
   achType: 1
   achReward: 3
-  achName: Ball3
+  achName: BlackStar
   effect: BlackStar
   amount: 15000
   effectAmount: 1
