@@ -11,7 +11,7 @@ public class BallManager : MonoBehaviour
     void Awake()
     {
         instance = this;
-        SetPlayerPrefs();
+        //SetPlayerPrefs();
         PlayerPrefs.SetInt("basic", 1);
         PlayerPrefs.Save();
 
