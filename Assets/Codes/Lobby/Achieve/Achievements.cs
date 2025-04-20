@@ -34,7 +34,7 @@ public class Achievements : MonoBehaviour
         GetButtonUi = GetButton.GetComponent<Button>();
         GetButtonUi.onClick.AddListener(ClickGet);
 
-        SetPlayerPrefs();
+        //SetPlayerPrefs();
     }
 
     void Start()
