@@ -265,7 +265,7 @@ public class GameManager : MonoBehaviour
     }
     public void GameResume()
     {
-        if (!Tutorial.isSelfPause) Time.timeScale = pauseTime; 
+        if (!Tutorial.gameObject.activeSelf || !Tutorial.isSelfPause) Time.timeScale = pauseTime; 
 
         PausePanel.SetActive(false);
         PauseBlurPanel.SetActive(false);
