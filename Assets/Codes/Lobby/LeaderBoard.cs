@@ -18,6 +18,11 @@ using Unity.Services.Leaderboards.Models;
 
 public class LeaderBoard : MonoBehaviour
 {
+    // 색상 설정
+    string nicknameColor = "#3A8DFF"; // 선명한 파란색
+    string tagColor = "#555555";     // 중간 회색
+    string coloredText;
+
     public Text score;
     public TextMeshProUGUI[] playerIdText;
     public TextMeshProUGUI[] playerScoreText;
@@ -47,6 +52,9 @@ public class LeaderBoard : MonoBehaviour
 
     private bool isAuthenticated = false; // 인증 여부 저장
 
+    void Awake()
+    {
+    }
 
     //void AuthenticateUser()
     //{
@@ -204,7 +212,16 @@ public class LeaderBoard : MonoBehaviour
         Debug.Log(myScore.ToString());
         Debug.Log(myNickname);
 
-        myPlayerIdText.text = myNickname;
+        // 닉네임과 태그 분리
+        string[] parts = myNickname.Split('#');
+        string nameOnly = parts.Length > 0 ? parts[0] : myNickname;
+        string tagOnly = parts.Length > 1 ? "#" + parts[1] : "";
+
+        // 색상 + 크기 조합 (태그는 70% 사이즈)
+        string coloredNickname = $"<b><color={nicknameColor}>{nameOnly}</color></b><size=70%><color={tagColor}>{tagOnly}</color></size>";
+
+
+        myPlayerIdText.text = coloredNickname;
         myPlayerScore.text = myScore.ToString();
         myPlayerRankText.text = (myRank + 1).ToString(); // 등수 UI에 표시
     }
@@ -226,7 +243,15 @@ public class LeaderBoard : MonoBehaviour
             foreach (var playerScore in scoresResponse.Results)
             {
                 string playername = playerScore.PlayerName;
-                playerIdText[index].text = playername;
+                string[] parts = playername.Split('#');
+                string nameOnly = parts.Length > 0 ? parts[0] : playername;
+                string tagOnly = parts.Length > 1 ? "#" + parts[1] : "";
+
+                // 색상 + 크기 조합 (태그는 70% 사이즈)
+                string coloredNickname = $"<b><color={nicknameColor}>{nameOnly}</color></b><size=70%><color={tagColor}>{tagOnly}</color></size>";
+
+
+                playerIdText[index].text = coloredNickname;
                 playerScoreText[index].text = playerScore.Score.ToString();
                 index++;
             }

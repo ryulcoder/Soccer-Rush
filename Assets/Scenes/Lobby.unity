@@ -15851,7 +15851,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &347438704
 RectTransform:
   m_ObjectHideFlags: 0
@@ -28120,7 +28120,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ryuls#1234
+  m_text: Ryuls<color=#888888>#1234</color>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5e332cacc71e69849b547d1f5675209d, type: 2}
   m_sharedMaterial: {fileID: 1225721773540895885, guid: 5e332cacc71e69849b547d1f5675209d,
@@ -28130,8 +28130,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4288121468
-  m_fontColor: {r: 0.4862745, g: 0.5411765, b: 0.5921569, a: 1}
+    rgba: 4294937914
+  m_fontColor: {r: 0.22745098, g: 0.5529412, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -65501,7 +65501,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1404354386
 RectTransform:
   m_ObjectHideFlags: 0
@@ -82099,7 +82099,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 336e3e5849c50b84688452b9b000cc4c, type: 3}
-    m_FontSize: 52
+    m_FontSize: 31
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
@@ -82110,48 +82110,11 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'copyright
-
-
-    f
-
-    ff
-
-    f
-
-    f
-
-    f
-
-    f
-
-
-    f
-
-    f
-
-    f
-
-    f
-
-    f
-
-
-    f
-
-    f
-
-    f
-
-    f
-
-    f
-
-    f
-
-    f
-
-'
+  m_Text: "\u201CStar Football\u201D by sahilseth Available on Sketchfab Licensed
+    under CC BY 4.0.\r\n\r\n\u201C**Foot Ball**\u201D by masanimations Available
+    on Sketchfab Licensed under CC BY 4.0.\r\n\r\n\u201C3D Soccer Ball (OBJ) with
+    Realistic Textures\u201D by ronildo.facanha Available on Sketchfab Licensed under
+    CC BY 4.0."
 --- !u!222 &1789019174
 CanvasRenderer:
   m_ObjectHideFlags: 0
