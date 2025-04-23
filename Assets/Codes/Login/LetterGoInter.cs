@@ -43,6 +43,10 @@ public class LetterGoInter : MonoBehaviour
 
         inputField.onValueChanged.AddListener(UpdateButtonState);
         UpdateButtonState(inputField.text); // 초기 상태 업데이트
+
+        inputField.onValueChanged.AddListener((word) => inputField.text = Regex.Replace(word, @"[^a-zA-Z]", ""));
+
+
     }
 
     void UpdateButtonState(string text)
